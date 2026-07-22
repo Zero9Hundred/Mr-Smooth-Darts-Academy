@@ -6,17 +6,17 @@
 <title>Mr Smooth Darts Academy</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --felt:#0A0A0A;
-    --felt-deep:#141414;
-    --surface:#1A1A1A;
-    --surface-2:#201C14;
-    --wire:rgba(255,255,255,0.10);
-    --wire-strong:rgba(255,255,255,0.20);
-    --chalk:#F5F3EF;
-    --chalk-dim:#A6A6A6;
+    --felt:#050608;
+    --felt-deep:#0D0F14;
+    --surface:#0D0F14;
+    --surface-2:#12151C;
+    --wire:#1B2029;
+    --wire-strong:#2A303C;
+    --chalk:#F1F3F7;
+    --chalk-dim:#8A9199;
     --brass:#C9972C;
     --brass-light:#E3B94F;
     --danger:#C1443C;
@@ -42,7 +42,7 @@
     -webkit-font-smoothing:antialiased;
   }
   h1,h2,h3,.display{
-    font-family:'Anton',sans-serif;
+    font-family:'Oswald',sans-serif;
     font-weight:400;
     letter-spacing:0.02em;
     text-transform:uppercase;
@@ -70,7 +70,7 @@
     padding:18px 18px 6px;
   }
   .brand{
-    font-family:'Anton',sans-serif;
+    font-family:'Oswald',sans-serif;
     font-size:20px;
     letter-spacing:0.03em;
     color:var(--chalk);
@@ -101,7 +101,7 @@
   .field input:focus{outline:2px solid var(--brass);outline-offset:1px;}
   .btn{
     width:100%;padding:14px 16px;border-radius:10px;border:none;
-    font-family:'Anton',sans-serif;font-size:15px;letter-spacing:0.04em;text-transform:uppercase;
+    font-family:'Oswald',sans-serif;font-size:15px;letter-spacing:0.04em;text-transform:uppercase;
     cursor:pointer;
   }
   .btn-primary{background:var(--brass);color:var(--felt-deep);}
@@ -143,7 +143,7 @@
     position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
   }
   .rank-ring .score{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:34px;line-height:1;}
-  .rank-ring .tier-name{font-family:'Anton',sans-serif;font-size:13px;letter-spacing:0.06em;text-transform:uppercase;margin-top:6px;}
+  .rank-ring .tier-name{font-family:'Oswald',sans-serif;font-size:13px;letter-spacing:0.06em;text-transform:uppercase;margin-top:6px;}
 
   .tier-dot{width:10px;height:10px;border-radius:50%;display:inline-block;margin-right:8px;flex-shrink:0;}
 
@@ -154,6 +154,18 @@
 
   .progress-track{height:8px;border-radius:5px;background:var(--felt-deep);overflow:hidden;margin-top:10px;}
   .progress-fill{height:100%;border-radius:5px;background:var(--brass);transition:width 0.4s ease;}
+
+  /* ---------- detail language: corner brackets + monogram watermark ---------- */
+  .corner{position:absolute;width:14px;height:14px;pointer-events:none;opacity:0.7;}
+  .corner-tl{top:8px;left:8px;border-top:1.5px solid var(--brass);border-left:1.5px solid var(--brass);}
+  .corner-tr{top:8px;right:8px;border-top:1.5px solid var(--brass);border-right:1.5px solid var(--brass);}
+  .corner-bl{bottom:8px;left:8px;border-bottom:1.5px solid var(--brass);border-left:1.5px solid var(--brass);}
+  .corner-br{bottom:8px;right:8px;border-bottom:1.5px solid var(--brass);border-right:1.5px solid var(--brass);}
+  .watermark{
+    position:absolute;top:-10px;right:-6px;font-family:'Oswald',sans-serif;font-weight:700;
+    font-size:96px;line-height:1;letter-spacing:-0.02em;color:var(--chalk);opacity:0.03;
+    pointer-events:none;user-select:none;
+  }
 
   /* ---------- hero ---------- */
   .hero{
@@ -173,7 +185,7 @@
     pointer-events:none;
   }
   .hero-fallback svg{width:76px;height:76px;}
-  .hero .word-mark{font-family:'Anton',sans-serif;font-size:24px;letter-spacing:0.02em;line-height:1.15;}
+  .hero .word-mark{font-family:'Oswald',sans-serif;font-size:24px;letter-spacing:0.02em;line-height:1.15;}
   .hero .word-mark .lead{display:block;font-family:'Inter',sans-serif;font-style:italic;font-weight:500;font-size:15px;text-transform:none;color:var(--chalk-dim);margin-bottom:2px;}
   .hero .word-mark .sub{display:block;font-size:14px;color:var(--brass-light);letter-spacing:0.1em;margin-top:3px;}
   .hero .tagline{font-size:12px;font-style:italic;color:var(--chalk-dim);margin-top:8px;}
@@ -240,7 +252,7 @@
   .step-dot.now{background:var(--brass-light);}
 
   .yesno-row{display:flex;gap:10px;margin-top:6px;}
-  .yesno-row button{flex:1;padding:12px;border-radius:10px;border:1px solid var(--wire-strong);background:var(--felt-deep);color:var(--chalk);font-size:14px;font-family:'Anton',sans-serif;letter-spacing:0.03em;cursor:pointer;}
+  .yesno-row button{flex:1;padding:12px;border-radius:10px;border:1px solid var(--wire-strong);background:var(--felt-deep);color:var(--chalk);font-size:14px;font-family:'Oswald',sans-serif;letter-spacing:0.03em;cursor:pointer;}
   .yesno-row button.selected{background:var(--brass);color:var(--felt-deep);border-color:var(--brass);}
 
   .p2-list{display:flex;flex-direction:column;gap:8px;}
@@ -374,16 +386,21 @@
   </div>
 
   <!-- ================= HOME ================= -->
-  <div id="screen-home" class="screen">
+  <div id="screen-home" class="screen" style="position:relative;overflow:hidden;">
+    <div class="watermark">MS</div>
     <div class="topbar">
       <div class="brand">Mr Smooth <span>Darts</span></div>
       <button class="icon-btn" id="btn-signout" title="Sign out">&#8630;</button>
     </div>
 
     <div class="hero">
+      <span class="corner corner-tl"></span>
+      <span class="corner corner-tr"></span>
+      <span class="corner corner-bl"></span>
+      <span class="corner corner-br"></span>
       <img class="hero-photo" id="hero-photo" src="hero.jpg" alt="" onerror="this.style.display='none';document.getElementById('hero-fallback').style.display='flex';">
       <div class="hero-fallback" id="hero-fallback">
-        <svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="46" fill="none" stroke="#C9972C" stroke-width="4"/><circle cx="50" cy="50" r="32" fill="none" stroke="#F5F3EF" stroke-width="3"/><circle cx="50" cy="50" r="18" fill="none" stroke="#E3B94F" stroke-width="3"/><circle cx="50" cy="50" r="5" fill="#E3B94F"/></svg>
+        <svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="46" fill="none" stroke="#C9972C" stroke-width="4"/><circle cx="50" cy="50" r="32" fill="none" stroke="#F1F3F7" stroke-width="3"/><circle cx="50" cy="50" r="18" fill="none" stroke="#E3B94F" stroke-width="3"/><circle cx="50" cy="50" r="5" fill="#E3B94F"/></svg>
       </div>
       <div class="word-mark">
         <span class="lead">Mr Smooth</span>
@@ -401,7 +418,7 @@
 
     <div class="rank-ring" id="home-ring">
       <svg viewBox="0 0 100 100">
-        <circle cx="50" cy="50" r="44" fill="none" stroke="rgba(243,238,225,0.10)" stroke-width="7"/>
+        <circle cx="50" cy="50" r="44" fill="none" stroke="rgba(241,243,247,0.10)" stroke-width="7"/>
         <circle id="home-ring-fill" cx="50" cy="50" r="44" fill="none" stroke="var(--t-beginner)" stroke-width="7" stroke-linecap="round" stroke-dasharray="276" stroke-dashoffset="276" transform="rotate(-90 50 50)"/>
       </svg>
       <div class="center">
@@ -939,7 +956,7 @@
       '<h2 style="font-size:20px;text-align:center;">Session complete</h2>'+
       '<div class="summary-total">'+
         '<div class="big">'+total+'</div>'+
-        '<div style="color:'+tier.color+';font-family:Anton,sans-serif;letter-spacing:0.05em;text-transform:uppercase;margin-top:6px;">'+tier.name+'</div>'+
+        '<div style="color:'+tier.color+';font-family:Oswald,sans-serif;letter-spacing:0.05em;text-transform:uppercase;margin-top:6px;">'+tier.name+'</div>'+
       '</div>'+
       '<div class="card">'+
         '<div class="summary-row"><span>Phase 1</span><span class="mono">'+p1+'</span></div>'+
