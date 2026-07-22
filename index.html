@@ -446,7 +446,6 @@
     <div class="hero">
       <button class="icon-btn icon-btn-float" id="btn-signout" title="Sign out"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px;"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg></button>
       <span class="corner corner-tl"></span>
-      <span class="corner corner-tr"></span>
       <span class="corner corner-bl"></span>
       <span class="corner corner-br"></span>
       <img class="hero-photo" id="hero-photo" src="hero.jpg" alt="" onerror="this.style.display='none';document.getElementById('hero-fallback').style.display='flex';">
@@ -473,24 +472,7 @@
       </div>
     </div>
 
-    <p class="subtle" style="text-align:center;margin-bottom:18px;" id="home-progress-text">Play a session to get ranked.</p>
-
-    <div class="stat-grid">
-      <div class="stat-box"><div class="num mono" id="home-sessions">0</div><div class="lab">Sessions</div></div>
-      <button class="stat-box" data-nav="leaderboard" style="cursor:pointer;text-align:left;width:100%;appearance:none;-webkit-appearance:none;font:inherit;">
-        <div class="num mono" id="home-rank-pos">&mdash;</div><div class="lab">Academy Rank &rarr;</div>
-      </button>
-    </div>
-
-    <div class="card">
-      <div class="card-head"><h3>Your progress</h3><button class="link-btn" data-nav="stats">View all &rarr;</button></div>
-      <div class="trend-chart" id="home-trend-chart"></div>
-    </div>
-
-    <div class="card">
-      <div class="card-head"><h3>Recent scores</h3><button class="link-btn" data-nav="stats">View all &rarr;</button></div>
-      <div id="home-recent-list"></div>
-    </div>
+    <p class="subtle" style="text-align:center;" id="home-progress-text">Play a session to get ranked.</p>
   </div>
 
   <!-- ================= ACADEMY ================= -->
@@ -510,6 +492,12 @@
   <div id="screen-stats" class="screen">
     <div class="topbar" style="padding-left:0;padding-right:0;">
       <h2 style="font-size:20px;">Stats</h2>
+    </div>
+    <div class="stat-grid">
+      <div class="stat-box"><div class="num mono" id="stats-sessions">0</div><div class="lab">Sessions</div></div>
+      <button class="stat-box" data-nav="leaderboard" style="cursor:pointer;text-align:left;width:100%;appearance:none;-webkit-appearance:none;font:inherit;">
+        <div class="num mono" id="stats-rank-pos">&mdash;</div><div class="lab">Academy Rank &rarr;</div>
+      </button>
     </div>
     <div class="card">
       <div class="card-head"><h3>Progress</h3></div>
@@ -783,7 +771,7 @@
   // ---------------- home ----------------
   function loadHome(){
     showScreen('home');
-    withTimeout(supabase.from('sessions').select('*').eq('user_id', currentUser.id).order('played_at', {ascending:false}))
+    withTimeout(supabase.from('sessions').select('total_score').eq('user_id', currentUser.id))
       .then(function(res){
         var sessions = res.data || [];
         var best = 0;
@@ -792,7 +780,6 @@
         document.getElementById('home-score').textContent = best;
         document.getElementById('home-tier').textContent = tier.name;
         document.getElementById('home-tier').style.color = tier.color;
-        document.getElementById('home-sessions').textContent = sessions.length;
 
         var ring = document.getElementById('home-ring-fill');
         ring.setAttribute('stroke', tier.color);
@@ -810,39 +797,6 @@
         } else {
           progText.textContent = (tier.max - best + 1) + ' points to the next tier.';
         }
-
-        document.getElementById('home-trend-chart').innerHTML = buildTrendSVG(sessions);
-
-        var recentEl = document.getElementById('home-recent-list');
-        if (sessions.length === 0){
-          recentEl.innerHTML = '<div class="empty-state" style="padding:20px 0;"><div class="glyph">'+ICON_TARGET+'</div>No sessions yet.</div>';
-        } else {
-          var recentHtml = '';
-          var recent = sessions.slice(0,3);
-          for (var r=0;r<recent.length;r++){
-            var s = recent[r];
-            var d = new Date(s.played_at);
-            var dateStr = d.toLocaleDateString(undefined, {day:'numeric', month:'short'});
-            recentHtml += '<div class="history-row"><div class="history-top"><span>'+s.total_score+' pts &middot; '+s.tier+'</span><span class="mono">'+dateStr+'</span></div></div>';
-          }
-          recentEl.innerHTML = recentHtml;
-        }
-
-        return withTimeout(supabase.from('sessions').select('user_id,total_score'));
-      })
-      .then(function(res){
-        if (!res) return;
-        var all = res.data || [];
-        var bestByUser = {};
-        for (var i=0;i<all.length;i++){
-          var uid = all[i].user_id;
-          if (!bestByUser[uid] || all[i].total_score > bestByUser[uid]) bestByUser[uid] = all[i].total_score;
-        }
-        var ranked = Object.keys(bestByUser).map(function(uid){ return {uid:uid, score:bestByUser[uid]}; });
-        ranked.sort(function(a,b){ return b.score - a.score; });
-        var pos = null;
-        for (var j=0;j<ranked.length;j++){ if (ranked[j].uid === currentUser.id){ pos = j+1; break; } }
-        document.getElementById('home-rank-pos').textContent = pos ? ('#'+pos) : '—';
       })
       .catch(function(err){ console.error(err); });
   }
@@ -860,24 +814,41 @@
     withTimeout(supabase.from('sessions').select('*').eq('user_id', currentUser.id).order('played_at', {ascending:false}))
       .then(function(res){
         var sessions = res.data || [];
+        document.getElementById('stats-sessions').textContent = sessions.length;
         document.getElementById('stats-trend-chart').innerHTML = buildTrendSVG(sessions, 140);
 
         var histEl = document.getElementById('stats-history');
         if (sessions.length === 0){
           histEl.innerHTML = '<div class="empty-state"><div class="glyph">'+ICON_CLIPBOARD+'</div>No sessions yet.</div>';
-          return;
+        } else {
+          var html = '';
+          for (var j=0;j<sessions.length;j++){
+            var s = sessions[j];
+            var d = new Date(s.played_at);
+            var dateStr = d.toLocaleDateString(undefined, {day:'numeric', month:'short', year:'numeric'});
+            html += '<div class="history-row">'+
+              '<div class="history-top"><span>'+s.total_score+' pts &middot; '+s.tier+'</span><span class="mono">P1 '+s.phase1_score+' / P2 '+s.phase2_score+' / P3 '+s.phase3_score+'</span></div>'+
+              '<div class="history-date">'+dateStr+'</div>'+
+            '</div>';
+          }
+          histEl.innerHTML = html;
         }
-        var html = '';
-        for (var j=0;j<sessions.length;j++){
-          var s = sessions[j];
-          var d = new Date(s.played_at);
-          var dateStr = d.toLocaleDateString(undefined, {day:'numeric', month:'short', year:'numeric'});
-          html += '<div class="history-row">'+
-            '<div class="history-top"><span>'+s.total_score+' pts &middot; '+s.tier+'</span><span class="mono">P1 '+s.phase1_score+' / P2 '+s.phase2_score+' / P3 '+s.phase3_score+'</span></div>'+
-            '<div class="history-date">'+dateStr+'</div>'+
-          '</div>';
+
+        return withTimeout(supabase.from('sessions').select('user_id,total_score'));
+      })
+      .then(function(res){
+        if (!res) return;
+        var all = res.data || [];
+        var bestByUser = {};
+        for (var i=0;i<all.length;i++){
+          var uid = all[i].user_id;
+          if (!bestByUser[uid] || all[i].total_score > bestByUser[uid]) bestByUser[uid] = all[i].total_score;
         }
-        histEl.innerHTML = html;
+        var ranked = Object.keys(bestByUser).map(function(uid){ return {uid:uid, score:bestByUser[uid]}; });
+        ranked.sort(function(a,b){ return b.score - a.score; });
+        var pos = null;
+        for (var j=0;j<ranked.length;j++){ if (ranked[j].uid === currentUser.id){ pos = j+1; break; } }
+        document.getElementById('stats-rank-pos').textContent = pos ? ('#'+pos) : '—';
       })
       .catch(function(err){
         document.getElementById('stats-history').innerHTML = '<div class="empty-state">Could not load history.</div>';
