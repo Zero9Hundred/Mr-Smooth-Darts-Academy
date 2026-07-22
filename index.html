@@ -228,13 +228,21 @@
 
   /* ---------- play flow ---------- */
   .target-badge{
-    width:88px;height:88px;border-radius:50%;margin:0 auto 16px;
+    width:88px;height:88px;border-radius:50%;margin:0 auto;
     background:conic-gradient(var(--brass) 0deg, var(--brass-light) 360deg);
     display:flex;align-items:center;justify-content:center;
     border:3px solid var(--felt-deep);
     box-shadow:0 0 0 2px var(--wire-strong);
   }
   .target-badge .num{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:28px;color:var(--felt-deep);}
+  .target-callout{
+    display:flex;align-items:center;justify-content:center;gap:14px;margin-bottom:16px;
+  }
+  .target-callout .flag{
+    font-family:'Oswald',sans-serif;font-size:11px;font-weight:600;letter-spacing:0.14em;
+    text-transform:uppercase;color:var(--brass-light);white-space:nowrap;
+  }
+  .target-callout .arrow{color:var(--brass-light);font-size:16px;line-height:1;}
   .step-track{display:flex;gap:5px;margin-bottom:18px;justify-content:center;}
   .step-dot{width:22px;height:5px;border-radius:3px;background:var(--wire-strong);}
   .step-dot.done{background:var(--brass);}
@@ -881,7 +889,7 @@
       '<h2 style="font-size:18px;text-align:center;margin-bottom:4px;">'+title+'</h2>'+
       '<p class="subtle" style="text-align:center;margin-bottom:16px;">'+blurb+'</p>'+
       '<div class="step-track">'+dots+'</div>'+
-      '<div class="target-badge"><span class="num">'+round.target+'</span></div>'+
+      '<div class="target-callout"><span class="flag">Target</span><span class="arrow">&rarr;</span><div class="target-badge"><span class="num">'+round.target+'</span></div><span class="arrow">&larr;</span><span class="flag">Target</span></div>'+
       '<div class="field">'+
         '<label>Score from this round</label>'+
         '<input type="number" inputmode="numeric" min="0" id="round-score" value="'+(round.score||'')+'" placeholder="0">'+
