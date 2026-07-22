@@ -302,6 +302,12 @@
   .summary-row:last-child{border-bottom:none;}
 
   /* ---------- leaderboard ---------- */
+  .lb-tabs{display:flex;background:var(--felt-deep);border-radius:10px;padding:4px;border:1px solid var(--wire);margin-bottom:14px;}
+  .lb-tabs button{
+    flex:1;text-align:center;padding:10px;border-radius:8px;cursor:pointer;background:transparent;border:none;
+    font-family:'Oswald',sans-serif;font-weight:600;font-size:13px;letter-spacing:0.06em;text-transform:uppercase;color:var(--chalk-dim);
+  }
+  .lb-tabs button.active{background:var(--brass);color:var(--felt-deep);}
   .lb-row{
     display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:10px;margin-bottom:8px;
     background:var(--surface);border:1px solid var(--wire);
@@ -523,6 +529,10 @@
   <div id="screen-leaderboard" class="screen">
     <div class="topbar" style="padding-left:0;padding-right:0;">
       <h2 style="font-size:20px;">Leaderboard</h2>
+    </div>
+    <div class="lb-tabs" id="lb-tabs">
+      <button class="active" data-mode="average">Average</button>
+      <button data-mode="best">Goat</button>
     </div>
     <p class="subtle" id="lb-you-line" style="margin-bottom:14px;"></p>
     <div id="lb-list"></div>
@@ -794,17 +804,21 @@
     withTimeout(supabase.from('sessions').select('total_score').eq('user_id', currentUser.id))
       .then(function(res){
         var sessions = res.data || [];
-        var best = 0;
-        for (var i=0;i<sessions.length;i++) if (sessions[i].total_score > best) best = sessions[i].total_score;
-        var tier = getTier(best);
-        document.getElementById('home-score').textContent = best;
+        var avg = 0;
+        if (sessions.length > 0){
+          var sum = 0;
+          for (var i=0;i<sessions.length;i++) sum += sessions[i].total_score;
+          avg = Math.round(sum / sessions.length);
+        }
+        var tier = getTier(avg);
+        document.getElementById('home-score').textContent = avg;
         document.getElementById('home-tier').textContent = tier.name;
         document.getElementById('home-tier').style.color = tier.color;
 
         var ring = document.getElementById('home-ring-fill');
         ring.setAttribute('stroke', tier.color);
         var span = tier.max - tier.min;
-        var into = Math.min(Math.max(best - tier.min, 0), span);
+        var into = Math.min(Math.max(avg - tier.min, 0), span);
         var pct = span > 0 ? into / span : 1;
         var circumference = 276;
         ring.setAttribute('stroke-dashoffset', String(circumference * (1 - pct)));
@@ -813,9 +827,9 @@
         if (sessions.length === 0){
           progText.textContent = 'Play a session to get ranked.';
         } else if (tier.name === 'Professional'){
-          progText.textContent = 'Top tier. Keep pushing your personal best.';
+          progText.textContent = 'Top tier. Keep your average up to stay there.';
         } else {
-          progText.textContent = (tier.max - best + 1) + ' points to the next tier.';
+          progText.textContent = (tier.max - avg + 1) + ' avg points to the next tier.';
         }
 
         var flamesEl = document.getElementById('home-flames');
@@ -824,13 +838,9 @@
           flamesEl.innerHTML = buildFlameRow(0);
           flamesLabel.textContent = 'Play a session to see your average form.';
         } else {
-          var sum = 0;
-          for (var s=0;s<sessions.length;s++) sum += sessions[s].total_score;
-          var avg = Math.round(sum / sessions.length);
-          var avgTier = getTier(avg);
-          var lit = tierIndex(avgTier);
+          var lit = tierIndex(tier);
           flamesEl.innerHTML = buildFlameRow(lit);
-          flamesLabel.textContent = lit+'/6 \u00b7 '+avgTier.name+' average';
+          flamesLabel.textContent = lit+'/6 \u00b7 '+tier.name+' average';
         }
       })
       .catch(function(err){ console.error(err); });
@@ -891,12 +901,16 @@
       .then(function(res){
         if (!res) return;
         var all = res.data || [];
-        var bestByUser = {};
+        var byUser = {};
         for (var i=0;i<all.length;i++){
           var uid = all[i].user_id;
-          if (!bestByUser[uid] || all[i].total_score > bestByUser[uid]) bestByUser[uid] = all[i].total_score;
+          if (!byUser[uid]) byUser[uid] = {sum:0, count:0};
+          byUser[uid].sum += all[i].total_score;
+          byUser[uid].count += 1;
         }
-        var ranked = Object.keys(bestByUser).map(function(uid){ return {uid:uid, score:bestByUser[uid]}; });
+        var ranked = Object.keys(byUser).map(function(uid){
+          return {uid:uid, score: Math.round(byUser[uid].sum / byUser[uid].count)};
+        });
         ranked.sort(function(a,b){ return b.score - a.score; });
         var pos = null;
         for (var j=0;j<ranked.length;j++){ if (ranked[j].uid === currentUser.id){ pos = j+1; break; } }
@@ -1083,7 +1097,20 @@
   }
 
   // ---------------- leaderboard ----------------
-  function loadLeaderboard(){
+  var lbMode = 'average';
+  var lbTabButtons = document.querySelectorAll('#lb-tabs button');
+  for (var lt=0; lt<lbTabButtons.length; lt++){
+    lbTabButtons[lt].addEventListener('click', function(){
+      lbMode = this.dataset.mode;
+      var all = document.querySelectorAll('#lb-tabs button');
+      for (var x=0;x<all.length;x++) all[x].classList.toggle('active', all[x].dataset.mode === lbMode);
+      loadLeaderboard(lbMode);
+    });
+  }
+
+  function loadLeaderboard(mode){
+    mode = mode || lbMode;
+    lbMode = mode;
     showScreen('leaderboard');
     document.getElementById('lb-list').innerHTML = '<div class="spinner" style="margin-top:30px;"></div>';
     Promise.all([
@@ -1095,13 +1122,18 @@
       var nameById = {};
       for (var i=0;i<profiles.length;i++) nameById[profiles[i].id] = profiles[i].username;
 
-      var bestByUser = {};
+      var byUser = {};
       for (var j=0;j<sessions.length;j++){
         var uid = sessions[j].user_id;
-        if (!bestByUser[uid] || sessions[j].total_score > bestByUser[uid]) bestByUser[uid] = sessions[j].total_score;
+        if (!byUser[uid]) byUser[uid] = {sum:0, count:0, best:0};
+        byUser[uid].sum += sessions[j].total_score;
+        byUser[uid].count += 1;
+        if (sessions[j].total_score > byUser[uid].best) byUser[uid].best = sessions[j].total_score;
       }
-      var ranked = Object.keys(bestByUser).map(function(uid){
-        return {uid:uid, score:bestByUser[uid], name: nameById[uid] || 'Unknown player'};
+      var ranked = Object.keys(byUser).map(function(uid){
+        var u = byUser[uid];
+        var score = mode === 'best' ? u.best : Math.round(u.sum / u.count);
+        return {uid:uid, score:score, name: nameById[uid] || 'Unknown player'};
       });
       ranked.sort(function(a,b){ return b.score - a.score; });
 
@@ -1127,7 +1159,8 @@
         '</div>';
       }
       listEl.innerHTML = html;
-      document.getElementById('lb-you-line').textContent = myPos ? ('You\'re ranked #'+myPos+' of '+ranked.length+'.') : 'Play a session to join the board.';
+      var metricLabel = mode === 'best' ? 'best-ever session' : 'rolling average';
+      document.getElementById('lb-you-line').textContent = myPos ? ('You\'re ranked #'+myPos+' of '+ranked.length+' by '+metricLabel+'.') : 'Play a session to join the board.';
     }).catch(function(err){
       document.getElementById('lb-list').innerHTML = '<div class="empty-state">Could not load the leaderboard. Pull to refresh.</div>';
       console.error(err);
@@ -1187,6 +1220,7 @@
     loadHome();
   }
 
+  var themeReconciledOnce = false;
   function checkProfileThenRoute(){
     withTimeout(supabase.from('profiles').select('*').eq('id', currentUser.id).maybeSingle())
       .then(function(res){
@@ -1196,11 +1230,18 @@
         }
         if (res.data){
           currentProfile = res.data;
-          var savedMode = res.data.theme_mode || 'dark';
-          if (savedMode !== window.__msdaCurrentTheme){
-            applyAndCacheTheme(savedMode);
+          if (!themeReconciledOnce){
+            themeReconciledOnce = true;
+            var savedMode = res.data.theme_mode || 'dark';
+            if (savedMode !== window.__msdaCurrentTheme){
+              applyAndCacheTheme(savedMode);
+            } else {
+              syncThemeToggleUI(savedMode);
+            }
           } else {
-            syncThemeToggleUI(savedMode);
+            // Session was already reconciled once — trust whatever the person
+            // chose locally rather than re-overwriting it on every re-auth event.
+            syncThemeToggleUI(window.__msdaCurrentTheme);
           }
           enterApp();
         } else {
