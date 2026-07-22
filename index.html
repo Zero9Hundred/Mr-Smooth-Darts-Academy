@@ -9,30 +9,31 @@
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --felt:#0B3D2E;
-    --felt-deep:#082C21;
-    --surface:#123F30;
-    --surface-2:#15473A;
-    --wire:rgba(243,238,225,0.12);
-    --wire-strong:rgba(243,238,225,0.22);
-    --chalk:#F3EEE1;
-    --chalk-dim:#AFC0B6;
+    --felt:#0A0A0A;
+    --felt-deep:#141414;
+    --surface:#1A1A1A;
+    --surface-2:#201C14;
+    --wire:rgba(255,255,255,0.10);
+    --wire-strong:rgba(255,255,255,0.20);
+    --chalk:#F5F3EF;
+    --chalk-dim:#A6A6A6;
     --brass:#C9972C;
     --brass-light:#E3B94F;
     --danger:#C1443C;
-    --t-beginner:#6E7D74;
-    --t-intermediate:#3FA37A;
-    --t-advanced:#2F8AA6;
+    --t-beginner:#6B5B3E;
+    --t-intermediate:#8C6F3A;
+    --t-advanced:#A67C2E;
     --t-expert:#C9972C;
-    --t-semipro:#D97A3D;
-    --t-professional:#E8C468;
+    --t-semipro:#E3B94F;
+    --t-professional:#F5D67A;
     --radius:14px;
   }
   *{box-sizing:border-box;}
   html,body{margin:0;padding:0;}
   body{
     background:
-      radial-gradient(circle at 50% -10%, rgba(201,151,44,0.10), transparent 45%),
+      radial-gradient(circle at 50% -10%, rgba(201,151,44,0.14), transparent 45%),
+      radial-gradient(circle at 100% 30%, rgba(201,151,44,0.08), transparent 50%),
       var(--felt);
     background-attachment:fixed;
     color:var(--chalk);
@@ -130,7 +131,7 @@
     font-size:11px;letter-spacing:0.05em;text-transform:uppercase;color:var(--chalk-dim);
     cursor:pointer;user-select:none;
   }
-  .pw-toggle-cb:checked ~ input{-webkit-text-security:none;}
+  .pw-toggle-cb:checked ~ .pw-toggle-label{color:var(--brass-light);}
 
   /* ---------- dartboard rank ring (signature element) ---------- */
   .rank-ring{
@@ -257,8 +258,8 @@
     position:absolute;top:2px;left:2px;width:26px;height:26px;border-radius:50%;background:var(--chalk-dim);
     transition:all 0.15s ease;
   }
-  .hit-toggle.on{background:rgba(63,163,122,0.25);border-color:var(--t-intermediate);}
-  .hit-toggle.on .knob{left:26px;background:var(--t-intermediate);}
+  .hit-toggle.on{background:rgba(201,151,44,0.22);border-color:var(--brass-light);}
+  .hit-toggle.on .knob{left:26px;background:var(--brass-light);}
 
   .running-total{
     position:sticky;top:0;background:var(--felt);padding:10px 0;margin-bottom:10px;
@@ -335,7 +336,7 @@
           <div class="field pw-wrap">
             <label>Password</label>
             <input type="password" id="login-password" autocomplete="current-password" required>
-            <input type="checkbox" class="pw-toggle-cb" id="pw-cb-login">
+            <input type="checkbox" class="pw-toggle-cb" id="pw-cb-login" data-target="login-password">
             <label class="pw-toggle-label" for="pw-cb-login">Show</label>
           </div>
           <button type="submit" class="btn btn-primary" id="btn-login">Sign in</button>
@@ -350,7 +351,7 @@
           <div class="field pw-wrap">
             <label>Password (min 6 characters)</label>
             <input type="password" id="signup-password" autocomplete="new-password" minlength="6" required>
-            <input type="checkbox" class="pw-toggle-cb" id="pw-cb-signup">
+            <input type="checkbox" class="pw-toggle-cb" id="pw-cb-signup" data-target="signup-password">
             <label class="pw-toggle-label" for="pw-cb-signup">Show</label>
           </div>
           <button type="submit" class="btn btn-primary" id="btn-signup">Create account</button>
@@ -382,7 +383,7 @@
     <div class="hero">
       <img class="hero-photo" id="hero-photo" src="hero.jpg" alt="" onerror="this.style.display='none';document.getElementById('hero-fallback').style.display='flex';">
       <div class="hero-fallback" id="hero-fallback">
-        <svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="46" fill="none" stroke="#C9972C" stroke-width="4"/><circle cx="50" cy="50" r="32" fill="none" stroke="#F3EEE1" stroke-width="3"/><circle cx="50" cy="50" r="18" fill="none" stroke="#E3B94F" stroke-width="3"/><circle cx="50" cy="50" r="5" fill="#E3B94F"/></svg>
+        <svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="46" fill="none" stroke="#C9972C" stroke-width="4"/><circle cx="50" cy="50" r="32" fill="none" stroke="#F5F3EF" stroke-width="3"/><circle cx="50" cy="50" r="18" fill="none" stroke="#E3B94F" stroke-width="3"/><circle cx="50" cy="50" r="5" fill="#E3B94F"/></svg>
       </div>
       <div class="word-mark">
         <span class="lead">Mr Smooth</span>
@@ -502,12 +503,12 @@
   var SUPABASE_KEY = 'sb_publishable_oq0QggIQWiVDcl20V0Twkg_0wDCRBvR';
 
   var TIERS = [
-    {name:'Beginner',     min:0,    max:250,  color:'var(--t-beginner)',     hex:'#6E7D74'},
-    {name:'Intermediate', min:251,  max:500,  color:'var(--t-intermediate)', hex:'#3FA37A'},
-    {name:'Advanced',     min:501,  max:750,  color:'var(--t-advanced)',     hex:'#2F8AA6'},
+    {name:'Beginner',     min:0,    max:250,  color:'var(--t-beginner)',     hex:'#6B5B3E'},
+    {name:'Intermediate', min:251,  max:500,  color:'var(--t-intermediate)', hex:'#8C6F3A'},
+    {name:'Advanced',     min:501,  max:750,  color:'var(--t-advanced)',     hex:'#A67C2E'},
     {name:'Expert',       min:751,  max:1000, color:'var(--t-expert)',       hex:'#C9972C'},
-    {name:'Semi-Pro',     min:1001, max:1250, color:'var(--t-semipro)',      hex:'#D97A3D'},
-    {name:'Professional', min:1251, max:3430, color:'var(--t-professional)', hex:'#E8C468'}
+    {name:'Semi-Pro',     min:1001, max:1250, color:'var(--t-semipro)',      hex:'#E3B94F'},
+    {name:'Professional', min:1251, max:3430, color:'var(--t-professional)', hex:'#F5D67A'}
   ];
   function getTier(score){
     for (var i=0;i<TIERS.length;i++){ if (score <= TIERS[i].max) return TIERS[i]; }
@@ -560,6 +561,16 @@
 
   var currentUser = null;
   var currentProfile = null;
+
+  // password show/hide — CSS can't unmask a real type="password" field,
+  // so this is one spot that genuinely needs JS rather than the checkbox-hack.
+  var pwToggles = document.querySelectorAll('.pw-toggle-cb');
+  for (var pw=0; pw<pwToggles.length; pw++){
+    pwToggles[pw].addEventListener('change', function(){
+      var target = document.getElementById(this.dataset.target);
+      if (target) target.type = this.checked ? 'text' : 'password';
+    });
+  }
 
   // ---------------- auth ----------------
   document.getElementById('form-login').addEventListener('submit', function(e){
