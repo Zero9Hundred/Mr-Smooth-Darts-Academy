@@ -54,14 +54,14 @@
 
   /* ---------- layout shell ---------- */
   #app{
-    max-width:520px;
+    max-width:430px;
     margin:0 auto;
     min-height:100vh;
     display:flex;
     flex-direction:column;
     position:relative;
   }
-  .screen{display:none;flex:1;padding:20px 18px 100px;}
+  .screen{display:none;flex:1;padding:16px 20px 90px;}
   .screen.active{display:flex;flex-direction:column;}
   .center-screen{align-items:center;justify-content:center;text-align:center;}
 
@@ -78,15 +78,20 @@
   .brand span{color:var(--brass-light);}
   .icon-btn{
     background:transparent;border:1px solid var(--wire);color:var(--chalk-dim);
-    width:36px;height:36px;border-radius:50%;font-size:14px;cursor:pointer;
+    width:32px;height:32px;border-radius:50%;font-size:13px;cursor:pointer;
+  }
+  .icon-btn-float{
+    position:absolute;top:10px;right:10px;z-index:5;
+    background:rgba(5,6,8,0.55);border-color:rgba(255,255,255,0.25);color:var(--chalk);
+    backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);
   }
 
   /* ---------- cards / inputs ---------- */
   .card{
     background:var(--surface);
     border:1px solid var(--wire);
-    border-radius:var(--radius);
-    padding:20px;
+    border-radius:13px;
+    padding:16px;
     margin-bottom:14px;
   }
   .field{margin-bottom:14px;}
@@ -169,41 +174,41 @@
 
   /* ---------- hero ---------- */
   .hero{
-    position:relative;border-radius:18px;overflow:hidden;
+    position:relative;border-radius:16px;overflow:hidden;
     background:linear-gradient(160deg, var(--surface-2), var(--felt-deep));
     border:1px solid var(--wire);
-    padding:18px 18px 20px;margin:6px 0 16px;
+    padding:14px 14px 16px;margin:0 0 14px;
     text-align:center;
   }
   .hero-photo{
-    width:100%;height:170px;object-fit:cover;object-position:right center;border-radius:12px;margin-bottom:14px;display:block;
+    width:100%;height:140px;object-fit:cover;object-position:right center;border-radius:11px;margin-bottom:12px;display:block;
   }
   .hero-fallback{
-    width:100%;height:150px;border-radius:12px;margin-bottom:14px;
+    width:100%;height:130px;border-radius:11px;margin-bottom:12px;
     display:none;align-items:center;justify-content:center;
     background:radial-gradient(circle at 50% 40%, rgba(201,151,44,0.18), transparent 70%), var(--felt-deep);
     pointer-events:none;
   }
-  .hero-fallback svg{width:76px;height:76px;}
-  .hero .word-mark{font-family:'Oswald',sans-serif;font-size:24px;letter-spacing:0.02em;line-height:1.15;}
-  .hero .word-mark .lead{display:block;font-family:'Inter',sans-serif;font-style:italic;font-weight:500;font-size:15px;text-transform:none;color:var(--chalk-dim);margin-bottom:2px;}
-  .hero .word-mark .sub{display:block;font-size:14px;color:var(--brass-light);letter-spacing:0.1em;margin-top:3px;}
-  .hero .tagline{font-size:12px;font-style:italic;color:var(--chalk-dim);margin-top:8px;}
+  .hero-fallback svg{width:68px;height:68px;}
+  .hero .word-mark{text-align:center;margin-top:2px;}
+  .hero .word-mark .lead{display:block;font-family:'Inter',sans-serif;font-style:italic;font-weight:600;font-size:28px;color:var(--chalk);margin-bottom:3px;}
+  .hero .word-mark .sub{display:block;font-family:'Oswald',sans-serif;font-weight:600;font-size:21px;color:var(--brass-light);letter-spacing:0.1em;text-transform:uppercase;}
+  .hero .tagline{margin:8px 0 0;font-family:'Oswald',sans-serif;font-weight:500;font-size:13px;letter-spacing:2px;text-transform:uppercase;color:var(--chalk-dim);}
 
   /* ---------- quick nav row ---------- */
-  .quick-nav{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:18px;}
+  .quick-nav{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px;}
   .quick-nav button{
     background:var(--surface);border:1px solid var(--wire);border-radius:12px;
-    padding:12px 6px;display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;color:var(--chalk);
+    padding:10px 6px;display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;color:var(--chalk);
   }
-  .quick-nav .glyph{font-size:18px;}
+  .quick-nav .glyph{font-size:17px;}
   .quick-nav .lab{font-size:10px;letter-spacing:0.03em;text-transform:uppercase;color:var(--chalk-dim);}
 
   /* ---------- trend chart ---------- */
-  .trend-chart svg{width:100%;height:120px;display:block;}
-  .trend-empty{text-align:center;color:var(--chalk-dim);font-size:12px;padding:30px 0;}
+  .trend-chart svg{width:100%;height:100px;display:block;}
+  .trend-empty{text-align:center;color:var(--chalk-dim);font-size:12px;padding:26px 0;}
   .card-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
-  .card-head h3{font-size:13px;color:var(--chalk-dim);letter-spacing:0.05em;}
+  .card-head h3{font-size:11px;color:var(--chalk-dim);letter-spacing:0.14em;font-weight:600;}
 
   /* ---------- academy ---------- */
   .academy-card{
@@ -224,7 +229,7 @@
   /* ---------- bottom nav ---------- */
   .bottom-nav{
     position:fixed;bottom:0;left:50%;transform:translateX(-50%);
-    width:100%;max-width:520px;
+    width:100%;max-width:430px;
     display:flex;background:var(--felt-deep);border-top:1px solid var(--wire);
     padding:8px 6px calc(8px + env(safe-area-inset-bottom));
     z-index:50;
@@ -324,11 +329,22 @@
   <!-- ================= AUTH ================= -->
   <div id="screen-auth" class="screen">
     <div style="flex:1;display:flex;flex-direction:column;justify-content:center;">
-      <div style="text-align:center;margin-bottom:28px;">
-        <div class="target-badge" style="margin-bottom:14px;"><span class="num">180</span></div>
-        <h1 style="font-size:26px;">Mr Smooth<br><span style="color:var(--brass-light);">Darts Academy</span></h1>
-        <p class="subtle" style="margin-top:8px;">Log your practice. Track your climb.</p>
+      <div class="hero" style="margin-bottom:24px;">
+        <span class="corner corner-tl"></span>
+        <span class="corner corner-tr"></span>
+        <span class="corner corner-bl"></span>
+        <span class="corner corner-br"></span>
+        <img class="hero-photo" src="hero.jpg" alt="" onerror="this.style.display='none';document.getElementById('auth-hero-fallback').style.display='flex';">
+        <div class="hero-fallback" id="auth-hero-fallback">
+          <svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="46" fill="none" stroke="#C9972C" stroke-width="4"/><circle cx="50" cy="50" r="32" fill="none" stroke="#F1F3F7" stroke-width="3"/><circle cx="50" cy="50" r="18" fill="none" stroke="#E3B94F" stroke-width="3"/><circle cx="50" cy="50" r="5" fill="#E3B94F"/></svg>
+        </div>
+        <div class="word-mark">
+          <span class="lead">Mr Smooth</span>
+          <span class="sub">Darts Academy</span>
+        </div>
+        <p class="tagline">Stable. Focused. Smooth.</p>
       </div>
+      <p class="subtle" style="text-align:center;margin:-14px 0 20px;">Log your practice. Track your climb.</p>
 
       <div class="tab-toggle">
         <input type="checkbox" id="tab-signup">
@@ -388,12 +404,9 @@
   <!-- ================= HOME ================= -->
   <div id="screen-home" class="screen" style="position:relative;overflow:hidden;">
     <div class="watermark">MS</div>
-    <div class="topbar">
-      <div class="brand">Mr Smooth <span>Darts</span></div>
-      <button class="icon-btn" id="btn-signout" title="Sign out">&#8630;</button>
-    </div>
 
     <div class="hero">
+      <button class="icon-btn icon-btn-float" id="btn-signout" title="Sign out">&#8630;</button>
       <span class="corner corner-tl"></span>
       <span class="corner corner-tr"></span>
       <span class="corner corner-bl"></span>
@@ -404,9 +417,9 @@
       </div>
       <div class="word-mark">
         <span class="lead">Mr Smooth</span>
-        Darts<span class="sub">Academy</span>
+        <span class="sub">Darts Academy</span>
       </div>
-      <p class="tagline">Smooth's the name, darts is the game.</p>
+      <p class="tagline">Stable. Focused. Smooth.</p>
     </div>
 
     <div class="quick-nav">
@@ -469,7 +482,7 @@
       <div class="card-head"><h3>Progress</h3></div>
       <div class="trend-chart" id="stats-trend-chart"></div>
     </div>
-    <h3 style="font-size:14px;color:var(--chalk-dim);margin:16px 0 8px;letter-spacing:0.05em;">Full history</h3>
+    <h3 style="font-size:11px;font-weight:600;color:var(--chalk-dim);margin:16px 0 10px;letter-spacing:0.14em;">Full history</h3>
     <div id="stats-history"></div>
   </div>
 
@@ -692,7 +705,7 @@
 
   // ---------------- trend chart (shared: home + stats) ----------------
   function buildTrendSVG(sessions, height){
-    height = height || 120;
+    height = height || 100;
     if (!sessions || sessions.length === 0){
       return '<div class="trend-empty">No sessions yet — your line starts after your first save.</div>';
     }
