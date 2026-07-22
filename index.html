@@ -83,11 +83,7 @@
   .icon-btn{
     background:transparent;border:1px solid var(--wire);color:var(--chalk-dim);
     width:32px;height:32px;border-radius:50%;font-size:13px;cursor:pointer;
-  }
-  .icon-btn-float{
-    position:absolute;top:10px;right:10px;z-index:5;
-    background:rgba(5,6,8,0.55);border-color:rgba(255,255,255,0.25);color:var(--chalk);
-    backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);
+    display:flex;align-items:center;justify-content:center;flex-shrink:0;
   }
 
   /* ---------- cards / inputs ---------- */
@@ -165,39 +161,31 @@
   .progress-fill{height:100%;border-radius:5px;background:var(--brass);transition:width 0.4s ease;}
 
   /* ---------- detail language: corner brackets + monogram watermark ---------- */
-  .corner{position:absolute;width:14px;height:14px;pointer-events:none;opacity:0.7;}
-  .corner-tl{top:8px;left:8px;border-top:1.5px solid var(--brass);border-left:1.5px solid var(--brass);}
-  .corner-tr{top:8px;right:8px;border-top:1.5px solid var(--brass);border-right:1.5px solid var(--brass);}
-  .corner-bl{bottom:8px;left:8px;border-bottom:1.5px solid var(--brass);border-left:1.5px solid var(--brass);}
-  .corner-br{bottom:8px;right:8px;border-bottom:1.5px solid var(--brass);border-right:1.5px solid var(--brass);}
   .watermark{
     position:absolute;top:-10px;right:-6px;font-family:'Oswald',sans-serif;font-weight:700;
     font-size:96px;line-height:1;letter-spacing:-0.02em;color:var(--chalk);opacity:var(--watermark-opacity);
     pointer-events:none;user-select:none;
   }
 
-  /* ---------- hero ---------- */
-  .hero{
-    position:relative;border-radius:16px;overflow:hidden;
-    background:linear-gradient(160deg, var(--surface-2), var(--felt-deep));
-    border:1px solid var(--wire);
-    padding:14px 14px 16px;margin:0 0 14px;
-    text-align:center;
+  /* ---------- header (Z9H symmetric back / wordmark / exit pattern) ---------- */
+  .app-header{
+    display:grid;grid-template-columns:32px 1fr 32px;align-items:center;column-gap:6px;
+    margin-bottom:2px;
   }
-  .hero-photo{
-    width:100%;height:140px;object-fit:cover;object-position:right center;border-radius:11px;margin-bottom:12px;display:block;
+  .header-spacer{width:32px;height:32px;}
+  .header-wordmark{text-align:center;}
+  .header-wordmark .lead{font-family:'Inter',sans-serif;font-style:italic;font-weight:600;font-size:26px;color:var(--chalk);}
+  .header-sub{
+    text-align:center;font-family:'Oswald',sans-serif;font-weight:600;font-size:19px;color:var(--brass-light);
+    letter-spacing:0.1em;text-transform:uppercase;margin-top:2px;
   }
-  .hero-fallback{
-    width:100%;height:130px;border-radius:11px;margin-bottom:12px;
-    display:none;align-items:center;justify-content:center;
-    background:radial-gradient(circle at 50% 40%, rgba(201,151,44,0.18), transparent 70%), var(--felt-deep);
-    pointer-events:none;
+  .tagline{
+    text-align:center;margin:8px 0 20px;font-family:'Oswald',sans-serif;font-weight:500;font-size:13px;
+    letter-spacing:2px;text-transform:uppercase;color:var(--chalk-dim);
   }
-  .hero-fallback svg{width:68px;height:68px;}
-  .hero .word-mark{text-align:center;margin-top:2px;}
-  .hero .word-mark .lead{display:block;font-family:'Inter',sans-serif;font-style:italic;font-weight:600;font-size:28px;color:var(--chalk);margin-bottom:3px;}
-  .hero .word-mark .sub{display:block;font-family:'Oswald',sans-serif;font-weight:600;font-size:21px;color:var(--brass-light);letter-spacing:0.1em;text-transform:uppercase;}
-  .hero .tagline{margin:8px 0 0;font-family:'Oswald',sans-serif;font-weight:500;font-size:13px;letter-spacing:2px;text-transform:uppercase;color:var(--chalk-dim);}
+  .auth-wordmark{text-align:center;margin-bottom:4px;}
+  .auth-wordmark .lead{display:block;font-family:'Inter',sans-serif;font-style:italic;font-weight:600;font-size:30px;color:var(--chalk);margin-bottom:3px;}
+  .auth-wordmark .sub{display:block;font-family:'Oswald',sans-serif;font-weight:600;font-size:22px;color:var(--brass-light);letter-spacing:0.1em;text-transform:uppercase;}
 
   /* ---------- trend chart ---------- */
   .trend-chart svg{width:100%;height:100px;display:block;}
@@ -367,22 +355,12 @@
   <!-- ================= AUTH ================= -->
   <div id="screen-auth" class="screen">
     <div style="flex:1;display:flex;flex-direction:column;justify-content:center;">
-      <div class="hero" style="margin-bottom:24px;">
-        <span class="corner corner-tl"></span>
-        <span class="corner corner-tr"></span>
-        <span class="corner corner-bl"></span>
-        <span class="corner corner-br"></span>
-        <img class="hero-photo" src="hero.jpg" alt="" onerror="this.style.display='none';document.getElementById('auth-hero-fallback').style.display='flex';">
-        <div class="hero-fallback" id="auth-hero-fallback">
-          <svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="46" fill="none" stroke="#C9972C" stroke-width="4"/><circle cx="50" cy="50" r="32" fill="none" stroke="#F1F3F7" stroke-width="3"/><circle cx="50" cy="50" r="18" fill="none" stroke="#E3B94F" stroke-width="3"/><circle cx="50" cy="50" r="5" fill="#E3B94F"/></svg>
-        </div>
-        <div class="word-mark">
-          <span class="lead">Mr Smooth</span>
-          <span class="sub">Darts Academy</span>
-        </div>
-        <p class="tagline">Stable. Focused. Smooth.</p>
+      <div class="auth-wordmark">
+        <span class="lead">Mr Smooth</span>
+        <span class="sub">Darts Academy</span>
       </div>
-      <p class="subtle" style="text-align:center;margin:-14px 0 20px;">Log your practice. Track your climb.</p>
+      <p class="tagline" style="margin-bottom:6px;">Stable. Focused. Smooth.</p>
+      <p class="subtle" style="text-align:center;margin:0 0 20px;">Log your practice. Track your climb.</p>
 
       <div class="tab-toggle">
         <input type="checkbox" id="tab-signup">
@@ -443,23 +421,13 @@
   <div id="screen-home" class="screen" style="position:relative;overflow:hidden;">
     <div class="watermark">MS</div>
 
-    <div class="hero">
-      <button class="icon-btn icon-btn-float" id="btn-signout" title="Sign out"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px;"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg></button>
-      <span class="corner corner-tl"></span>
-      <span class="corner corner-bl"></span>
-      <span class="corner corner-br"></span>
-      <img class="hero-photo" id="hero-photo" src="hero.jpg" alt="" onerror="this.style.display='none';document.getElementById('hero-fallback').style.display='flex';">
-      <div class="hero-fallback" id="hero-fallback">
-        <svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="46" fill="none" stroke="#C9972C" stroke-width="4"/><circle cx="50" cy="50" r="32" fill="none" stroke="#F1F3F7" stroke-width="3"/><circle cx="50" cy="50" r="18" fill="none" stroke="#E3B94F" stroke-width="3"/><circle cx="50" cy="50" r="5" fill="#E3B94F"/></svg>
-      </div>
-      <div class="word-mark">
-        <span class="lead">Mr Smooth</span>
-        <span class="sub">Darts Academy</span>
-      </div>
-      <p class="tagline">Stable. Focused. Smooth.</p>
-    </div>
-
-    <button class="btn btn-primary" id="btn-home-play" style="margin-bottom:18px;">Start a session</button>
+    <header class="app-header">
+      <span class="header-spacer" aria-hidden="true"></span>
+      <div class="header-wordmark"><span class="lead">Mr Smooth</span></div>
+      <button class="icon-btn" id="btn-signout" title="Sign out"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px;"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg></button>
+    </header>
+    <div class="header-sub">Darts Academy</div>
+    <p class="tagline">Stable. Focused. Smooth.</p>
 
     <div class="rank-ring" id="home-ring">
       <svg viewBox="0 0 100 100">
@@ -472,7 +440,9 @@
       </div>
     </div>
 
-    <p class="subtle" style="text-align:center;" id="home-progress-text">Play a session to get ranked.</p>
+    <p class="subtle" style="text-align:center;margin-bottom:20px;" id="home-progress-text">Play a session to get ranked.</p>
+
+    <button class="btn btn-primary" id="btn-home-play">Start a session</button>
   </div>
 
   <!-- ================= ACADEMY ================= -->
