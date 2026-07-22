@@ -152,7 +152,18 @@
 
   .tier-dot{width:10px;height:10px;border-radius:50%;display:inline-block;margin-right:8px;flex-shrink:0;}
 
+  .flame-row{display:flex;justify-content:center;gap:7px;}
+  .flame-row svg{width:26px;height:26px;transition:all 0.2s ease;}
+  .flame-row svg.unlit{fill:var(--wire-strong);}
+  .flame-row svg.lit{
+    fill:var(--brass-light);
+    filter:drop-shadow(0 0 5px var(--brass-light)) drop-shadow(0 0 2px rgba(227,185,79,0.8));
+  }
+
   .stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;}
+  .stat-grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:14px;}
+  .stat-grid-3 .stat-box{padding:12px 8px;text-align:center;}
+  .stat-grid-3 .stat-box .num{font-size:17px;}
   .stat-box{background:var(--felt-deep);border:1px solid var(--wire);border-radius:10px;padding:14px;}
   .stat-box .num{font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:700;}
   .stat-box .lab{font-size:11px;color:var(--chalk-dim);text-transform:uppercase;letter-spacing:0.05em;margin-top:4px;}
@@ -243,6 +254,13 @@
     text-transform:uppercase;color:var(--brass-light);white-space:nowrap;
   }
   .target-callout .arrow{color:var(--brass-light);font-size:16px;line-height:1;}
+
+  .score-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;}
+  .score-opt{
+    padding:12px 2px;border-radius:10px;border:1px solid var(--wire-strong);background:var(--felt-deep);
+    color:var(--chalk);font-family:'JetBrains Mono',monospace;font-weight:700;font-size:14px;cursor:pointer;
+  }
+  .score-opt.selected{background:var(--brass);color:var(--felt-deep);border-color:var(--brass);}
   .step-track{display:flex;gap:5px;margin-bottom:18px;justify-content:center;}
   .step-dot{width:22px;height:5px;border-radius:3px;background:var(--wire-strong);}
   .step-dot.done{background:var(--brass);}
@@ -450,6 +468,12 @@
 
     <p class="subtle" style="text-align:center;margin-bottom:20px;" id="home-progress-text">Play a session to get ranked.</p>
 
+    <div style="text-align:center;margin-bottom:20px;">
+      <div style="font-size:11px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--chalk-dim);margin-bottom:10px;">Average Form</div>
+      <div class="flame-row" id="home-flames"></div>
+      <div class="subtle" id="home-flames-label" style="margin-top:8px;">Play a session to see your average form.</div>
+    </div>
+
     <button class="btn btn-primary" id="btn-home-play">Start a session</button>
   </div>
 
@@ -476,6 +500,11 @@
       <button class="stat-box" data-nav="leaderboard" style="cursor:pointer;text-align:left;width:100%;appearance:none;-webkit-appearance:none;font:inherit;">
         <div class="num mono" id="stats-rank-pos">&mdash;</div><div class="lab">Academy Rank &rarr;</div>
       </button>
+    </div>
+    <div class="stat-grid-3">
+      <div class="stat-box"><div class="num mono" id="stats-highest">0</div><div class="lab">Highest</div></div>
+      <div class="stat-box"><div class="num mono" id="stats-lowest">0</div><div class="lab">Lowest</div></div>
+      <div class="stat-box"><div class="num mono" id="stats-average">0</div><div class="lab">Average</div></div>
     </div>
     <div class="card">
       <div class="card-head"><h3>Progress</h3></div>
@@ -551,6 +580,19 @@
   function getTier(score){
     for (var i=0;i<TIERS.length;i++){ if (score <= TIERS[i].max) return TIERS[i]; }
     return TIERS[TIERS.length-1];
+  }
+  function tierIndex(tier){
+    for (var i=0;i<TIERS.length;i++){ if (TIERS[i].name === tier.name) return i+1; }
+    return 1;
+  }
+
+  var FLAME_PATH = 'M12.963 2.286a.75.75 0 00-1.071-.136 9.742 9.742 0 00-3.539 6.176 7.547 7.547 0 01-1.705-1.715.75.75 0 00-1.152-.082A9 9 0 1015.68 4.534a7.46 7.46 0 01-2.717-2.248zM15.75 14.25a3.75 3.75 0 11-7.313-1.172c.628.465 1.35.81 2.133.998a5.981 5.981 0 011.925-3.545 3.75 3.75 0 013.255 3.719z';
+  function buildFlameRow(litCount){
+    var html = '';
+    for (var i=1;i<=6;i++){
+      html += '<svg viewBox="0 0 24 24" class="'+(i<=litCount?'lit':'unlit')+'"><path fill-rule="evenodd" clip-rule="evenodd" d="'+FLAME_PATH+'"/></svg>';
+    }
+    return html;
   }
 
   var ICON_TARGET = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4.3"/><circle cx="12" cy="12" r="1.1" fill="currentColor" stroke="none"/></svg>';
@@ -775,6 +817,21 @@
         } else {
           progText.textContent = (tier.max - best + 1) + ' points to the next tier.';
         }
+
+        var flamesEl = document.getElementById('home-flames');
+        var flamesLabel = document.getElementById('home-flames-label');
+        if (sessions.length === 0){
+          flamesEl.innerHTML = buildFlameRow(0);
+          flamesLabel.textContent = 'Play a session to see your average form.';
+        } else {
+          var sum = 0;
+          for (var s=0;s<sessions.length;s++) sum += sessions[s].total_score;
+          var avg = Math.round(sum / sessions.length);
+          var avgTier = getTier(avg);
+          var lit = tierIndex(avgTier);
+          flamesEl.innerHTML = buildFlameRow(lit);
+          flamesLabel.textContent = lit+'/6 \u00b7 '+avgTier.name+' average';
+        }
       })
       .catch(function(err){ console.error(err); });
   }
@@ -794,6 +851,23 @@
         var sessions = res.data || [];
         document.getElementById('stats-sessions').textContent = sessions.length;
         document.getElementById('stats-trend-chart').innerHTML = buildTrendSVG(sessions, 140);
+
+        if (sessions.length === 0){
+          document.getElementById('stats-highest').textContent = '0';
+          document.getElementById('stats-lowest').textContent = '0';
+          document.getElementById('stats-average').textContent = '0';
+        } else {
+          var hi = sessions[0].total_score, lo = sessions[0].total_score, sum = 0;
+          for (var k=0;k<sessions.length;k++){
+            var v = sessions[k].total_score;
+            if (v > hi) hi = v;
+            if (v < lo) lo = v;
+            sum += v;
+          }
+          document.getElementById('stats-highest').textContent = hi;
+          document.getElementById('stats-lowest').textContent = lo;
+          document.getElementById('stats-average').textContent = Math.round(sum / sessions.length);
+        }
 
         var histEl = document.getElementById('stats-history');
         if (sessions.length === 0){
@@ -884,6 +958,12 @@
       var cls = i < idx ? 'done' : (i === idx ? 'now' : '');
       dots += '<div class="step-dot '+cls+'"></div>';
     }
+    var scoreButtons = '';
+    for (var m=0;m<10;m++){
+      var val = round.target * m;
+      var isSel = round.score === val;
+      scoreButtons += '<button type="button" class="score-opt'+(isSel?' selected':'')+'" data-mult="'+m+'">'+val+'</button>';
+    }
     container.innerHTML =
       '<div class="running-total"><span class="lab">Running total</span><span class="val mono" id="rt-val">'+runningGrandTotal()+'</span></div>'+
       '<h2 style="font-size:18px;text-align:center;margin-bottom:4px;">'+title+'</h2>'+
@@ -892,7 +972,7 @@
       '<div class="target-callout"><span class="flag">Target</span><span class="arrow">&rarr;</span><div class="target-badge"><span class="num">'+round.target+'</span></div><span class="arrow">&larr;</span><span class="flag">Target</span></div>'+
       '<div class="field">'+
         '<label>Score from this round</label>'+
-        '<input type="number" inputmode="numeric" min="0" id="round-score" value="'+(round.score||'')+'" placeholder="0">'+
+        '<div class="score-grid">'+scoreButtons+'</div>'+
       '</div>'+
       '<div class="field">'+
         '<label>Shanghai this round? (+100)</label>'+
@@ -903,12 +983,15 @@
       '</div>'+
       '<button class="btn btn-primary" id="round-next" style="margin-top:10px;">'+(idx === rounds.length-1 ? 'Continue' : 'Next target')+'</button>';
 
+    var scoreBtns = container.querySelectorAll('.score-opt');
+    for (var b=0;b<scoreBtns.length;b++){
+      scoreBtns[b].addEventListener('click', function(){
+        round.score = round.target * Number(this.dataset.mult);
+        renderPlay();
+      });
+    }
     document.getElementById('shanghai-yes').addEventListener('click', function(){ round.shanghai = true; renderPlay(); });
     document.getElementById('shanghai-no').addEventListener('click', function(){ round.shanghai = false; renderPlay(); });
-    document.getElementById('round-score').addEventListener('input', function(e){
-      round.score = e.target.value === '' ? 0 : Number(e.target.value);
-      document.getElementById('rt-val').textContent = runningGrandTotal();
-    });
     document.getElementById('round-next').addEventListener('click', onNext);
   }
 
