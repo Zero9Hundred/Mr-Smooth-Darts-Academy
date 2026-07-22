@@ -863,9 +863,9 @@
 
   function renderPlay(){
     var c = document.getElementById('play-content');
-    if (playState.phase === 1) renderRoundPhase(c, 1, 'Phase 1', 'Score 3 darts at each target. Hit a Shanghai (single, double, treble of the same number) for a 100pt bonus.', playState.p1, playState.p1i, function(){ advanceRound(1); });
+    if (playState.phase === 1) renderRoundPhase(c, 1, 'Phase 1', 'Throw 3 darts at the target and record your score. Only darts in the target count — singles, doubles, and trebles all score. Hit a Shanghai (single, double, treble of the same number) for a 100pt bonus.', playState.p1, playState.p1i, function(){ advanceRound(1); });
     else if (playState.phase === 2) renderPhase2(c);
-    else if (playState.phase === 3) renderRoundPhase(c, 3, 'Phase 3', 'Same as Phase 1, higher targets. Shanghai still pays 100.', playState.p3, playState.p3i, function(){ advanceRound(3); });
+    else if (playState.phase === 3) renderRoundPhase(c, 3, 'Phase 3', 'Same as Phase 1, higher targets. Only darts in the target count. Shanghai still pays 100.', playState.p3, playState.p3i, function(){ advanceRound(3); });
     else if (playState.phase === 'summary') renderSummary(c);
   }
 
