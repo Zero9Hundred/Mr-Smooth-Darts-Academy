@@ -270,7 +270,7 @@
   }
   .target-badge .num{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:28px;color:var(--felt-deep);}
   .target-callout{
-    display:flex;align-items:center;justify-content:center;gap:14px;margin-bottom:16px;
+    display:flex;align-items:center;justify-content:center;gap:14px;margin-bottom:12px;
   }
   .target-callout .flag{
     font-family:'Oswald',sans-serif;font-size:11px;font-weight:600;letter-spacing:0.14em;
@@ -284,14 +284,14 @@
     color:var(--chalk);font-family:'JetBrains Mono',monospace;font-weight:700;font-size:14px;cursor:pointer;
   }
   .score-opt.selected{background:var(--brass);color:var(--felt-deep);border-color:var(--brass);}
-  .step-track{display:flex;gap:5px;margin-bottom:18px;justify-content:center;}
+  .step-track{display:flex;gap:5px;margin-bottom:12px;justify-content:center;}
   .step-dot{width:22px;height:5px;border-radius:3px;background:var(--wire-strong);}
   .step-dot.done{background:var(--brass);}
   .step-dot.now{background:var(--brass-light);}
 
   .yesno-row{display:flex;gap:10px;margin-top:6px;}
-  .yesno-row button{flex:1;padding:12px;border-radius:10px;border:1px solid var(--wire-strong);background:var(--felt-deep);color:var(--chalk);font-size:14px;font-family:'Oswald',sans-serif;letter-spacing:0.03em;cursor:pointer;}
-  .yesno-row button.selected{background:var(--brass);color:var(--felt-deep);border-color:var(--brass);}
+  .yesno-row button{flex:1;padding:9px;border-radius:10px;border:1px solid var(--wire-strong);background:var(--felt-deep);color:var(--chalk);font-size:13px;font-family:'Oswald',sans-serif;letter-spacing:0.03em;cursor:pointer;}
+  .yesno-row button.selected{background:#F5883D;color:#050608;border-color:#F5883D;}
 
   .p2-list{display:flex;flex-direction:column;gap:8px;}
   .p2-row{
@@ -599,8 +599,8 @@
   <!-- ================= BOTTOM NAV ================= -->
   <div class="bottom-nav" id="bottom-nav" style="display:none;">
     <button data-screen="home"><svg class="glyph" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5"/><path d="M5.5 9.5V20a1 1 0 0 0 1 1h4v-6h3v6h4a1 1 0 0 0 1-1V9.5"/></svg>Home</button>
+    <button data-screen="play"><svg class="glyph" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4.3"/><circle cx="12" cy="12" r="1.1" fill="currentColor" stroke="none"/></svg>Ranked</button>
     <button data-screen="academy"><svg class="glyph" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10 12 5 2 10l10 5 10-5Z"/><path d="M6 12.5V17c0 1.5 3 3 6 3s6-1.5 6-3v-4.5"/></svg>Coaching</button>
-    <button data-screen="play"><svg class="glyph" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4.3"/><circle cx="12" cy="12" r="1.1" fill="currentColor" stroke="none"/></svg>Practice</button>
     <button data-screen="stats"><svg class="glyph" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V11"/><path d="M12 20V4"/><path d="M20 20v-6"/></svg>Stats</button>
     <button data-screen="profile"><svg class="glyph" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.5"/><path d="M4.5 20c1.4-4 4.4-6 7.5-6s6.1 2 7.5 6"/></svg>Profile</button>
   </div>
@@ -1015,21 +1015,21 @@
     container.innerHTML =
       '<div class="running-total"><span class="lab">Running total</span><span class="val mono" id="rt-val">'+runningGrandTotal()+'</span></div>'+
       '<h2 style="font-size:18px;text-align:center;margin-bottom:4px;">'+title+'</h2>'+
-      '<p class="subtle" style="text-align:center;margin-bottom:16px;">'+blurb+'</p>'+
+      '<p class="subtle" style="text-align:center;margin-bottom:12px;">'+blurb+'</p>'+
       '<div class="step-track">'+dots+'</div>'+
       '<div class="target-callout"><span class="flag">Target</span><span class="arrow">&rarr;</span><div class="target-badge"><span class="num">'+round.target+'</span></div><span class="arrow">&larr;</span><span class="flag">Target</span></div>'+
-      '<div class="field">'+
+      '<div class="field" style="margin-bottom:12px;">'+
         '<label>Score from this round</label>'+
         '<div class="score-grid">'+scoreButtons+'</div>'+
       '</div>'+
-      '<div class="field">'+
+      '<div class="field" style="margin-bottom:10px;">'+
         '<label>Shanghai this round? (+100)</label>'+
         '<div class="yesno-row">'+
           '<button type="button" id="shanghai-yes" class="'+(round.shanghai?'selected':'')+'">Yes</button>'+
           '<button type="button" id="shanghai-no" class="'+(!round.shanghai?'selected':'')+'">No</button>'+
         '</div>'+
       '</div>'+
-      '<button class="btn btn-primary" id="round-next" style="margin-top:10px;">'+(idx === rounds.length-1 ? 'Continue' : 'Next target')+'</button>';
+      '<button class="btn btn-primary" id="round-next" style="margin-top:6px;">'+(idx === rounds.length-1 ? 'Continue' : 'Next target')+'</button>';
 
     var scoreBtns = container.querySelectorAll('.score-opt');
     for (var b=0;b<scoreBtns.length;b++){
