@@ -522,11 +522,12 @@
       <p class="subtle" style="text-align:center;margin-bottom:16px;" id="home-progress-text">Play a session to get ranked.</p>
 
       <div style="text-align:center;">
-        <div style="font-size:11px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--chalk-dim);margin-bottom:10px;">Average Form</div>
+        <div id="home-flames-heading" style="font-size:11px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--chalk-dim);margin-bottom:10px;">Average Form</div>
         <div class="flame-row" id="home-flames"></div>
       </div>
 
-      <button class="btn-mission" id="btn-home-play"><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8V4z"/></svg>Start a Session</button>
+      <div id="home-resume-banner" style="display:none;text-align:center;font-size:12px;color:var(--chalk-dim);margin-bottom:10px;">You have a session in progress.</div>
+      <button class="btn-mission" id="btn-home-play"><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8V4z"/></svg><span id="btn-home-play-label">Start a Session</span></button>
     </div>
   </div>
 
@@ -861,6 +862,14 @@
   // ---------------- home ----------------
   function loadHome(){
     showScreen('home');
+    var savedSession = loadSavedPlayState();
+    var hasSavedProgress = savedSession && (
+      phaseTotal(savedSession.p1 || []) > 0 || p2Total(savedSession.p2 || []) > 0 || phaseTotal(savedSession.p3 || []) > 0 ||
+      savedSession.phase === 2 || savedSession.phase === 3 || savedSession.phase === 'summary' ||
+      (savedSession.phase === 1 && savedSession.p1i > 0)
+    );
+    document.getElementById('home-resume-banner').style.display = hasSavedProgress ? 'block' : 'none';
+    document.getElementById('btn-home-play-label').textContent = hasSavedProgress ? 'Resume Session' : 'Start a Session';
     withTimeout(supabase.from('sessions').select('total_score').eq('user_id', currentUser.id))
       .then(function(res){
         var sessions = res.data || [];
@@ -894,11 +903,14 @@
         }
 
         var flamesEl = document.getElementById('home-flames');
+        var flamesHeading = document.getElementById('home-flames-heading');
         if (sessions.length === 0){
           flamesEl.innerHTML = buildFlameRow(0);
+          flamesHeading.textContent = 'Average Form';
         } else {
           var lit = tierIndex(tier);
           flamesEl.innerHTML = buildFlameRow(lit);
+          flamesHeading.textContent = tier.name + ' Tier';
         }
       })
       .catch(function(err){ console.error(err); });
@@ -1362,14 +1374,7 @@
   // ---------------- entry / auth state ----------------
   function enterApp(){
     document.getElementById('bottom-nav').style.display = 'flex';
-    var saved = loadSavedPlayState();
-    if (saved && saved.phase !== undefined){
-      playState = saved;
-      showScreen('play');
-      renderPlay();
-    } else {
-      loadHome();
-    }
+    loadHome();
   }
 
   var themeReconciledOnce = false;
