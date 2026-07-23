@@ -61,6 +61,7 @@
     max-width:430px;
     margin:0 auto;
     min-height:100vh;
+    min-height:100dvh;
     display:flex;
     flex-direction:column;
     position:relative;
@@ -178,6 +179,16 @@
   .tier-band{font-family:'JetBrains Mono',monospace;font-size:10px;color:#8A9199;margin-top:3px;letter-spacing:0.02em;}
 
   .tier-dot{width:10px;height:10px;border-radius:50%;display:inline-block;margin-right:8px;flex-shrink:0;}
+
+  .band-row{display:flex;align-items:center;gap:10px;padding:11px 12px;border-radius:10px;margin-bottom:6px;background:var(--felt-deep);border:1px solid var(--wire);}
+  .band-row:last-child{margin-bottom:0;}
+  .band-row.current{border-color:#F5883D;background:rgba(245,136,61,0.12);box-shadow:0 0 16px rgba(245,136,61,0.3);}
+  .band-dot{width:8px;height:8px;border-radius:50%;background:var(--wire-strong);flex-shrink:0;}
+  .band-flame{width:18px;height:18px;fill:#F5883D;filter:drop-shadow(0 0 3px rgba(245,136,61,0.7));flex-shrink:0;}
+  .band-name{flex:1;font-family:'Oswald',sans-serif;font-size:14px;text-transform:uppercase;letter-spacing:0.03em;color:var(--chalk);}
+  .band-row.current .band-name{color:#F5883D;}
+  .band-range{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--chalk-dim);}
+  .band-row.current .band-range{color:#F5883D;}
 
   .flame-row{display:flex;justify-content:center;gap:7px;}
   .flame-row svg{width:26px;height:26px;transition:all 0.2s ease;}
@@ -537,41 +548,44 @@
     <div class="topbar" style="padding-left:0;padding-right:0;">
       <h2 style="font-size:20px;">Stats</h2>
     </div>
-    <div class="stat-grid">
-      <div class="stat-box"><div class="num mono" id="stats-sessions">0</div><div class="lab">Sessions</div></div>
-      <button class="stat-box" data-nav="leaderboard" style="cursor:pointer;text-align:left;width:100%;appearance:none;-webkit-appearance:none;font:inherit;">
-        <div class="num mono" id="stats-rank-pos">&mdash;</div><div class="lab">Coaching Rank &rarr;</div>
-      </button>
+    <div class="lb-tabs" id="stats-scope-tabs">
+      <button class="active" data-scope="you">You</button>
+      <button data-scope="global">Global</button>
     </div>
-    <div class="stat-grid-3">
-      <div class="stat-box"><div class="num mono" id="stats-highest">0</div><div class="lab">Highest</div></div>
-      <div class="stat-box"><div class="num mono" id="stats-lowest">0</div><div class="lab">Lowest</div></div>
-      <div class="stat-box"><div class="num mono" id="stats-average">0</div><div class="lab">Average</div></div>
+
+    <div id="stats-you-panel">
+      <div class="stat-grid">
+        <div class="stat-box"><div class="num mono" id="stats-sessions">0</div><div class="lab">Sessions</div></div>
+        <button class="stat-box" data-nav="stats-global" style="cursor:pointer;text-align:left;width:100%;appearance:none;-webkit-appearance:none;font:inherit;">
+          <div class="num mono" id="stats-rank-pos">&mdash;</div><div class="lab">Coaching Rank &rarr;</div>
+        </button>
+      </div>
+      <div class="stat-grid-3">
+        <div class="stat-box"><div class="num mono" id="stats-highest">0</div><div class="lab">Highest</div></div>
+        <div class="stat-box"><div class="num mono" id="stats-lowest">0</div><div class="lab">Lowest</div></div>
+        <div class="stat-box"><div class="num mono" id="stats-average">0</div><div class="lab">Average</div></div>
+      </div>
+      <div class="card">
+        <div class="card-head"><h3>Progress</h3></div>
+        <div class="trend-chart" id="stats-trend-chart"></div>
+      </div>
+      <h3 style="font-size:11px;font-weight:600;color:var(--chalk-dim);margin:16px 0 10px;letter-spacing:0.14em;">Full history</h3>
+      <div id="stats-history"></div>
     </div>
-    <div class="card">
-      <div class="card-head"><h3>Progress</h3></div>
-      <div class="trend-chart" id="stats-trend-chart"></div>
+
+    <div id="stats-global-panel" style="display:none;">
+      <div class="lb-tabs" id="lb-tabs">
+        <button class="active" data-mode="average">Average</button>
+        <button data-mode="best">Goat</button>
+      </div>
+      <p class="subtle" id="lb-you-line" style="margin-bottom:14px;"></p>
+      <div id="lb-list"></div>
     </div>
-    <h3 style="font-size:11px;font-weight:600;color:var(--chalk-dim);margin:16px 0 10px;letter-spacing:0.14em;">Full history</h3>
-    <div id="stats-history"></div>
   </div>
 
   <!-- ================= PLAY ================= -->
   <div id="screen-play" class="screen">
     <div id="play-content"></div>
-  </div>
-
-  <!-- ================= LEADERBOARD ================= -->
-  <div id="screen-leaderboard" class="screen">
-    <div class="topbar" style="padding-left:0;padding-right:0;">
-      <h2 style="font-size:20px;">Leaderboard</h2>
-    </div>
-    <div class="lb-tabs" id="lb-tabs">
-      <button class="active" data-mode="average">Average</button>
-      <button data-mode="best">Goat</button>
-    </div>
-    <p class="subtle" id="lb-you-line" style="margin-bottom:14px;"></p>
-    <div id="lb-list"></div>
   </div>
 
   <!-- ================= PROFILE ================= -->
@@ -587,9 +601,14 @@
     <div class="card">
       <div class="card-head"><h3>Appearance</h3></div>
       <div class="p2-row" style="background:var(--felt-deep);">
-        <div><div class="lbl" id="theme-toggle-label">Dark mode</div><div class="pts">Matches Z9H's theme system</div></div>
+        <div><div class="lbl" id="theme-toggle-label">Dark mode</div></div>
         <div class="hit-toggle" id="theme-toggle"><div class="knob"></div></div>
       </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head"><h3>Rank Bands</h3></div>
+      <div id="profile-bands"></div>
     </div>
 
     <button class="btn btn-ghost" data-nav="stats" style="margin-bottom:10px;">View full history</button>
@@ -686,6 +705,11 @@
       navBtns[j].classList.toggle('active', navBtns[j].dataset.screen === id);
     }
     window.scrollTo(0,0);
+    // Belt-and-braces: content injected right after this (e.g. renderPlay) or a
+    // late web-font swap can shift layout just enough to leave the page looking
+    // scrolled even though we reset it above. Re-assert once the browser has
+    // actually painted the new layout.
+    requestAnimationFrame(function(){ window.scrollTo(0,0); });
   }
 
   var currentUser = null;
@@ -786,8 +810,8 @@
     if (target === 'home') loadHome();
     else if (target === 'academy') loadAcademy();
     else if (target === 'play') startPlayFlow();
-    else if (target === 'stats') loadStats();
-    else if (target === 'leaderboard') loadLeaderboard();
+    else if (target === 'stats') loadStats('you');
+    else if (target === 'stats-global') loadStats('global');
     else if (target === 'profile') loadProfile();
   }
   var navButtons = document.querySelectorAll('.bottom-nav button');
@@ -886,8 +910,23 @@
   }
 
   // ---------------- stats ----------------
-  function loadStats(){
+  var statsScope = 'you';
+  function loadStats(scope){
+    statsScope = scope || statsScope || 'you';
     showScreen('stats');
+    var scopeTabs = document.querySelectorAll('#stats-scope-tabs button');
+    for (var x=0;x<scopeTabs.length;x++) scopeTabs[x].classList.toggle('active', scopeTabs[x].dataset.scope === statsScope);
+    document.getElementById('stats-you-panel').style.display = statsScope === 'you' ? 'block' : 'none';
+    document.getElementById('stats-global-panel').style.display = statsScope === 'global' ? 'block' : 'none';
+    if (statsScope === 'global') loadLeaderboard();
+    else loadStatsYouData();
+  }
+  var statsScopeTabButtons = document.querySelectorAll('#stats-scope-tabs button');
+  for (var sst=0; sst<statsScopeTabButtons.length; sst++){
+    statsScopeTabButtons[sst].addEventListener('click', function(){ loadStats(this.dataset.scope); });
+  }
+
+  function loadStatsYouData(){
     document.getElementById('stats-trend-chart').innerHTML = '<div class="trend-empty">Loading…</div>';
     document.getElementById('stats-history').innerHTML = '<div class="spinner" style="margin-top:20px;"></div>';
     withTimeout(supabase.from('sessions').select('*').eq('user_id', currentUser.id).order('played_at', {ascending:false}))
@@ -968,8 +1007,27 @@
       p3: P3_TARGETS.map(function(t){ return {target:t, score:0, shanghai:false}; })
     };
   }
+
+  // In-progress sessions only ever lived in a JS variable, so a phone lock /
+  // Safari reclaiming the tab / re-login would silently wipe whatever you'd
+  // logged so far. Persisting to sessionStorage survives all of that — it's
+  // only cleared when the browser tab itself is fully closed.
+  function savePlayState(){
+    try { sessionStorage.setItem('msda_play_state', JSON.stringify(playState)); } catch(e){}
+  }
+  function loadSavedPlayState(){
+    try {
+      var raw = sessionStorage.getItem('msda_play_state');
+      return raw ? JSON.parse(raw) : null;
+    } catch(e){ return null; }
+  }
+  function clearSavedPlayState(){
+    try { sessionStorage.removeItem('msda_play_state'); } catch(e){}
+  }
+
   function startPlayFlow(){
-    playState = freshPlayState();
+    var saved = loadSavedPlayState();
+    playState = saved || freshPlayState();
     showScreen('play');
     renderPlay();
   }
@@ -992,14 +1050,15 @@
   }
 
   function renderPlay(){
+    savePlayState();
     var c = document.getElementById('play-content');
-    if (playState.phase === 1) renderRoundPhase(c, 1, 'Phase 1', 'Throw 3 darts at the target and record your score. Only darts in the target count — singles, doubles, and trebles all score. Hit a Shanghai (single, double, treble of the same number) for a 100pt bonus.', playState.p1, playState.p1i, function(){ advanceRound(1); });
+    if (playState.phase === 1) renderRoundPhase(c, 1, 'Phase 1', 'Throw 3 darts at the target and record your score. Only darts in the target count — singles, doubles, and trebles all score. Hit a Shanghai (single, double, treble of the same number) for a 100pt bonus.', playState.p1, playState.p1i, function(){ advanceRound(1); }, function(){ goBackRound(1); });
     else if (playState.phase === 2) renderPhase2(c);
-    else if (playState.phase === 3) renderRoundPhase(c, 3, 'Phase 3', 'Same as Phase 1, higher targets. Only darts in the target count. Shanghai still pays 100.', playState.p3, playState.p3i, function(){ advanceRound(3); });
+    else if (playState.phase === 3) renderRoundPhase(c, 3, 'Phase 3', 'Same as Phase 1, higher targets. Only darts in the target count. Shanghai still pays 100.', playState.p3, playState.p3i, function(){ advanceRound(3); }, function(){ goBackRound(3); });
     else if (playState.phase === 'summary') renderSummary(c);
   }
 
-  function renderRoundPhase(container, phaseNum, title, blurb, rounds, idx, onNext){
+  function renderRoundPhase(container, phaseNum, title, blurb, rounds, idx, onNext, onBack){
     var round = rounds[idx];
     var dots = '';
     for (var i=0;i<rounds.length;i++){
@@ -1012,6 +1071,7 @@
       var isSel = round.score === val;
       scoreButtons += '<button type="button" class="score-opt'+(isSel?' selected':'')+'" data-mult="'+m+'">'+val+'</button>';
     }
+    var canGoBack = !(phaseNum === 1 && idx === 0);
     container.innerHTML =
       '<div class="running-total"><span class="lab">Running total</span><span class="val mono" id="rt-val">'+runningGrandTotal()+'</span></div>'+
       '<h2 style="font-size:18px;text-align:center;margin-bottom:4px;">'+title+'</h2>'+
@@ -1029,7 +1089,10 @@
           '<button type="button" id="shanghai-no" class="'+(!round.shanghai?'selected':'')+'">No</button>'+
         '</div>'+
       '</div>'+
-      '<button class="btn btn-primary" id="round-next" style="margin-top:6px;">'+(idx === rounds.length-1 ? 'Continue' : 'Next target')+'</button>';
+      '<div style="display:flex;gap:10px;margin-top:6px;">'+
+        '<button class="btn btn-ghost" id="round-back" style="flex:0 0 88px;"'+(canGoBack?'':' disabled')+'>Back</button>'+
+        '<button class="btn btn-primary" id="round-next" style="flex:1;">'+(idx === rounds.length-1 ? 'Continue' : 'Next target')+'</button>'+
+      '</div>';
 
     var scoreBtns = container.querySelectorAll('.score-opt');
     for (var b=0;b<scoreBtns.length;b++){
@@ -1041,6 +1104,17 @@
     document.getElementById('shanghai-yes').addEventListener('click', function(){ round.shanghai = true; renderPlay(); });
     document.getElementById('shanghai-no').addEventListener('click', function(){ round.shanghai = false; renderPlay(); });
     document.getElementById('round-next').addEventListener('click', onNext);
+    if (canGoBack) document.getElementById('round-back').addEventListener('click', onBack);
+  }
+
+  function goBackRound(phaseNum){
+    if (phaseNum === 1){
+      if (playState.p1i > 0) playState.p1i--;
+    } else if (phaseNum === 3){
+      if (playState.p3i > 0){ playState.p3i--; }
+      else { playState.phase = 2; }
+    }
+    renderPlay();
   }
 
   function advanceRound(phaseNum){
@@ -1067,7 +1141,10 @@
       '<h2 style="font-size:18px;text-align:center;margin-bottom:4px;">Phase 2</h2>'+
       '<p class="subtle" style="text-align:center;margin-bottom:16px;">One dart at each double, then the bull. Toggle on for a hit.</p>'+
       '<div class="p2-list">'+rows+'</div>'+
-      '<button class="btn btn-primary" id="p2-next" style="margin-top:16px;">Continue to Phase 3</button>';
+      '<div style="display:flex;gap:10px;margin-top:16px;">'+
+        '<button class="btn btn-ghost" id="p2-back" style="flex:0 0 88px;">Back</button>'+
+        '<button class="btn btn-primary" id="p2-next" style="flex:1;">Continue to Phase 3</button>'+
+      '</div>';
 
     var toggles = container.querySelectorAll('.hit-toggle');
     for (var t=0;t<toggles.length;t++){
@@ -1077,6 +1154,11 @@
         renderPlay();
       });
     }
+    document.getElementById('p2-back').addEventListener('click', function(){
+      playState.phase = 1;
+      playState.p1i = playState.p1.length - 1;
+      renderPlay();
+    });
     document.getElementById('p2-next').addEventListener('click', function(){
       playState.phase = 3;
       renderPlay();
@@ -1103,9 +1185,18 @@
       '</div>'+
       '<div id="summary-msg"></div>'+
       '<button class="btn btn-primary" id="btn-save-session">Save session</button>'+
+      '<button class="btn btn-ghost" id="btn-edit-session" style="margin-top:10px;">Back and edit</button>'+
       '<button class="btn btn-ghost" id="btn-discard-session" style="margin-top:10px;">Discard</button>';
 
-    document.getElementById('btn-discard-session').addEventListener('click', loadHome);
+    document.getElementById('btn-edit-session').addEventListener('click', function(){
+      playState.phase = 3;
+      playState.p3i = playState.p3.length - 1;
+      renderPlay();
+    });
+    document.getElementById('btn-discard-session').addEventListener('click', function(){
+      clearSavedPlayState();
+      loadHome();
+    });
     document.getElementById('btn-save-session').addEventListener('click', function(){
       var btn = this;
       btn.disabled = true; btn.textContent = 'Saving...';
@@ -1122,6 +1213,7 @@
           btn.disabled = false; btn.textContent = 'Save session';
           return;
         }
+        clearSavedPlayState();
         loadHome();
       }).catch(function(err){
         document.getElementById('summary-msg').innerHTML = '<div class="msg msg-error">'+escapeHtml(err.message)+'</div>';
@@ -1145,7 +1237,6 @@
   function loadLeaderboard(mode){
     mode = mode || lbMode;
     lbMode = mode;
-    showScreen('leaderboard');
     document.getElementById('lb-list').innerHTML = '<div class="spinner" style="margin-top:30px;"></div>';
     Promise.all([
       withTimeout(supabase.from('sessions').select('user_id,total_score')),
@@ -1233,6 +1324,20 @@
   }
 
   // ---------------- profile ----------------
+  function buildBandsList(currentTierName){
+    var html = '';
+    for (var i=0;i<TIERS.length;i++){
+      var t = TIERS[i];
+      var isCurrent = t.name === currentTierName;
+      html += '<div class="band-row'+(isCurrent?' current':'')+'">'+
+        (isCurrent ? '<svg class="band-flame" viewBox="0 0 24 24"><path fill-rule="evenodd" clip-rule="evenodd" d="'+FLAME_PATH+'"/></svg>' : '<span class="band-dot"></span>')+
+        '<div class="band-name">'+t.name+'</div>'+
+        '<div class="band-range">'+t.min+'\u2013'+t.max+'</div>'+
+      '</div>';
+    }
+    return html;
+  }
+
   function loadProfile(){
     showScreen('profile');
     syncThemeToggleUI(window.__msdaCurrentTheme || 'dark');
@@ -1240,10 +1345,16 @@
     withTimeout(supabase.from('sessions').select('total_score').eq('user_id', currentUser.id))
       .then(function(res){
         var sessions = res.data || [];
-        var best = 0;
-        for (var i=0;i<sessions.length;i++) if (sessions[i].total_score > best) best = sessions[i].total_score;
+        var best = 0, sum = 0;
+        for (var i=0;i<sessions.length;i++){
+          if (sessions[i].total_score > best) best = sessions[i].total_score;
+          sum += sessions[i].total_score;
+        }
         document.getElementById('profile-pb').textContent = best;
         document.getElementById('profile-sessions').textContent = sessions.length;
+        var avg = sessions.length > 0 ? Math.round(sum / sessions.length) : 0;
+        var avgTier = getTier(avg);
+        document.getElementById('profile-bands').innerHTML = buildBandsList(sessions.length > 0 ? avgTier.name : null);
       })
       .catch(function(err){ console.error(err); });
   }
@@ -1251,7 +1362,14 @@
   // ---------------- entry / auth state ----------------
   function enterApp(){
     document.getElementById('bottom-nav').style.display = 'flex';
-    loadHome();
+    var saved = loadSavedPlayState();
+    if (saved && saved.phase !== undefined){
+      playState = saved;
+      showScreen('play');
+      renderPlay();
+    } else {
+      loadHome();
+    }
   }
 
   var themeReconciledOnce = false;
