@@ -411,6 +411,7 @@
     applyThemeMode(cached || 'dark');
     window.__msdaApplyThemeMode = applyThemeMode;
     window.__msdaCurrentTheme = cached || 'dark';
+    window.__msdaHadCachedTheme = cached !== null;
   })();
 </script>
 
@@ -1381,7 +1382,6 @@
     loadHome();
   }
 
-  var themeReconciledOnce = false;
   function checkProfileThenRoute(){
     withTimeout(supabase.from('profiles').select('*').eq('id', currentUser.id).maybeSingle())
       .then(function(res){
@@ -1391,18 +1391,18 @@
         }
         if (res.data){
           currentProfile = res.data;
-          if (!themeReconciledOnce){
-            themeReconciledOnce = true;
-            var savedMode = res.data.theme_mode || 'dark';
-            if (savedMode !== window.__msdaCurrentTheme){
-              applyAndCacheTheme(savedMode);
-            } else {
-              syncThemeToggleUI(savedMode);
-            }
+          var savedMode = res.data.theme_mode || 'dark';
+          if (!window.__msdaHadCachedTheme){
+            // No local preference on this device at all — this is either a
+            // brand new device/browser, or localStorage got cleared. Trust
+            // whatever's saved on the account instead.
+            applyAndCacheTheme(savedMode);
           } else {
-            // Session was already reconciled once — trust whatever the person
-            // chose locally rather than re-overwriting it on every re-auth event.
+            // This device already has its own preference — that wins, always.
+            // Push it to the server so other devices pick it up, but never
+            // let the server pull this device's choice backwards.
             syncThemeToggleUI(window.__msdaCurrentTheme);
+            if (savedMode !== window.__msdaCurrentTheme) persistThemeToServer(window.__msdaCurrentTheme);
           }
           enterApp();
         } else {
