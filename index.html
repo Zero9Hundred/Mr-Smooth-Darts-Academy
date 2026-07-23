@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Mr Smooth Darts Academy</title>
+<title>Darts Coaching — with Mr Smooth</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
@@ -13,19 +13,19 @@
     --felt-deep:#0D0F14;
     --surface:#0D0F14;
     --surface-2:#12151C;
-    --wire:#1B2029;
+    --wire:#202530;
     --wire-strong:#2A303C;
     --chalk:#F1F3F7;
     --chalk-dim:#8A9199;
-    --brass:#C9972C;
-    --brass-light:#E3B94F;
+    --brass:#4E89FF;
+    --brass-light:#4E89FF;
     --danger:#C1443C;
-    --t-beginner:#6B5B3E;
-    --t-intermediate:#8C6F3A;
-    --t-advanced:#A67C2E;
-    --t-expert:#C9972C;
-    --t-semipro:#E3B94F;
-    --t-professional:#F5D67A;
+    --t-beginner:#4E89FF;
+    --t-intermediate:#4E89FF;
+    --t-advanced:#4E89FF;
+    --t-expert:#4E89FF;
+    --t-semipro:#4E89FF;
+    --t-professional:#4E89FF;
     --watermark-opacity:0.03;
     --glow1:0.14;
     --glow2:0.08;
@@ -35,8 +35,8 @@
   html,body{margin:0;padding:0;}
   body{
     background:
-      radial-gradient(circle at 50% -10%, rgba(201,151,44,var(--glow1)), transparent 45%),
-      radial-gradient(circle at 100% 30%, rgba(201,151,44,var(--glow2)), transparent 50%),
+      radial-gradient(circle at 50% -10%, rgba(78,137,255,var(--glow1)), transparent 45%),
+      radial-gradient(circle at 100% 30%, rgba(78,137,255,var(--glow2)), transparent 50%),
       var(--felt);
     background-attachment:fixed;
     color:var(--chalk);
@@ -138,6 +138,34 @@
   }
   .pw-toggle-cb:checked ~ .pw-toggle-label{color:var(--brass-light);}
 
+  /* ---------- eyebrow label + bracketed mission card ---------- */
+  .eyebrow{text-align:center;font-size:11px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--chalk-dim);margin:0 0 10px;}
+  .mission-card{
+    position:relative;overflow:hidden;
+    background:radial-gradient(circle at 50% 25%, rgba(78,137,255,0.10), transparent 62%), var(--surface);
+    border:1px solid var(--wire);border-radius:18px;
+    padding:26px 20px 22px;margin-bottom:16px;
+  }
+  .mission-card .bg-rings{
+    position:absolute;inset:0;pointer-events:none;
+    background-image:
+      radial-gradient(circle at 50% 38%, transparent 0, transparent 58px, rgba(255,255,255,0.025) 59px, rgba(255,255,255,0.025) 60px, transparent 61px),
+      radial-gradient(circle at 50% 38%, transparent 0, transparent 88px, rgba(255,255,255,0.02) 89px, rgba(255,255,255,0.02) 90px, transparent 91px);
+  }
+  .corner{position:absolute;width:16px;height:16px;pointer-events:none;}
+  .corner-tl{top:10px;left:10px;border-top:1.5px solid var(--wire-strong);border-left:1.5px solid var(--wire-strong);}
+  .corner-tr{top:10px;right:10px;border-top:1.5px solid var(--wire-strong);border-right:1.5px solid var(--wire-strong);}
+  .corner-bl{bottom:10px;left:10px;border-bottom:1.5px solid var(--wire-strong);border-left:1.5px solid var(--wire-strong);}
+  .corner-br{bottom:10px;right:10px;border-bottom:1.5px solid var(--wire-strong);border-right:1.5px solid var(--wire-strong);}
+  .btn-mission{
+    width:100%;padding:18px 16px;border-radius:12px;border:none;position:relative;z-index:1;
+    background:var(--brass);color:#050608;font-family:'Oswald',sans-serif;font-weight:700;font-size:16px;
+    letter-spacing:0.05em;text-transform:uppercase;cursor:pointer;margin-top:18px;
+    display:flex;align-items:center;justify-content:center;gap:10px;
+    box-shadow:0 0 26px rgba(78,137,255,0.5), 0 10px 22px rgba(0,0,0,0.35);
+  }
+  .btn-mission svg{width:14px;height:14px;fill:currentColor;flex-shrink:0;}
+
   /* ---------- dartboard rank ring (signature element) ---------- */
   .rank-ring{
     position:relative;width:180px;height:180px;margin:6px auto 14px;
@@ -146,6 +174,10 @@
   .rank-ring svg{position:absolute;inset:0;pointer-events:none;}
   .rank-ring .center{
     position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  }
+  .center-badge-bg{
+    background:#0D0F14;border:1px solid #202530;border-radius:50%;
+    width:104px;height:104px;display:flex;flex-direction:column;align-items:center;justify-content:center;
   }
   .rank-ring .score{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:34px;line-height:1;}
   .rank-ring .tier-name{font-family:'Oswald',sans-serif;font-size:13px;letter-spacing:0.06em;text-transform:uppercase;margin-top:6px;}
@@ -157,7 +189,7 @@
   .flame-row svg.unlit{fill:var(--wire-strong);}
   .flame-row svg.lit{
     fill:var(--brass-light);
-    filter:drop-shadow(0 0 5px var(--brass-light)) drop-shadow(0 0 2px rgba(227,185,79,0.8));
+    filter:drop-shadow(0 0 5px var(--brass-light)) drop-shadow(0 0 2px rgba(78,137,255,0.8));
   }
 
   .stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;}
@@ -181,22 +213,18 @@
   /* ---------- header (Z9H symmetric back / wordmark / exit pattern) ---------- */
   .app-header{
     display:grid;grid-template-columns:32px 1fr 32px;align-items:center;column-gap:6px;
-    margin-bottom:2px;
+    margin-bottom:6px;
   }
   .header-spacer{width:32px;height:32px;}
-  .header-wordmark{text-align:center;}
-  .header-wordmark .lead{font-family:'Inter',sans-serif;font-style:italic;font-weight:600;font-size:26px;color:var(--chalk);}
-  .header-sub{
-    text-align:center;font-family:'Oswald',sans-serif;font-weight:600;font-size:19px;color:var(--brass-light);
-    letter-spacing:0.1em;text-transform:uppercase;margin-top:2px;
-  }
+  .wordmark{text-align:center;margin-bottom:2px;}
+  .wordmark .lead{display:block;font-family:'Oswald',sans-serif;font-style:normal;font-weight:700;font-size:clamp(28px, 9.5vw, 38px);line-height:1.05;color:var(--chalk);text-transform:uppercase;letter-spacing:0.01em;}
+  .wordmark .sub{display:block;font-family:'Inter',sans-serif;font-weight:500;font-style:italic;font-size:17px;color:var(--chalk);margin-top:8px;text-shadow:0 0 18px rgba(78,137,255,0.95), 0 0 9px rgba(78,137,255,0.85), 0 0 3px rgba(78,137,255,0.9);}
+  .badge-mark{display:flex;justify-content:center;margin:18px 0 20px;}
+  .badge-mark svg{width:120px;height:120px;}
   .tagline{
     text-align:center;margin:8px 0 20px;font-family:'Oswald',sans-serif;font-weight:500;font-size:13px;
     letter-spacing:2px;text-transform:uppercase;color:var(--chalk-dim);
   }
-  .auth-wordmark{text-align:center;margin-bottom:4px;}
-  .auth-wordmark .lead{display:block;font-family:'Inter',sans-serif;font-style:italic;font-weight:600;font-size:30px;color:var(--chalk);margin-bottom:3px;}
-  .auth-wordmark .sub{display:block;font-family:'Oswald',sans-serif;font-weight:600;font-size:22px;color:var(--brass-light);letter-spacing:0.1em;text-transform:uppercase;}
 
   /* ---------- trend chart ---------- */
   .trend-chart svg{width:100%;height:100px;display:block;}
@@ -218,7 +246,7 @@
   .academy-card .desc{font-size:12px;color:var(--chalk-dim);margin-top:2px;}
   .coming-soon{
     margin-left:auto;font-size:9px;letter-spacing:0.05em;text-transform:uppercase;color:var(--brass-light);
-    border:1px solid rgba(201,151,44,0.4);border-radius:20px;padding:3px 8px;flex-shrink:0;
+    border:1px solid rgba(78,137,255,0.4);border-radius:20px;padding:3px 8px;flex-shrink:0;
   }
 
   /* ---------- bottom nav ---------- */
@@ -285,7 +313,7 @@
     position:absolute;top:2px;left:2px;width:26px;height:26px;border-radius:50%;background:var(--chalk-dim);
     transition:all 0.15s ease;
   }
-  .hit-toggle.on{background:rgba(201,151,44,0.22);border-color:var(--brass-light);}
+  .hit-toggle.on{background:rgba(78,137,255,0.22);border-color:var(--brass-light);}
   .hit-toggle.on .knob{left:26px;background:var(--brass-light);}
 
   .running-total{
@@ -312,7 +340,7 @@
     display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:10px;margin-bottom:8px;
     background:var(--surface);border:1px solid var(--wire);
   }
-  .lb-row.me{border-color:var(--brass);background:rgba(201,151,44,0.10);}
+  .lb-row.me{border-color:var(--brass);background:rgba(78,137,255,0.10);}
   .lb-pos{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:16px;width:26px;color:var(--chalk-dim);}
   .lb-row.me .lb-pos{color:var(--brass-light);}
   .lb-name{flex:1;font-weight:600;font-size:14px;}
@@ -348,7 +376,7 @@
   // ============================================================
   (function(){
     var THEMES = {
-      dark:  { felt:'#050608', feltDeep:'#0D0F14', surface:'#0D0F14', surface2:'#12151C', wire:'#1B2029', wireStrong:'#2A303C', chalk:'#F1F3F7', chalkDim:'#8A9199', watermarkOpacity:'0.03', glow1:'0.14', glow2:'0.08' },
+      dark:  { felt:'#050608', feltDeep:'#0D0F14', surface:'#0D0F14', surface2:'#12151C', wire:'#202530', wireStrong:'#2A303C', chalk:'#F1F3F7', chalkDim:'#8A9199', watermarkOpacity:'0.03', glow1:'0.14', glow2:'0.08' },
       light: { felt:'#EEF0F3', feltDeep:'#FFFFFF', surface:'#FFFFFF', surface2:'#F4F5F8', wire:'#D8DBE1', wireStrong:'#C3C8D1', chalk:'#14161A', chalkDim:'#5C6169', watermarkOpacity:'0.045', glow1:'0.07', glow2:'0.045' }
     };
     function applyThemeMode(mode){
@@ -387,12 +415,12 @@
   <!-- ================= AUTH ================= -->
   <div id="screen-auth" class="screen">
     <div style="flex:1;display:flex;flex-direction:column;justify-content:center;">
-      <div class="auth-wordmark">
-        <span class="lead">Mr Smooth</span>
-        <span class="sub">Darts Academy</span>
+      <div class="wordmark">
+        <span class="lead">Darts Coaching</span>
+        <span class="sub">&hellip;with Mr Smooth</span>
       </div>
-      <p class="tagline" style="margin-bottom:6px;">Stable. Focused. Smooth.</p>
-      <p class="subtle" style="text-align:center;margin:0 0 20px;">Log your practice. Track your climb.</p>
+      <div class="badge-mark"><svg viewBox="0 0 220 220"><defs><radialGradient id="authBullGlow" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#4E89FF" stop-opacity="0.9"/><stop offset="100%" stop-color="#4E89FF" stop-opacity="0"/></radialGradient></defs><circle cx="110" cy="110" r="102" fill="#0D0F14" stroke="#202530" stroke-width="2"/><path d="M 94.67,13.21 A 98.00,98.00 0 0,1 125.33,13.21 L 124.08,21.11 A 90.00,90.00 0 0,0 95.92,21.11 Z" fill="#4E89FF" stroke="#7B8494" stroke-width="0.75"/> <path d="M 95.92,21.11 A 90.00,90.00 0 0,1 124.08,21.11 L 119.07,52.71 A 58.00,58.00 0 0,0 100.93,52.71 Z" fill="#F1F3F7" stroke="#050608" stroke-width="0.6"/> <path d="M 100.93,52.71 A 58.00,58.00 0 0,1 119.07,52.71 L 117.82,60.62 A 50.00,50.00 0 0,0 102.18,60.62 Z" fill="#4E89FF" stroke="#7B8494" stroke-width="0.75"/> <path d="M 102.18,60.62 A 50.00,50.00 0 0,1 117.82,60.62 L 112.50,94.20 A 16.00,16.00 0 0,0 107.50,94.20 Z" fill="#F1F3F7" stroke="#050608" stroke-width="0.6"/> <path d="M 125.33,13.21 A 98.00,98.00 0 0,1 154.49,22.68 L 150.86,29.81 A 90.00,90.00 0 0,0 124.08,21.11 Z" fill="#3A4152" stroke="#7B8494" stroke-width="0.75"/> <path d="M 124.08,21.11 A 90.00,90.00 0 0,1 150.86,29.81 L 136.33,58.32 A 58.00,58.00 0 0,0 119.07,52.71 Z" fill="#05060A" stroke="#050608" stroke-width="0.6"/> <path d="M 119.07,52.71 A 58.00,58.00 0 0,1 136.33,58.32 L 132.70,65.45 A 50.00,50.00 0 0,0 117.82,60.62 Z" fill="#3A4152" stroke="#7B8494" stroke-width="0.75"/> <path d="M 117.82,60.62 A 50.00,50.00 0 0,1 132.70,65.45 L 117.26,95.74 A 16.00,16.00 0 0,0 112.50,94.20 Z" fill="#05060A" stroke="#050608" stroke-width="0.6"/> <path d="M 154.49,22.68 A 98.00,98.00 0 0,1 179.30,40.70 L 173.64,46.36 A 90.00,90.00 0 0,0 150.86,29.81 Z" fill="#4E89FF" stroke="#7B8494" stroke-width="0.75"/> <path d="M 150.86,29.81 A 90.00,90.00 0 0,1 173.64,46.36 L 151.01,68.99 A 58.00,58.00 0 0,0 136.33,58.32 Z" fill="#F1F3F7" stroke="#050608" stroke-width="0.6"/> <path d="M 136.33,58.32 A 58.00,58.00 0 0,1 151.01,68.99 L 145.36,74.64 A 50.00,50.00 0 0,0 132.70,65.45 Z" fill="#4E89FF" stroke="#7B8494" stroke-width="0.75"/> <path d="M 132.70,65.45 A 50.00,50.00 0 0,1 145.36,74.64 L 121.31,98.69 A 16.00,16.00 0 0,0 117.26,95.74 Z" fill="#F1F3F7" stroke="#050608" stroke-width="0.6"/> <path d="M 179.30,40.70 A 98.00,98.00 0 0,1 197.32,65.51 L 190.19,69.14 A 90.00,90.00 0 0,0 173.64,46.36 Z" fill="#3A4152" stroke="#7B8494" stroke-width="0.75"/> <path d="M 173.64,46.36 A 90.00,90.00 0 0,1 190.19,69.14 L 161.68,83.67 A 58.00,58.00 0 0,0 151.01,68.99 Z" fill="#05060A" stroke="#050608" stroke-width="0.6"/> <path d="M 151.01,68.99 A 58.00,58.00 0 0,1 161.68,83.67 L 154.55,87.30 A 50.00,50.00 0 0,0 145.36,74.64 Z" fill="#3A4152" stroke="#7B8494" stroke-width="0.75"/> <path d="M 145.36,74.64 A 50.00,50.00 0 0,1 154.55,87.30 L 124.26,102.74 A 16.00,16.00 0 0,0 121.31,98.69 Z" fill="#05060A" stroke="#050608" stroke-width="0.6"/> <path d="M 197.32,65.51 A 98.00,98.00 0 0,1 206.79,94.67 L 198.89,95.92 A 90.00,90.00 0 0,0 190.19,69.14 Z" fill="#4E89FF" stroke="#7B8494" stroke-width="0.75"/> <path d="M 190.19,69.14 A 90.00,90.00 0 0,1 198.89,95.92 L 167.29,100.93 A 58.00,58.00 0 0,0 161.68,83.67 Z" fill="#F1F3F7" stroke="#050608" stroke-width="0.6"/> <path d="M 161.68,83.67 A 58.00,58.00 0 0,1 167.29,100.93 L 159.38,102.18 A 50.00,50.00 0 0,0 154.55,87.30 Z" fill="#4E89FF" stroke="#7B8494" stroke-width="0.75"/> <path d="M 154.55,87.30 A 50.00,50.00 0 0,1 159.38,102.18 L 125.80,107.50 A 16.00,16.00 0 0,0 124.26,102.74 Z" fill="#F1F3F7" stroke="#050608" stroke-width="0.6"/> <path d="M 206.79,94.67 A 98.00,98.00 0 0,1 206.79,125.33 L 198.89,124.08 A 90.00,90.00 0 0,0 198.89,95.92 Z" fill="#3A4152" stroke="#7B8494" stroke-width="0.75"/> <path d="M 198.89,95.92 A 90.00,90.00 0 0,1 198.89,124.08 L 167.29,119.07 A 58.00,58.00 0 0,0 167.29,100.93 Z" fill="#05060A" stroke="#050608" stroke-width="0.6"/> <path d="M 167.29,100.93 A 58.00,58.00 0 0,1 167.29,119.07 L 159.38,117.82 A 50.00,50.00 0 0,0 159.38,102.18 Z" fill="#3A4152" stroke="#7B8494" stroke-width="0.75"/> <path d="M 159.38,102.18 A 50.00,50.00 0 0,1 159.38,117.82 L 125.80,112.50 A 16.00,16.00 0 0,0 125.80,107.50 Z" fill="#05060A" stroke="#050608" stroke-width="0.6"/> <path d="M 206.79,125.33 A 98.00,98.00 0 0,1 197.32,154.49 L 190.19,150.86 A 90.00,90.00 0 0,0 198.89,124.08 Z" fill="#4E89FF" stroke="#7B8494" stroke-width="0.75"/> <path d="M 198.89,124.08 A 90.00,90.00 0 0,1 190.19,150.86 L 161.68,136.33 A 58.00,58.00 0 0,0 167.29,119.07 Z" fill="#F1F3F7" stroke="#050608" stroke-width="0.6"/> <path d="M 167.29,119.07 A 58.00,58.00 0 0,1 161.68,136.33 L 154.55,132.70 A 50.00,50.00 0 0,0 159.38,117.82 Z" fill="#4E89FF" stroke="#7B8494" stroke-width="0.75"/> <path d="M 159.38,117.82 A 50.00,50.00 0 0,1 154.55,132.70 L 124.26,117.26 A 16.00,16.00 0 0,0 125.80,112.50 Z" fill="#F1F3F7" stroke="#050608" stroke-width="0.6"/> <path d="M 197.32,154.49 A 98.00,98.00 0 0,1 179.30,179.30 L 173.64,173.64 A 90.00,90.00 0 0,0 190.19,150.86 Z" fill="#3A4152" stroke="#7B8494" stroke-width="0.75"/> <path d="M 190.19,150.86 A 90.00,90.00 0 0,1 173.64,173.64 L 151.01,151.01 A 58.00,58.00 0 0,0 161.68,136.33 Z" fill="#05060A" stroke="#050608" stroke-width="0.6"/> <path d="M 161.68,136.33 A 58.00,58.00 0 0,1 151.01,151.01 L 145.36,145.36 A 50.00,50.00 0 0,0 154.55,132.70 Z" fill="#3A4152" stroke="#7B8494" stroke-width="0.75"/> <path d="M 154.55,132.70 A 50.00,50.00 0 0,1 145.36,145.36 L 121.31,121.31 A 16.00,16.00 0 0,0 124.26,117.26 Z" fill="#05060A" stroke="#050608" stroke-width="0.6"/> <path d="M 179.30,179.30 A 98.00,98.00 0 0,1 154.49,197.32 L 150.86,190.19 A 90.00,90.00 0 0,0 173.64,173.64 Z" fill="#4E89FF" stroke="#7B8494" stroke-width="0.75"/> <path d="M 173.64,173.64 A 90.00,90.00 0 0,1 150.86,190.19 L 136.33,161.68 A 58.00,58.00 0 0,0 151.01,151.01 Z" fill="#F1F3F7" stroke="#050608" stroke-width="0.6"/> <path d="M 151.01,151.01 A 58.00,58.00 0 0,1 136.33,161.68 L 132.70,154.55 A 50.00,50.00 0 0,0 145.36,145.36 Z" fill="#4E89FF" stroke="#7B8494" stroke-width="0.75"/> <path d="M 145.36,145.36 A 50.00,50.00 0 0,1 132.70,154.55 L 117.26,124.26 A 16.00,16.00 0 0,0 121.31,121.31 Z" fill="#F1F3F7" stroke="#050608" stroke-width="0.6"/> <path d="M 154.49,197.32 A 98.00,98.00 0 0,1 125.33,206.79 L 124.08,198.89 A 90.00,90.00 0 0,0 150.86,190.19 Z" fill="#3A4152" stroke="#7B8494" stroke-width="0.75"/> <path d="M 150.86,190.19 A 90.00,90.00 0 0,1 124.08,198.89 L 119.07,167.29 A 58.00,58.00 0 0,0 136.33,161.68 Z" fill="#05060A" stroke="#050608" stroke-width="0.6"/> <path d="M 136.33,161.68 A 58.00,58.00 0 0,1 119.07,167.29 L 117.82,159.38 A 50.00,50.00 0 0,0 132.70,154.55 Z" fill="#3A4152" stroke="#7B8494" stroke-width="0.75"/> <path d="M 132.70,154.55 A 50.00,50.00 0 0,1 117.82,159.38 L 112.50,125.80 A 16.00,16.00 0 0,0 117.26,124.26 Z" fill="#05060A" stroke="#050608" stroke-width="0.6"/> <path d="M 125.33,206.79 A 98.00,98.00 0 0,1 94.67,206.79 L 95.92,198.89 A 90.00,90.00 0 0,0 124.08,198.89 Z" fill="#4E89FF" stroke="#7B8494" stroke-width="0.75"/> <path d="M 124.08,198.89 A 90.00,90.00 0 0,1 95.92,198.89 L 100.93,167.29 A 58.00,58.00 0 0,0 119.07,167.29 Z" fill="#F1F3F7" stroke="#050608" stroke-width="0.6"/> <path d="M 119.07,167.29 A 58.00,58.00 0 0,1 100.93,167.29 L 102.18,159.38 A 50.00,50.00 0 0,0 117.82,159.38 Z" fill="#4E89FF" stroke="#7B8494" stroke-width="0.75"/> <path d="M 117.82,159.38 A 50.00,50.00 0 0,1 102.18,159.38 L 107.50,125.80 A 16.00,16.00 0 0,0 112.50,125.80 Z" fill="#F1F3F7" stroke="#050608" stroke-width="0.6"/> <path d="M 94.67,206.79 A 98.00,98.00 0 0,1 65.51,197.32 L 69.14,190.19 A 90.00,90.00 0 0,0 95.92,198.89 Z" fill="#3A4152" stroke="#7B8494" stroke-width="0.75"/> <path d="M 95.92,198.89 A 90.00,90.00 0 0,1 69.14,190.19 L 83.67,161.68 A 58.00,58.00 0 0,0 100.93,167.29 Z" fill="#05060A" stroke="#050608" stroke-width="0.6"/> <path d="M 100.93,167.29 A 58.00,58.00 0 0,1 83.67,161.68 L 87.30,154.55 A 50.00,50.00 0 0,0 102.18,159.38 Z" fill="#3A4152" stroke="#7B8494" stroke-width="0.75"/> <path d="M 102.18,159.38 A 50.00,50.00 0 0,1 87.30,154.55 L 102.74,124.26 A 16.00,16.00 0 0,0 107.50,125.80 Z" fill="#05060A" stroke="#050608" stroke-width="0.6"/> <path d="M 65.51,197.32 A 98.00,98.00 0 0,1 40.70,179.30 L 46.36,173.64 A 90.00,90.00 0 0,0 69.14,190.19 Z" fill="#4E89FF" stroke="#7B8494" stroke-width="0.75"/> <path d="M 69.14,190.19 A 90.00,90.00 0 0,1 46.36,173.64 L 68.99,151.01 A 58.00,58.00 0 0,0 83.67,161.68 Z" fill="#F1F3F7" stroke="#050608" stroke-width="0.6"/> <path d="M 83.67,161.68 A 58.00,58.00 0 0,1 68.99,151.01 L 74.64,145.36 A 50.00,50.00 0 0,0 87.30,154.55 Z" fill="#4E89FF" stroke="#7B8494" stroke-width="0.75"/> <path d="M 87.30,154.55 A 50.00,50.00 0 0,1 74.64,145.36 L 98.69,121.31 A 16.00,16.00 0 0,0 102.74,124.26 Z" fill="#F1F3F7" stroke="#050608" stroke-width="0.6"/> <path d="M 40.70,179.30 A 98.00,98.00 0 0,1 22.68,154.49 L 29.81,150.86 A 90.00,90.00 0 0,0 46.36,173.64 Z" fill="#3A4152" stroke="#7B8494" stroke-width="0.75"/> <path d="M 46.36,173.64 A 90.00,90.00 0 0,1 29.81,150.86 L 58.32,136.33 A 58.00,58.00 0 0,0 68.99,151.01 Z" fill="#05060A" stroke="#050608" stroke-width="0.6"/> <path d="M 68.99,151.01 A 58.00,58.00 0 0,1 58.32,136.33 L 65.45,132.70 A 50.00,50.00 0 0,0 74.64,145.36 Z" fill="#3A4152" stroke="#7B8494" stroke-width="0.75"/> <path d="M 74.64,145.36 A 50.00,50.00 0 0,1 65.45,132.70 L 95.74,117.26 A 16.00,16.00 0 0,0 98.69,121.31 Z" fill="#05060A" stroke="#050608" stroke-width="0.6"/> <path d="M 22.68,154.49 A 98.00,98.00 0 0,1 13.21,125.33 L 21.11,124.08 A 90.00,90.00 0 0,0 29.81,150.86 Z" fill="#4E89FF" stroke="#7B8494" stroke-width="0.75"/> <path d="M 29.81,150.86 A 90.00,90.00 0 0,1 21.11,124.08 L 52.71,119.07 A 58.00,58.00 0 0,0 58.32,136.33 Z" fill="#F1F3F7" stroke="#050608" stroke-width="0.6"/> <path d="M 58.32,136.33 A 58.00,58.00 0 0,1 52.71,119.07 L 60.62,117.82 A 50.00,50.00 0 0,0 65.45,132.70 Z" fill="#4E89FF" stroke="#7B8494" stroke-width="0.75"/> <path d="M 65.45,132.70 A 50.00,50.00 0 0,1 60.62,117.82 L 94.20,112.50 A 16.00,16.00 0 0,0 95.74,117.26 Z" fill="#F1F3F7" stroke="#050608" stroke-width="0.6"/> <path d="M 13.21,125.33 A 98.00,98.00 0 0,1 13.21,94.67 L 21.11,95.92 A 90.00,90.00 0 0,0 21.11,124.08 Z" fill="#3A4152" stroke="#7B8494" stroke-width="0.75"/> <path d="M 21.11,124.08 A 90.00,90.00 0 0,1 21.11,95.92 L 52.71,100.93 A 58.00,58.00 0 0,0 52.71,119.07 Z" fill="#05060A" stroke="#050608" stroke-width="0.6"/> <path d="M 52.71,119.07 A 58.00,58.00 0 0,1 52.71,100.93 L 60.62,102.18 A 50.00,50.00 0 0,0 60.62,117.82 Z" fill="#3A4152" stroke="#7B8494" stroke-width="0.75"/> <path d="M 60.62,117.82 A 50.00,50.00 0 0,1 60.62,102.18 L 94.20,107.50 A 16.00,16.00 0 0,0 94.20,112.50 Z" fill="#05060A" stroke="#050608" stroke-width="0.6"/> <path d="M 13.21,94.67 A 98.00,98.00 0 0,1 22.68,65.51 L 29.81,69.14 A 90.00,90.00 0 0,0 21.11,95.92 Z" fill="#4E89FF" stroke="#7B8494" stroke-width="0.75"/> <path d="M 21.11,95.92 A 90.00,90.00 0 0,1 29.81,69.14 L 58.32,83.67 A 58.00,58.00 0 0,0 52.71,100.93 Z" fill="#F1F3F7" stroke="#050608" stroke-width="0.6"/> <path d="M 52.71,100.93 A 58.00,58.00 0 0,1 58.32,83.67 L 65.45,87.30 A 50.00,50.00 0 0,0 60.62,102.18 Z" fill="#4E89FF" stroke="#7B8494" stroke-width="0.75"/> <path d="M 60.62,102.18 A 50.00,50.00 0 0,1 65.45,87.30 L 95.74,102.74 A 16.00,16.00 0 0,0 94.20,107.50 Z" fill="#F1F3F7" stroke="#050608" stroke-width="0.6"/> <path d="M 22.68,65.51 A 98.00,98.00 0 0,1 40.70,40.70 L 46.36,46.36 A 90.00,90.00 0 0,0 29.81,69.14 Z" fill="#3A4152" stroke="#7B8494" stroke-width="0.75"/> <path d="M 29.81,69.14 A 90.00,90.00 0 0,1 46.36,46.36 L 68.99,68.99 A 58.00,58.00 0 0,0 58.32,83.67 Z" fill="#05060A" stroke="#050608" stroke-width="0.6"/> <path d="M 58.32,83.67 A 58.00,58.00 0 0,1 68.99,68.99 L 74.64,74.64 A 50.00,50.00 0 0,0 65.45,87.30 Z" fill="#3A4152" stroke="#7B8494" stroke-width="0.75"/> <path d="M 65.45,87.30 A 50.00,50.00 0 0,1 74.64,74.64 L 98.69,98.69 A 16.00,16.00 0 0,0 95.74,102.74 Z" fill="#05060A" stroke="#050608" stroke-width="0.6"/> <path d="M 40.70,40.70 A 98.00,98.00 0 0,1 65.51,22.68 L 69.14,29.81 A 90.00,90.00 0 0,0 46.36,46.36 Z" fill="#4E89FF" stroke="#7B8494" stroke-width="0.75"/> <path d="M 46.36,46.36 A 90.00,90.00 0 0,1 69.14,29.81 L 83.67,58.32 A 58.00,58.00 0 0,0 68.99,68.99 Z" fill="#F1F3F7" stroke="#050608" stroke-width="0.6"/> <path d="M 68.99,68.99 A 58.00,58.00 0 0,1 83.67,58.32 L 87.30,65.45 A 50.00,50.00 0 0,0 74.64,74.64 Z" fill="#4E89FF" stroke="#7B8494" stroke-width="0.75"/> <path d="M 74.64,74.64 A 50.00,50.00 0 0,1 87.30,65.45 L 102.74,95.74 A 16.00,16.00 0 0,0 98.69,98.69 Z" fill="#F1F3F7" stroke="#050608" stroke-width="0.6"/> <path d="M 65.51,22.68 A 98.00,98.00 0 0,1 94.67,13.21 L 95.92,21.11 A 90.00,90.00 0 0,0 69.14,29.81 Z" fill="#3A4152" stroke="#7B8494" stroke-width="0.75"/> <path d="M 69.14,29.81 A 90.00,90.00 0 0,1 95.92,21.11 L 100.93,52.71 A 58.00,58.00 0 0,0 83.67,58.32 Z" fill="#05060A" stroke="#050608" stroke-width="0.6"/> <path d="M 83.67,58.32 A 58.00,58.00 0 0,1 100.93,52.71 L 102.18,60.62 A 50.00,50.00 0 0,0 87.30,65.45 Z" fill="#3A4152" stroke="#7B8494" stroke-width="0.75"/> <path d="M 87.30,65.45 A 50.00,50.00 0 0,1 102.18,60.62 L 107.50,94.20 A 16.00,16.00 0 0,0 102.74,95.74 Z" fill="#05060A" stroke="#050608" stroke-width="0.6"/><circle cx="110" cy="110" r="16" fill="none" stroke="#050608" stroke-width="1"/><circle cx="110" cy="110" r="16" fill="#F1F3F7"/><circle cx="110" cy="110" r="20" fill="url(#authBullGlow)"/><circle cx="110" cy="110" r="7" fill="#4E89FF"/><circle cx="110" cy="110" r="98" fill="none" stroke="#050608" stroke-width="2"/></svg></div>
+      <p class="tagline" style="margin-bottom:20px;">Stability. Alignment. Release.</p>
 
       <div class="tab-toggle">
         <input type="checkbox" id="tab-signup">
@@ -455,38 +483,53 @@
 
     <header class="app-header">
       <span class="header-spacer" aria-hidden="true"></span>
-      <div class="header-wordmark"><span class="lead">Mr Smooth</span></div>
+      <span class="header-spacer" aria-hidden="true"></span>
       <button class="icon-btn" id="btn-signout" title="Sign out"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px;"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg></button>
     </header>
-    <div class="header-sub">Darts Academy</div>
-    <p class="tagline">Stable. Focused. Smooth.</p>
+    <div class="wordmark">
+      <span class="lead">Darts Coaching</span>
+      <span class="sub">&hellip;with Mr Smooth</span>
+    </div>
+    <p class="tagline">Stability. Alignment. Release.</p>
 
-    <div class="rank-ring" id="home-ring">
-      <svg viewBox="0 0 100 100">
-        <circle cx="50" cy="50" r="44" fill="none" stroke="var(--wire-strong)" stroke-width="7"/>
-        <circle id="home-ring-fill" cx="50" cy="50" r="44" fill="none" stroke="var(--t-beginner)" stroke-width="7" stroke-linecap="round" stroke-dasharray="276" stroke-dashoffset="276" transform="rotate(-90 50 50)"/>
-      </svg>
-      <div class="center">
-        <div class="score mono" id="home-score">0</div>
-        <div class="tier-name" id="home-tier">Beginner</div>
+    <div class="eyebrow">Your Rank</div>
+    <div class="mission-card">
+      <span class="corner corner-tl"></span>
+      <span class="corner corner-tr"></span>
+      <span class="corner corner-bl"></span>
+      <span class="corner corner-br"></span>
+      <div class="bg-rings"></div>
+
+      <div class="rank-ring" id="home-ring">
+        <svg viewBox="0 0 100 100">
+          <circle cx="50" cy="50" r="44" fill="none" stroke="var(--wire-strong)" stroke-width="7"/>
+          <circle id="home-ring-fill" cx="50" cy="50" r="44" fill="none" stroke="var(--t-beginner)" stroke-width="7" stroke-linecap="round" stroke-dasharray="276" stroke-dashoffset="276" transform="rotate(-90 50 50)"/>
+        </svg>
+        <svg viewBox="0 0 220 220" style="position:absolute;inset:16px;pointer-events:none;"><defs><radialGradient id="homeBullGlow" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#4E89FF" stop-opacity="0.9"/><stop offset="100%" stop-color="#4E89FF" stop-opacity="0"/></radialGradient></defs><circle cx="110" cy="110" r="102" fill="#0D0F14" stroke="#202530" stroke-width="2"/><path d="M 94.67,13.21 A 98.00,98.00 0 0,1 125.33,13.21 L 124.08,21.11 A 90.00,90.00 0 0,0 95.92,21.11 Z" fill="#4E89FF" stroke="#7B8494" stroke-width="0.75"/> <path d="M 95.92,21.11 A 90.00,90.00 0 0,1 124.08,21.11 L 119.07,52.71 A 58.00,58.00 0 0,0 100.93,52.71 Z" fill="#F1F3F7" stroke="#050608" stroke-width="0.6"/> <path d="M 100.93,52.71 A 58.00,58.00 0 0,1 119.07,52.71 L 117.82,60.62 A 50.00,50.00 0 0,0 102.18,60.62 Z" fill="#4E89FF" stroke="#7B8494" stroke-width="0.75"/> <path d="M 102.18,60.62 A 50.00,50.00 0 0,1 117.82,60.62 L 112.50,94.20 A 16.00,16.00 0 0,0 107.50,94.20 Z" fill="#F1F3F7" stroke="#050608" stroke-width="0.6"/> <path d="M 125.33,13.21 A 98.00,98.00 0 0,1 154.49,22.68 L 150.86,29.81 A 90.00,90.00 0 0,0 124.08,21.11 Z" fill="#3A4152" stroke="#7B8494" stroke-width="0.75"/> <path d="M 124.08,21.11 A 90.00,90.00 0 0,1 150.86,29.81 L 136.33,58.32 A 58.00,58.00 0 0,0 119.07,52.71 Z" fill="#05060A" stroke="#050608" stroke-width="0.6"/> <path d="M 119.07,52.71 A 58.00,58.00 0 0,1 136.33,58.32 L 132.70,65.45 A 50.00,50.00 0 0,0 117.82,60.62 Z" fill="#3A4152" stroke="#7B8494" stroke-width="0.75"/> <path d="M 117.82,60.62 A 50.00,50.00 0 0,1 132.70,65.45 L 117.26,95.74 A 16.00,16.00 0 0,0 112.50,94.20 Z" fill="#05060A" stroke="#050608" stroke-width="0.6"/> <path d="M 154.49,22.68 A 98.00,98.00 0 0,1 179.30,40.70 L 173.64,46.36 A 90.00,90.00 0 0,0 150.86,29.81 Z" fill="#4E89FF" stroke="#7B8494" stroke-width="0.75"/> <path d="M 150.86,29.81 A 90.00,90.00 0 0,1 173.64,46.36 L 151.01,68.99 A 58.00,58.00 0 0,0 136.33,58.32 Z" fill="#F1F3F7" stroke="#050608" stroke-width="0.6"/> <path d="M 136.33,58.32 A 58.00,58.00 0 0,1 151.01,68.99 L 145.36,74.64 A 50.00,50.00 0 0,0 132.70,65.45 Z" fill="#4E89FF" stroke="#7B8494" stroke-width="0.75"/> <path d="M 132.70,65.45 A 50.00,50.00 0 0,1 145.36,74.64 L 121.31,98.69 A 16.00,16.00 0 0,0 117.26,95.74 Z" fill="#F1F3F7" stroke="#050608" stroke-width="0.6"/> <path d="M 179.30,40.70 A 98.00,98.00 0 0,1 197.32,65.51 L 190.19,69.14 A 90.00,90.00 0 0,0 173.64,46.36 Z" fill="#3A4152" stroke="#7B8494" stroke-width="0.75"/> <path d="M 173.64,46.36 A 90.00,90.00 0 0,1 190.19,69.14 L 161.68,83.67 A 58.00,58.00 0 0,0 151.01,68.99 Z" fill="#05060A" stroke="#050608" stroke-width="0.6"/> <path d="M 151.01,68.99 A 58.00,58.00 0 0,1 161.68,83.67 L 154.55,87.30 A 50.00,50.00 0 0,0 145.36,74.64 Z" fill="#3A4152" stroke="#7B8494" stroke-width="0.75"/> <path d="M 145.36,74.64 A 50.00,50.00 0 0,1 154.55,87.30 L 124.26,102.74 A 16.00,16.00 0 0,0 121.31,98.69 Z" fill="#05060A" stroke="#050608" stroke-width="0.6"/> <path d="M 197.32,65.51 A 98.00,98.00 0 0,1 206.79,94.67 L 198.89,95.92 A 90.00,90.00 0 0,0 190.19,69.14 Z" fill="#4E89FF" stroke="#7B8494" stroke-width="0.75"/> <path d="M 190.19,69.14 A 90.00,90.00 0 0,1 198.89,95.92 L 167.29,100.93 A 58.00,58.00 0 0,0 161.68,83.67 Z" fill="#F1F3F7" stroke="#050608" stroke-width="0.6"/> <path d="M 161.68,83.67 A 58.00,58.00 0 0,1 167.29,100.93 L 159.38,102.18 A 50.00,50.00 0 0,0 154.55,87.30 Z" fill="#4E89FF" stroke="#7B8494" stroke-width="0.75"/> <path d="M 154.55,87.30 A 50.00,50.00 0 0,1 159.38,102.18 L 125.80,107.50 A 16.00,16.00 0 0,0 124.26,102.74 Z" fill="#F1F3F7" stroke="#050608" stroke-width="0.6"/> <path d="M 206.79,94.67 A 98.00,98.00 0 0,1 206.79,125.33 L 198.89,124.08 A 90.00,90.00 0 0,0 198.89,95.92 Z" fill="#3A4152" stroke="#7B8494" stroke-width="0.75"/> <path d="M 198.89,95.92 A 90.00,90.00 0 0,1 198.89,124.08 L 167.29,119.07 A 58.00,58.00 0 0,0 167.29,100.93 Z" fill="#05060A" stroke="#050608" stroke-width="0.6"/> <path d="M 167.29,100.93 A 58.00,58.00 0 0,1 167.29,119.07 L 159.38,117.82 A 50.00,50.00 0 0,0 159.38,102.18 Z" fill="#3A4152" stroke="#7B8494" stroke-width="0.75"/> <path d="M 159.38,102.18 A 50.00,50.00 0 0,1 159.38,117.82 L 125.80,112.50 A 16.00,16.00 0 0,0 125.80,107.50 Z" fill="#05060A" stroke="#050608" stroke-width="0.6"/> <path d="M 206.79,125.33 A 98.00,98.00 0 0,1 197.32,154.49 L 190.19,150.86 A 90.00,90.00 0 0,0 198.89,124.08 Z" fill="#4E89FF" stroke="#7B8494" stroke-width="0.75"/> <path d="M 198.89,124.08 A 90.00,90.00 0 0,1 190.19,150.86 L 161.68,136.33 A 58.00,58.00 0 0,0 167.29,119.07 Z" fill="#F1F3F7" stroke="#050608" stroke-width="0.6"/> <path d="M 167.29,119.07 A 58.00,58.00 0 0,1 161.68,136.33 L 154.55,132.70 A 50.00,50.00 0 0,0 159.38,117.82 Z" fill="#4E89FF" stroke="#7B8494" stroke-width="0.75"/> <path d="M 159.38,117.82 A 50.00,50.00 0 0,1 154.55,132.70 L 124.26,117.26 A 16.00,16.00 0 0,0 125.80,112.50 Z" fill="#F1F3F7" stroke="#050608" stroke-width="0.6"/> <path d="M 197.32,154.49 A 98.00,98.00 0 0,1 179.30,179.30 L 173.64,173.64 A 90.00,90.00 0 0,0 190.19,150.86 Z" fill="#3A4152" stroke="#7B8494" stroke-width="0.75"/> <path d="M 190.19,150.86 A 90.00,90.00 0 0,1 173.64,173.64 L 151.01,151.01 A 58.00,58.00 0 0,0 161.68,136.33 Z" fill="#05060A" stroke="#050608" stroke-width="0.6"/> <path d="M 161.68,136.33 A 58.00,58.00 0 0,1 151.01,151.01 L 145.36,145.36 A 50.00,50.00 0 0,0 154.55,132.70 Z" fill="#3A4152" stroke="#7B8494" stroke-width="0.75"/> <path d="M 154.55,132.70 A 50.00,50.00 0 0,1 145.36,145.36 L 121.31,121.31 A 16.00,16.00 0 0,0 124.26,117.26 Z" fill="#05060A" stroke="#050608" stroke-width="0.6"/> <path d="M 179.30,179.30 A 98.00,98.00 0 0,1 154.49,197.32 L 150.86,190.19 A 90.00,90.00 0 0,0 173.64,173.64 Z" fill="#4E89FF" stroke="#7B8494" stroke-width="0.75"/> <path d="M 173.64,173.64 A 90.00,90.00 0 0,1 150.86,190.19 L 136.33,161.68 A 58.00,58.00 0 0,0 151.01,151.01 Z" fill="#F1F3F7" stroke="#050608" stroke-width="0.6"/> <path d="M 151.01,151.01 A 58.00,58.00 0 0,1 136.33,161.68 L 132.70,154.55 A 50.00,50.00 0 0,0 145.36,145.36 Z" fill="#4E89FF" stroke="#7B8494" stroke-width="0.75"/> <path d="M 145.36,145.36 A 50.00,50.00 0 0,1 132.70,154.55 L 117.26,124.26 A 16.00,16.00 0 0,0 121.31,121.31 Z" fill="#F1F3F7" stroke="#050608" stroke-width="0.6"/> <path d="M 154.49,197.32 A 98.00,98.00 0 0,1 125.33,206.79 L 124.08,198.89 A 90.00,90.00 0 0,0 150.86,190.19 Z" fill="#3A4152" stroke="#7B8494" stroke-width="0.75"/> <path d="M 150.86,190.19 A 90.00,90.00 0 0,1 124.08,198.89 L 119.07,167.29 A 58.00,58.00 0 0,0 136.33,161.68 Z" fill="#05060A" stroke="#050608" stroke-width="0.6"/> <path d="M 136.33,161.68 A 58.00,58.00 0 0,1 119.07,167.29 L 117.82,159.38 A 50.00,50.00 0 0,0 132.70,154.55 Z" fill="#3A4152" stroke="#7B8494" stroke-width="0.75"/> <path d="M 132.70,154.55 A 50.00,50.00 0 0,1 117.82,159.38 L 112.50,125.80 A 16.00,16.00 0 0,0 117.26,124.26 Z" fill="#05060A" stroke="#050608" stroke-width="0.6"/> <path d="M 125.33,206.79 A 98.00,98.00 0 0,1 94.67,206.79 L 95.92,198.89 A 90.00,90.00 0 0,0 124.08,198.89 Z" fill="#4E89FF" stroke="#7B8494" stroke-width="0.75"/> <path d="M 124.08,198.89 A 90.00,90.00 0 0,1 95.92,198.89 L 100.93,167.29 A 58.00,58.00 0 0,0 119.07,167.29 Z" fill="#F1F3F7" stroke="#050608" stroke-width="0.6"/> <path d="M 119.07,167.29 A 58.00,58.00 0 0,1 100.93,167.29 L 102.18,159.38 A 50.00,50.00 0 0,0 117.82,159.38 Z" fill="#4E89FF" stroke="#7B8494" stroke-width="0.75"/> <path d="M 117.82,159.38 A 50.00,50.00 0 0,1 102.18,159.38 L 107.50,125.80 A 16.00,16.00 0 0,0 112.50,125.80 Z" fill="#F1F3F7" stroke="#050608" stroke-width="0.6"/> <path d="M 94.67,206.79 A 98.00,98.00 0 0,1 65.51,197.32 L 69.14,190.19 A 90.00,90.00 0 0,0 95.92,198.89 Z" fill="#3A4152" stroke="#7B8494" stroke-width="0.75"/> <path d="M 95.92,198.89 A 90.00,90.00 0 0,1 69.14,190.19 L 83.67,161.68 A 58.00,58.00 0 0,0 100.93,167.29 Z" fill="#05060A" stroke="#050608" stroke-width="0.6"/> <path d="M 100.93,167.29 A 58.00,58.00 0 0,1 83.67,161.68 L 87.30,154.55 A 50.00,50.00 0 0,0 102.18,159.38 Z" fill="#3A4152" stroke="#7B8494" stroke-width="0.75"/> <path d="M 102.18,159.38 A 50.00,50.00 0 0,1 87.30,154.55 L 102.74,124.26 A 16.00,16.00 0 0,0 107.50,125.80 Z" fill="#05060A" stroke="#050608" stroke-width="0.6"/> <path d="M 65.51,197.32 A 98.00,98.00 0 0,1 40.70,179.30 L 46.36,173.64 A 90.00,90.00 0 0,0 69.14,190.19 Z" fill="#4E89FF" stroke="#7B8494" stroke-width="0.75"/> <path d="M 69.14,190.19 A 90.00,90.00 0 0,1 46.36,173.64 L 68.99,151.01 A 58.00,58.00 0 0,0 83.67,161.68 Z" fill="#F1F3F7" stroke="#050608" stroke-width="0.6"/> <path d="M 83.67,161.68 A 58.00,58.00 0 0,1 68.99,151.01 L 74.64,145.36 A 50.00,50.00 0 0,0 87.30,154.55 Z" fill="#4E89FF" stroke="#7B8494" stroke-width="0.75"/> <path d="M 87.30,154.55 A 50.00,50.00 0 0,1 74.64,145.36 L 98.69,121.31 A 16.00,16.00 0 0,0 102.74,124.26 Z" fill="#F1F3F7" stroke="#050608" stroke-width="0.6"/> <path d="M 40.70,179.30 A 98.00,98.00 0 0,1 22.68,154.49 L 29.81,150.86 A 90.00,90.00 0 0,0 46.36,173.64 Z" fill="#3A4152" stroke="#7B8494" stroke-width="0.75"/> <path d="M 46.36,173.64 A 90.00,90.00 0 0,1 29.81,150.86 L 58.32,136.33 A 58.00,58.00 0 0,0 68.99,151.01 Z" fill="#05060A" stroke="#050608" stroke-width="0.6"/> <path d="M 68.99,151.01 A 58.00,58.00 0 0,1 58.32,136.33 L 65.45,132.70 A 50.00,50.00 0 0,0 74.64,145.36 Z" fill="#3A4152" stroke="#7B8494" stroke-width="0.75"/> <path d="M 74.64,145.36 A 50.00,50.00 0 0,1 65.45,132.70 L 95.74,117.26 A 16.00,16.00 0 0,0 98.69,121.31 Z" fill="#05060A" stroke="#050608" stroke-width="0.6"/> <path d="M 22.68,154.49 A 98.00,98.00 0 0,1 13.21,125.33 L 21.11,124.08 A 90.00,90.00 0 0,0 29.81,150.86 Z" fill="#4E89FF" stroke="#7B8494" stroke-width="0.75"/> <path d="M 29.81,150.86 A 90.00,90.00 0 0,1 21.11,124.08 L 52.71,119.07 A 58.00,58.00 0 0,0 58.32,136.33 Z" fill="#F1F3F7" stroke="#050608" stroke-width="0.6"/> <path d="M 58.32,136.33 A 58.00,58.00 0 0,1 52.71,119.07 L 60.62,117.82 A 50.00,50.00 0 0,0 65.45,132.70 Z" fill="#4E89FF" stroke="#7B8494" stroke-width="0.75"/> <path d="M 65.45,132.70 A 50.00,50.00 0 0,1 60.62,117.82 L 94.20,112.50 A 16.00,16.00 0 0,0 95.74,117.26 Z" fill="#F1F3F7" stroke="#050608" stroke-width="0.6"/> <path d="M 13.21,125.33 A 98.00,98.00 0 0,1 13.21,94.67 L 21.11,95.92 A 90.00,90.00 0 0,0 21.11,124.08 Z" fill="#3A4152" stroke="#7B8494" stroke-width="0.75"/> <path d="M 21.11,124.08 A 90.00,90.00 0 0,1 21.11,95.92 L 52.71,100.93 A 58.00,58.00 0 0,0 52.71,119.07 Z" fill="#05060A" stroke="#050608" stroke-width="0.6"/> <path d="M 52.71,119.07 A 58.00,58.00 0 0,1 52.71,100.93 L 60.62,102.18 A 50.00,50.00 0 0,0 60.62,117.82 Z" fill="#3A4152" stroke="#7B8494" stroke-width="0.75"/> <path d="M 60.62,117.82 A 50.00,50.00 0 0,1 60.62,102.18 L 94.20,107.50 A 16.00,16.00 0 0,0 94.20,112.50 Z" fill="#05060A" stroke="#050608" stroke-width="0.6"/> <path d="M 13.21,94.67 A 98.00,98.00 0 0,1 22.68,65.51 L 29.81,69.14 A 90.00,90.00 0 0,0 21.11,95.92 Z" fill="#4E89FF" stroke="#7B8494" stroke-width="0.75"/> <path d="M 21.11,95.92 A 90.00,90.00 0 0,1 29.81,69.14 L 58.32,83.67 A 58.00,58.00 0 0,0 52.71,100.93 Z" fill="#F1F3F7" stroke="#050608" stroke-width="0.6"/> <path d="M 52.71,100.93 A 58.00,58.00 0 0,1 58.32,83.67 L 65.45,87.30 A 50.00,50.00 0 0,0 60.62,102.18 Z" fill="#4E89FF" stroke="#7B8494" stroke-width="0.75"/> <path d="M 60.62,102.18 A 50.00,50.00 0 0,1 65.45,87.30 L 95.74,102.74 A 16.00,16.00 0 0,0 94.20,107.50 Z" fill="#F1F3F7" stroke="#050608" stroke-width="0.6"/> <path d="M 22.68,65.51 A 98.00,98.00 0 0,1 40.70,40.70 L 46.36,46.36 A 90.00,90.00 0 0,0 29.81,69.14 Z" fill="#3A4152" stroke="#7B8494" stroke-width="0.75"/> <path d="M 29.81,69.14 A 90.00,90.00 0 0,1 46.36,46.36 L 68.99,68.99 A 58.00,58.00 0 0,0 58.32,83.67 Z" fill="#05060A" stroke="#050608" stroke-width="0.6"/> <path d="M 58.32,83.67 A 58.00,58.00 0 0,1 68.99,68.99 L 74.64,74.64 A 50.00,50.00 0 0,0 65.45,87.30 Z" fill="#3A4152" stroke="#7B8494" stroke-width="0.75"/> <path d="M 65.45,87.30 A 50.00,50.00 0 0,1 74.64,74.64 L 98.69,98.69 A 16.00,16.00 0 0,0 95.74,102.74 Z" fill="#05060A" stroke="#050608" stroke-width="0.6"/> <path d="M 40.70,40.70 A 98.00,98.00 0 0,1 65.51,22.68 L 69.14,29.81 A 90.00,90.00 0 0,0 46.36,46.36 Z" fill="#4E89FF" stroke="#7B8494" stroke-width="0.75"/> <path d="M 46.36,46.36 A 90.00,90.00 0 0,1 69.14,29.81 L 83.67,58.32 A 58.00,58.00 0 0,0 68.99,68.99 Z" fill="#F1F3F7" stroke="#050608" stroke-width="0.6"/> <path d="M 68.99,68.99 A 58.00,58.00 0 0,1 83.67,58.32 L 87.30,65.45 A 50.00,50.00 0 0,0 74.64,74.64 Z" fill="#4E89FF" stroke="#7B8494" stroke-width="0.75"/> <path d="M 74.64,74.64 A 50.00,50.00 0 0,1 87.30,65.45 L 102.74,95.74 A 16.00,16.00 0 0,0 98.69,98.69 Z" fill="#F1F3F7" stroke="#050608" stroke-width="0.6"/> <path d="M 65.51,22.68 A 98.00,98.00 0 0,1 94.67,13.21 L 95.92,21.11 A 90.00,90.00 0 0,0 69.14,29.81 Z" fill="#3A4152" stroke="#7B8494" stroke-width="0.75"/> <path d="M 69.14,29.81 A 90.00,90.00 0 0,1 95.92,21.11 L 100.93,52.71 A 58.00,58.00 0 0,0 83.67,58.32 Z" fill="#05060A" stroke="#050608" stroke-width="0.6"/> <path d="M 83.67,58.32 A 58.00,58.00 0 0,1 100.93,52.71 L 102.18,60.62 A 50.00,50.00 0 0,0 87.30,65.45 Z" fill="#3A4152" stroke="#7B8494" stroke-width="0.75"/> <path d="M 87.30,65.45 A 50.00,50.00 0 0,1 102.18,60.62 L 107.50,94.20 A 16.00,16.00 0 0,0 102.74,95.74 Z" fill="#05060A" stroke="#050608" stroke-width="0.6"/><circle cx="110" cy="110" r="20" fill="url(#homeBullGlow)"/><circle cx="110" cy="110" r="98" fill="none" stroke="#050608" stroke-width="2"/></svg>
+        <div class="center">
+          <div class="center-badge-bg">
+            <div class="score mono" id="home-score">0</div>
+            <div class="tier-name" id="home-tier">Beginner</div>
+          </div>
+        </div>
       </div>
+
+      <p class="subtle" style="text-align:center;margin-bottom:16px;" id="home-progress-text">Play a session to get ranked.</p>
+
+      <div style="text-align:center;">
+        <div style="font-size:11px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--chalk-dim);margin-bottom:10px;">Average Form</div>
+        <div class="flame-row" id="home-flames"></div>
+        <div class="subtle" id="home-flames-label" style="margin-top:8px;">Play a session to see your average form.</div>
+      </div>
+
+      <button class="btn-mission" id="btn-home-play"><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8V4z"/></svg>Start a Session</button>
     </div>
-
-    <p class="subtle" style="text-align:center;margin-bottom:20px;" id="home-progress-text">Play a session to get ranked.</p>
-
-    <div style="text-align:center;margin-bottom:20px;">
-      <div style="font-size:11px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--chalk-dim);margin-bottom:10px;">Average Form</div>
-      <div class="flame-row" id="home-flames"></div>
-      <div class="subtle" id="home-flames-label" style="margin-top:8px;">Play a session to see your average form.</div>
-    </div>
-
-    <button class="btn btn-primary" id="btn-home-play">Start a session</button>
   </div>
 
   <!-- ================= ACADEMY ================= -->
   <div id="screen-academy" class="screen">
     <div class="topbar" style="padding-left:0;padding-right:0;">
-      <h2 style="font-size:20px;">Academy</h2>
+      <h2 style="font-size:20px;">Coaching</h2>
     </div>
     <p class="subtle" style="margin-bottom:16px;">Coaching lessons built around your throw. Landing soon.</p>
     <div class="academy-card"><div class="glyph-box"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="2"/><path d="M12 7.5v5"/><path d="M12 9.5 8 12"/><path d="M12 9.5l4.5 1.5"/><path d="M12 12.5 9 19"/><path d="M12 12.5l3.5 6.5"/></svg></div><div><div class="title">Stance & Balance</div><div class="desc">The foundation of smooth.</div></div><span class="coming-soon">Soon</span></div>
@@ -504,7 +547,7 @@
     <div class="stat-grid">
       <div class="stat-box"><div class="num mono" id="stats-sessions">0</div><div class="lab">Sessions</div></div>
       <button class="stat-box" data-nav="leaderboard" style="cursor:pointer;text-align:left;width:100%;appearance:none;-webkit-appearance:none;font:inherit;">
-        <div class="num mono" id="stats-rank-pos">&mdash;</div><div class="lab">Academy Rank &rarr;</div>
+        <div class="num mono" id="stats-rank-pos">&mdash;</div><div class="lab">Coaching Rank &rarr;</div>
       </button>
     </div>
     <div class="stat-grid-3">
@@ -563,7 +606,7 @@
   <!-- ================= BOTTOM NAV ================= -->
   <div class="bottom-nav" id="bottom-nav" style="display:none;">
     <button data-screen="home"><svg class="glyph" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5"/><path d="M5.5 9.5V20a1 1 0 0 0 1 1h4v-6h3v6h4a1 1 0 0 0 1-1V9.5"/></svg>Home</button>
-    <button data-screen="academy"><svg class="glyph" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10 12 5 2 10l10 5 10-5Z"/><path d="M6 12.5V17c0 1.5 3 3 6 3s6-1.5 6-3v-4.5"/></svg>Academy</button>
+    <button data-screen="academy"><svg class="glyph" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10 12 5 2 10l10 5 10-5Z"/><path d="M6 12.5V17c0 1.5 3 3 6 3s6-1.5 6-3v-4.5"/></svg>Coaching</button>
     <button data-screen="play"><svg class="glyph" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4.3"/><circle cx="12" cy="12" r="1.1" fill="currentColor" stroke="none"/></svg>Practice</button>
     <button data-screen="stats"><svg class="glyph" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V11"/><path d="M12 20V4"/><path d="M20 20v-6"/></svg>Stats</button>
     <button data-screen="profile"><svg class="glyph" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.5"/><path d="M4.5 20c1.4-4 4.4-6 7.5-6s6.1 2 7.5 6"/></svg>Profile</button>
@@ -580,12 +623,12 @@
   var SUPABASE_KEY = 'sb_publishable_oq0QggIQWiVDcl20V0Twkg_0wDCRBvR';
 
   var TIERS = [
-    {name:'Beginner',     min:0,    max:250,  color:'var(--t-beginner)',     hex:'#6B5B3E'},
-    {name:'Intermediate', min:251,  max:500,  color:'var(--t-intermediate)', hex:'#8C6F3A'},
-    {name:'Advanced',     min:501,  max:750,  color:'var(--t-advanced)',     hex:'#A67C2E'},
-    {name:'Expert',       min:751,  max:1000, color:'var(--t-expert)',       hex:'#C9972C'},
-    {name:'Semi-Pro',     min:1001, max:1250, color:'var(--t-semipro)',      hex:'#E3B94F'},
-    {name:'Professional', min:1251, max:3430, color:'var(--t-professional)', hex:'#F5D67A'}
+    {name:'Beginner',     min:0,    max:250,  color:'var(--t-beginner)',     hex:'#4E89FF'},
+    {name:'Intermediate', min:251,  max:500,  color:'var(--t-intermediate)', hex:'#4E89FF'},
+    {name:'Advanced',     min:501,  max:750,  color:'var(--t-advanced)',     hex:'#4E89FF'},
+    {name:'Expert',       min:751,  max:1000, color:'var(--t-expert)',       hex:'#4E89FF'},
+    {name:'Semi-Pro',     min:1001, max:1250, color:'var(--t-semipro)',      hex:'#4E89FF'},
+    {name:'Professional', min:1251, max:3430, color:'var(--t-professional)', hex:'#4E89FF'}
   ];
   function getTier(score){
     for (var i=0;i<TIERS.length;i++){ if (score <= TIERS[i].max) return TIERS[i]; }
@@ -622,7 +665,7 @@
   function waitForSupabaseLib(cb, tries){
     tries = tries || 0;
     if (window.supabase && window.supabase.createClient){ cb(); return; }
-    if (tries > 60){ showFatal('Could not load the darts academy right now. Check your connection and reload.'); return; }
+    if (tries > 60){ showFatal('Could not load the app right now. Check your connection and reload.'); return; }
     setTimeout(function(){ waitForSupabaseLib(cb, tries+1); }, 100);
   }
   function showFatal(msg){
@@ -790,10 +833,10 @@
     });
     var pathD = coords.map(function(c, i){ return (i===0?'M':'L') + c[0].toFixed(1) + ',' + c[1].toFixed(1); }).join(' ');
     var areaD = pathD + ' L' + coords[coords.length-1][0].toFixed(1) + ',' + (h-pad) + ' L' + coords[0][0].toFixed(1) + ',' + (h-pad) + ' Z';
-    var dots = coords.map(function(c){ return '<circle cx="'+c[0].toFixed(1)+'" cy="'+c[1].toFixed(1)+'" r="3" fill="#E3B94F"/>'; }).join('');
+    var dots = coords.map(function(c){ return '<circle cx="'+c[0].toFixed(1)+'" cy="'+c[1].toFixed(1)+'" r="3" fill="#4E89FF"/>'; }).join('');
     return '<svg viewBox="0 0 '+w+' '+h+'" preserveAspectRatio="none">'+
-      '<path d="'+areaD+'" fill="rgba(201,151,44,0.12)" stroke="none"/>'+
-      '<path d="'+pathD+'" fill="none" stroke="#E3B94F" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>'+
+      '<path d="'+areaD+'" fill="rgba(78,137,255,0.12)" stroke="none"/>'+
+      '<path d="'+pathD+'" fill="none" stroke="#4E89FF" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>'+
       dots+
       '</svg>';
   }
@@ -1249,7 +1292,7 @@
         }
       })
       .catch(function(err){
-        showFatal('Could not reach the academy. Check your connection and reload.');
+        showFatal('Could not reach the app. Check your connection and reload.');
         console.error(err);
       });
   }
