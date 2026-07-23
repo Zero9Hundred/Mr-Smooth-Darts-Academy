@@ -616,6 +616,11 @@
       <div id="profile-bands"></div>
     </div>
 
+    <div class="card">
+      <div class="card-head"><h3>Members</h3><span class="subtle" id="profile-members-count" style="font-size:12px;"></span></div>
+      <div id="profile-members"></div>
+    </div>
+
     <button class="btn btn-ghost" data-nav="stats" style="margin-bottom:10px;">View full history</button>
     <button class="btn btn-danger" id="btn-profile-signout">Sign out</button>
   </div>
@@ -1374,6 +1379,45 @@
         document.getElementById('profile-bands').innerHTML = buildBandsList(sessions.length > 0 ? avgTier.name : null);
       })
       .catch(function(err){ console.error(err); });
+    loadProfileMembers();
+  }
+
+  function loadProfileMembers(){
+    var listEl = document.getElementById('profile-members');
+    var countEl = document.getElementById('profile-members-count');
+    listEl.innerHTML = '<div class="spinner" style="margin:16px 0;"></div>';
+    Promise.all([
+      withTimeout(supabase.from('profiles').select('id,username,created_at')),
+      withTimeout(supabase.from('sessions').select('user_id'))
+    ]).then(function(results){
+      var profiles = results[0].data || [];
+      var sessions = results[1].data || [];
+      var hasPlayed = {};
+      for (var i=0;i<sessions.length;i++) hasPlayed[sessions[i].user_id] = true;
+
+      profiles.sort(function(a,b){ return new Date(a.created_at) - new Date(b.created_at); });
+      countEl.textContent = profiles.length + (profiles.length === 1 ? ' member' : ' members');
+
+      if (profiles.length === 0){
+        listEl.innerHTML = '<div class="empty-state">No members yet.</div>';
+        return;
+      }
+      var html = '';
+      for (var j=0;j<profiles.length;j++){
+        var p = profiles[j];
+        var isMe = p.id === currentUser.id;
+        var d = new Date(p.created_at);
+        var dateStr = d.toLocaleDateString(undefined, {day:'numeric', month:'short', year:'numeric'});
+        html += '<div class="p2-row" style="background:var(--felt-deep);margin-bottom:6px;">'+
+          '<div><div class="lbl">'+escapeHtml(p.username)+(isMe?' (you)':'')+'</div><div class="pts">Joined '+dateStr+'</div></div>'+
+          (hasPlayed[p.id] ? '' : '<span class="coming-soon">New</span>')+
+        '</div>';
+      }
+      listEl.innerHTML = html;
+    }).catch(function(err){
+      listEl.innerHTML = '<div class="empty-state">Could not load members.</div>';
+      console.error(err);
+    });
   }
 
   // ---------------- entry / auth state ----------------
