@@ -20,12 +20,12 @@
     --brass:#4E89FF;
     --brass-light:#4E89FF;
     --danger:#C1443C;
-    --t-beginner:#4E89FF;
-    --t-intermediate:#4E89FF;
-    --t-advanced:#4E89FF;
-    --t-expert:#4E89FF;
-    --t-semipro:#4E89FF;
-    --t-professional:#4E89FF;
+    --t-beginner:#F5883D;
+    --t-intermediate:#F5883D;
+    --t-advanced:#F5883D;
+    --t-expert:#F5883D;
+    --t-semipro:#F5883D;
+    --t-professional:#F5883D;
     --watermark-opacity:0.03;
     --glow1:0.14;
     --glow2:0.08;
@@ -171,10 +171,11 @@
   }
   .center-badge-bg{
     background:#0D0F14;border:1px solid #202530;border-radius:50%;
-    width:104px;height:104px;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    width:112px;height:112px;display:flex;flex-direction:column;align-items:center;justify-content:center;
   }
-  .rank-ring .score{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:34px;line-height:1;}
-  .rank-ring .tier-name{font-family:'Oswald',sans-serif;font-size:13px;letter-spacing:0.06em;text-transform:uppercase;margin-top:6px;}
+  .rank-ring .score{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:30px;line-height:1;}
+  .rank-ring .tier-name{font-family:'Oswald',sans-serif;font-size:12px;letter-spacing:0.06em;text-transform:uppercase;margin-top:5px;}
+  .tier-band{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--chalk-dim);margin-top:3px;letter-spacing:0.02em;}
 
   .tier-dot{width:10px;height:10px;border-radius:50%;display:inline-block;margin-right:8px;flex-shrink:0;}
 
@@ -182,8 +183,8 @@
   .flame-row svg{width:26px;height:26px;transition:all 0.2s ease;}
   .flame-row svg.unlit{fill:var(--wire-strong);}
   .flame-row svg.lit{
-    fill:var(--brass-light);
-    filter:drop-shadow(0 0 5px var(--brass-light)) drop-shadow(0 0 2px rgba(78,137,255,0.8));
+    fill:#F5883D;
+    filter:drop-shadow(0 0 3px rgba(245,136,61,0.6));
   }
 
   .stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;}
@@ -502,6 +503,7 @@
           <div class="center-badge-bg">
             <div class="score mono" id="home-score">0</div>
             <div class="tier-name" id="home-tier">Beginner</div>
+            <div class="tier-band" id="home-tier-band">0&ndash;250</div>
           </div>
         </div>
       </div>
@@ -614,12 +616,12 @@
   var SUPABASE_KEY = 'sb_publishable_oq0QggIQWiVDcl20V0Twkg_0wDCRBvR';
 
   var TIERS = [
-    {name:'Beginner',     min:0,    max:250,  color:'var(--t-beginner)',     hex:'#4E89FF'},
-    {name:'Intermediate', min:251,  max:500,  color:'var(--t-intermediate)', hex:'#4E89FF'},
-    {name:'Advanced',     min:501,  max:750,  color:'var(--t-advanced)',     hex:'#4E89FF'},
-    {name:'Expert',       min:751,  max:1000, color:'var(--t-expert)',       hex:'#4E89FF'},
-    {name:'Semi-Pro',     min:1001, max:1250, color:'var(--t-semipro)',      hex:'#4E89FF'},
-    {name:'Professional', min:1251, max:3430, color:'var(--t-professional)', hex:'#4E89FF'}
+    {name:'Beginner',     min:0,    max:250,  color:'var(--t-beginner)',     hex:'#F5883D'},
+    {name:'Intermediate', min:251,  max:500,  color:'var(--t-intermediate)', hex:'#F5883D'},
+    {name:'Advanced',     min:501,  max:750,  color:'var(--t-advanced)',     hex:'#F5883D'},
+    {name:'Expert',       min:751,  max:1000, color:'var(--t-expert)',       hex:'#F5883D'},
+    {name:'Semi-Pro',     min:1001, max:1250, color:'var(--t-semipro)',      hex:'#F5883D'},
+    {name:'Professional', min:1251, max:3430, color:'var(--t-professional)', hex:'#F5883D'}
   ];
   function getTier(score){
     for (var i=0;i<TIERS.length;i++){ if (score <= TIERS[i].max) return TIERS[i]; }
@@ -848,6 +850,7 @@
         document.getElementById('home-score').textContent = avg;
         document.getElementById('home-tier').textContent = tier.name;
         document.getElementById('home-tier').style.color = tier.color;
+        document.getElementById('home-tier-band').textContent = tier.min+'\u2013'+tier.max;
 
         var ring = document.getElementById('home-ring-fill');
         ring.setAttribute('stroke', tier.color);
