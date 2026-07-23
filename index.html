@@ -265,8 +265,9 @@
   }
   .bottom-nav button{
     flex:1;background:transparent;border:none;color:var(--chalk-dim);
-    display:flex;flex-direction:column;align-items:center;gap:4px;
-    font-size:10px;letter-spacing:0.04em;text-transform:uppercase;padding:6px 2px;cursor:pointer;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;
+    font-size:10px;letter-spacing:0.04em;text-transform:uppercase;padding:10px 2px;cursor:pointer;
+    min-height:48px;touch-action:manipulation;-webkit-tap-highlight-color:transparent;
   }
   svg.glyph{width:19px;height:19px;stroke:currentColor;flex-shrink:0;}
   .bottom-nav button.active{color:var(--brass-light);}
@@ -376,9 +377,11 @@
   // instantly; Profile reconciles against the real saved value
   // once the session/profile load resolves.
   //
-  // sessionStorage always stores JSON.stringify('dark' | 'light'),
+  // localStorage always stores JSON.stringify('dark' | 'light'),
   // and every read path uses JSON.parse — kept deliberately
   // consistent to avoid the encoding-mismatch reversion bug from Z9H.
+  // Using localStorage rather than sessionStorage since it needs to survive
+  // indefinitely across app relaunches, not just page refreshes in one tab.
   // ============================================================
   (function(){
     var THEMES = {
@@ -402,7 +405,7 @@
     }
     var cached = null;
     try {
-      var raw = sessionStorage.getItem('msda_theme_mode');
+      var raw = localStorage.getItem('msda_theme_mode');
       cached = raw ? JSON.parse(raw) : null;
     } catch(e){}
     applyThemeMode(cached || 'dark');
@@ -1022,19 +1025,20 @@
 
   // In-progress sessions only ever lived in a JS variable, so a phone lock /
   // Safari reclaiming the tab / re-login would silently wipe whatever you'd
-  // logged so far. Persisting to sessionStorage survives all of that — it's
-  // only cleared when the browser tab itself is fully closed.
+  // logged so far. Persisting to localStorage survives all of that, including
+  // fresh app launches from a home-screen icon (sessionStorage isn't reliable
+  // there — it can behave like a fresh session on each launch).
   function savePlayState(){
-    try { sessionStorage.setItem('msda_play_state', JSON.stringify(playState)); } catch(e){}
+    try { localStorage.setItem('msda_play_state', JSON.stringify(playState)); } catch(e){}
   }
   function loadSavedPlayState(){
     try {
-      var raw = sessionStorage.getItem('msda_play_state');
+      var raw = localStorage.getItem('msda_play_state');
       return raw ? JSON.parse(raw) : null;
     } catch(e){ return null; }
   }
   function clearSavedPlayState(){
-    try { sessionStorage.removeItem('msda_play_state'); } catch(e){}
+    try { localStorage.removeItem('msda_play_state'); } catch(e){}
   }
 
   function startPlayFlow(){
@@ -1313,7 +1317,7 @@
   function applyAndCacheTheme(mode){
     window.__msdaCurrentTheme = mode;
     if (window.__msdaApplyThemeMode) window.__msdaApplyThemeMode(mode);
-    try { sessionStorage.setItem('msda_theme_mode', JSON.stringify(mode)); } catch(e){}
+    try { localStorage.setItem('msda_theme_mode', JSON.stringify(mode)); } catch(e){}
     syncThemeToggleUI(mode);
   }
   function persistThemeToServer(mode){
