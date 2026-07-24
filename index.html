@@ -358,6 +358,15 @@
   .history-top{display:flex;justify-content:space-between;font-size:14px;margin-bottom:2px;}
   .history-date{font-size:12px;color:var(--chalk-dim);}
 
+  .history-table{width:100%;border-collapse:collapse;font-family:'JetBrains Mono',monospace;font-size:11px;white-space:nowrap;}
+  .history-table th{
+    font-family:'Oswald',sans-serif;font-weight:600;font-size:9px;letter-spacing:0.06em;text-transform:uppercase;
+    color:var(--chalk-dim);text-align:right;padding:0 8px 8px 0;border-bottom:1px solid var(--wire);
+  }
+  .history-table td{text-align:right;padding:9px 8px 9px 0;border-bottom:1px solid var(--wire);color:var(--chalk);}
+  .history-table th:first-child, .history-table td:first-child{text-align:left;color:var(--chalk-dim);font-family:'Inter',sans-serif;}
+  .history-table tr:last-child td{border-bottom:none;}
+
   .empty-state{text-align:center;padding:40px 20px;color:var(--chalk-dim);}
   .empty-state .glyph{margin-bottom:10px;}
   .empty-state .glyph svg{width:30px;height:30px;stroke:var(--chalk-dim);}
@@ -1109,16 +1118,25 @@
         if (sessions.length === 0){
           histEl.innerHTML = '<div class="empty-state"><div class="glyph">'+ICON_CLIPBOARD+'</div>No sessions yet.</div>';
         } else {
-          var html = '';
+          var tierAbbr = {'Beginner':'Beg','Intermediate':'Int','Advanced':'Adv','Expert':'Exp','Semi-Pro':'S-P','Professional':'Pro'};
+          var html = '<div style="overflow-x:auto;"><table class="history-table"><thead><tr>'+
+            '<th>Date</th><th>Score</th><th>Rank</th><th>P1</th><th>P2</th><th>P3</th>'+
+          '</tr></thead><tbody>';
           for (var j=0;j<sessions.length;j++){
             var s = sessions[j];
             var d = new Date(s.played_at);
-            var dateStr = d.toLocaleDateString(undefined, {day:'numeric', month:'short', year:'numeric'});
-            html += '<div class="history-row">'+
-              '<div class="history-top"><span>'+s.total_score+' pts &middot; '+s.tier+'</span><span class="mono">P1 '+s.phase1_score+' / P2 '+s.phase2_score+' / P3 '+s.phase3_score+'</span></div>'+
-              '<div class="history-date">'+dateStr+'</div>'+
-            '</div>';
+            var dateStr = d.toLocaleDateString(undefined, {day:'numeric', month:'short'});
+            var rankShort = tierAbbr[s.tier] || s.tier;
+            html += '<tr>'+
+              '<td>'+dateStr+'</td>'+
+              '<td>'+s.total_score+'</td>'+
+              '<td>'+escapeHtml(rankShort)+'</td>'+
+              '<td>'+s.phase1_score+'</td>'+
+              '<td>'+s.phase2_score+'</td>'+
+              '<td>'+s.phase3_score+'</td>'+
+            '</tr>';
           }
+          html += '</tbody></table></div>';
           histEl.innerHTML = html;
         }
 
