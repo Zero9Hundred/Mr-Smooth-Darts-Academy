@@ -579,18 +579,53 @@
     </div>
 
     <div id="stats-global-panel" style="display:none;">
-      <div class="lb-tabs" id="lb-tabs">
-        <button class="active" data-mode="average">Average</button>
-        <button data-mode="best">Goat</button>
+      <div class="lb-tabs" id="board-type-tabs" style="margin-bottom:10px;">
+        <button class="active" data-board="ranking">Ranking</button>
+        <button data-board="followthrough">Follow Through</button>
       </div>
-      <p class="subtle" id="lb-you-line" style="margin-bottom:14px;"></p>
-      <div id="lb-list"></div>
+      <div id="ranking-board-panel">
+        <div class="lb-tabs" id="lb-tabs">
+          <button class="active" data-mode="average">Average</button>
+          <button data-mode="best">Goat</button>
+        </div>
+        <p class="subtle" id="lb-you-line" style="margin-bottom:14px;"></p>
+        <div id="lb-list"></div>
+      </div>
+      <div id="followthrough-board-panel" style="display:none;">
+        <div class="lb-tabs" id="ft-lb-tabs">
+          <button class="active" data-mode="average">Average</button>
+          <button data-mode="best">Goat</button>
+        </div>
+        <p class="subtle" id="ft-lb-you-line" style="margin-bottom:14px;"></p>
+        <div id="ft-lb-list"></div>
+      </div>
     </div>
+  </div>
+
+  <!-- ================= TRAINING HUB ================= -->
+  <div id="screen-training" class="screen">
+    <div class="topbar" style="padding-left:0;padding-right:0;">
+      <h2 style="font-size:20px;">Training</h2>
+    </div>
+    <p class="subtle" style="margin-bottom:16px;">Pick a session.</p>
+    <button class="academy-card" id="btn-training-ranking" style="width:100%;text-align:left;border:1px solid var(--wire);cursor:pointer;font:inherit;color:inherit;">
+      <div class="glyph-box"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4.3"/><circle cx="12" cy="12" r="1.1" fill="currentColor" stroke="none"/></svg></div>
+      <div><div class="title">Ranking Session</div><div class="desc">Phase 1, 2 &amp; 3 &mdash; builds your rank &amp; average.</div></div>
+    </button>
+    <button class="academy-card" id="btn-training-followthrough" style="width:100%;text-align:left;border:1px solid var(--wire);cursor:pointer;font:inherit;color:inherit;">
+      <div class="glyph-box"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/><circle cx="12" cy="12" r="2" fill="currentColor" stroke="none"/></svg></div>
+      <div><div class="title">Follow Through Session</div><div class="desc">Alignment drill &mdash; log a single score.</div></div>
+    </button>
   </div>
 
   <!-- ================= PLAY ================= -->
   <div id="screen-play" class="screen">
     <div id="play-content"></div>
+  </div>
+
+  <!-- ================= FOLLOW THROUGH ================= -->
+  <div id="screen-followthrough" class="screen">
+    <div id="followthrough-content"></div>
   </div>
 
   <!-- ================= PROFILE ================= -->
@@ -628,7 +663,7 @@
   <!-- ================= BOTTOM NAV ================= -->
   <div class="bottom-nav" id="bottom-nav" style="display:none;">
     <button data-screen="home"><svg class="glyph" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5"/><path d="M5.5 9.5V20a1 1 0 0 0 1 1h4v-6h3v6h4a1 1 0 0 0 1-1V9.5"/></svg>Home</button>
-    <button data-screen="play"><svg class="glyph" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4.3"/><circle cx="12" cy="12" r="1.1" fill="currentColor" stroke="none"/></svg>Ranked</button>
+    <button data-screen="training"><svg class="glyph" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4.3"/><circle cx="12" cy="12" r="1.1" fill="currentColor" stroke="none"/></svg>Training</button>
     <button data-screen="academy"><svg class="glyph" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10 12 5 2 10l10 5 10-5Z"/><path d="M6 12.5V17c0 1.5 3 3 6 3s6-1.5 6-3v-4.5"/></svg>Coaching</button>
     <button data-screen="stats"><svg class="glyph" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V11"/><path d="M12 20V4"/><path d="M20 20v-6"/></svg>Stats</button>
     <button data-screen="profile"><svg class="glyph" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.5"/><path d="M4.5 20c1.4-4 4.4-6 7.5-6s6.1 2 7.5 6"/></svg>Profile</button>
@@ -819,16 +854,22 @@
   function routeTo(target){
     if (target === 'home') loadHome();
     else if (target === 'academy') loadAcademy();
+    else if (target === 'training') loadTraining();
     else if (target === 'play') startPlayFlow();
     else if (target === 'stats') loadStats('you');
     else if (target === 'stats-global') loadStats('global');
     else if (target === 'profile') loadProfile();
+  }
+  function loadTraining(){
+    showScreen('training');
   }
   var navButtons = document.querySelectorAll('.bottom-nav button');
   for (var n=0;n<navButtons.length;n++){
     navButtons[n].addEventListener('click', function(){ routeTo(this.dataset.screen); });
   }
   document.getElementById('btn-home-play').addEventListener('click', startPlayFlow);
+  document.getElementById('btn-training-ranking').addEventListener('click', startPlayFlow);
+  document.getElementById('btn-training-followthrough').addEventListener('click', startFollowThroughFlow);
   // quick-nav tiles and "view all" links share a data-nav attribute
   document.addEventListener('click', function(e){
     var el = e.target.closest ? e.target.closest('[data-nav]') : null;
@@ -1047,11 +1088,68 @@
     try { localStorage.removeItem('msda_play_state'); } catch(e){}
   }
 
+  var ALIGNMENT_DIAGRAM_SVG = '<svg viewBox="90 5 220 265" style="width:100%;max-width:260px;display:block;margin:0 auto;"><path d="M 113.74,45.71 A 190.00,190.00 0 0,1 170.28,27.34 L 173.41,47.09 A 170.00,170.00 0 0,0 122.82,63.53 Z" fill="#3A4152" stroke="#7B8494" stroke-width="0.75"/>   <path d="M 122.82,63.53 A 170.00,170.00 0 0,1 173.41,47.09 L 182.79,106.35 A 110.00,110.00 0 0,0 150.06,116.99 Z" fill="#F1F3F7" stroke="#05060A" stroke-width="0.6"/>   <path d="M 150.06,116.99 A 110.00,110.00 0 0,1 182.79,106.35 L 185.14,121.17 A 95.00,95.00 0 0,0 156.87,130.35 Z" fill="#3A4152" stroke="#7B8494" stroke-width="0.75"/>   <path d="M 156.87,130.35 A 95.00,95.00 0 0,1 185.14,121.17 L 193.74,175.49 A 40.00,40.00 0 0,0 181.84,179.36 Z" fill="#F1F3F7" stroke="#05060A" stroke-width="0.6"/>   <path d="M 170.28,27.34 A 190.00,190.00 0 0,1 229.72,27.34 L 226.59,47.09 A 170.00,170.00 0 0,0 173.41,47.09 Z" fill="#3A4152" stroke="#7B8494" stroke-width="0.75"/>   <path d="M 173.41,47.09 A 170.00,170.00 0 0,1 226.59,47.09 L 217.21,106.35 A 110.00,110.00 0 0,0 182.79,106.35 Z" fill="#F1F3F7" stroke="#05060A" stroke-width="0.6"/>   <path d="M 182.79,106.35 A 110.00,110.00 0 0,1 217.21,106.35 L 214.86,121.17 A 95.00,95.00 0 0,0 185.14,121.17 Z" fill="#4E89FF" stroke="#7B8494" stroke-width="0.75"/>   <path d="M 185.14,121.17 A 95.00,95.00 0 0,1 214.86,121.17 L 206.26,175.49 A 40.00,40.00 0 0,0 193.74,175.49 Z" fill="#F1F3F7" stroke="#05060A" stroke-width="0.6"/>   <path d="M 229.72,27.34 A 190.00,190.00 0 0,1 286.26,45.71 L 277.18,63.53 A 170.00,170.00 0 0,0 226.59,47.09 Z" fill="#3A4152" stroke="#7B8494" stroke-width="0.75"/>   <path d="M 226.59,47.09 A 170.00,170.00 0 0,1 277.18,63.53 L 249.94,116.99 A 110.00,110.00 0 0,0 217.21,106.35 Z" fill="#F1F3F7" stroke="#05060A" stroke-width="0.6"/>   <path d="M 217.21,106.35 A 110.00,110.00 0 0,1 249.94,116.99 L 243.13,130.35 A 95.00,95.00 0 0,0 214.86,121.17 Z" fill="#3A4152" stroke="#7B8494" stroke-width="0.75"/>   <path d="M 214.86,121.17 A 95.00,95.00 0 0,1 243.13,130.35 L 218.16,179.36 A 40.00,40.00 0 0,0 206.26,175.49 Z" fill="#F1F3F7" stroke="#05060A" stroke-width="0.6"/>   <circle cx="200" cy="215" r="40" fill="#3A4152" stroke="#7B8494" stroke-width="0.75"/>   <circle cx="200" cy="215" r="18" fill="#A62028" stroke="#7B8494" stroke-width="0.75"/>   <path d="M 170.28,27.34 A 190.00,190.00 0 0,1 229.72,27.34 L 226.59,47.09 A 170.00,170.00 0 0,0 173.41,47.09 Z" fill="none" stroke="#C8283A" stroke-width="2.5"/>   <path d="M 113.74,45.71 A 190.00,190.00 0 0,1 170.28,27.34 L 193.74,175.49 A 40.00,40.00 0 0,0 181.84,179.36 Z" fill="none" stroke="#C8283A" stroke-width="2.5"/>   <path d="M 229.72,27.34 A 190.00,190.00 0 0,1 286.26,45.71 L 218.16,179.36 A 40.00,40.00 0 0,0 206.26,175.49 Z" fill="none" stroke="#C8283A" stroke-width="2.5"/>   <circle cx="200" cy="215" r="40" fill="none" stroke="#C8283A" stroke-width="2.5"/>   <path d="M 173.41,47.09 A 170.00,170.00 0 0,1 226.59,47.09 L 206.26,175.49 A 40.00,40.00 0 0,0 193.74,175.49 Z" fill="none" stroke="#3FCB6B" stroke-width="3"/><text x="200" y="112.5" text-anchor="middle" dominant-baseline="middle" font-family="JetBrains Mono" font-weight="700" font-size="9.5" fill="#050608">3pts</text><text x="200" y="75" text-anchor="middle" dominant-baseline="middle" font-family="JetBrains Mono" font-weight="700" font-size="10.5" fill="#050608">1pt</text><text x="200" y="147.5" text-anchor="middle" dominant-baseline="middle" font-family="JetBrains Mono" font-weight="700" font-size="10.5" fill="#050608">1pt</text></svg>';
+
   function startPlayFlow(){
     var saved = loadSavedPlayState();
     playState = saved || freshPlayState();
     showScreen('play');
     renderPlay();
+  }
+
+  // ---------------- follow through session ----------------
+  function startFollowThroughFlow(){
+    showScreen('followthrough');
+    renderFollowThrough();
+  }
+
+  function renderFollowThrough(){
+    var c = document.getElementById('followthrough-content');
+    c.innerHTML =
+      '<h2 style="font-size:18px;text-align:center;margin-bottom:4px;">Follow Through</h2>'+
+      '<p class="subtle" style="text-align:center;margin-bottom:16px;">Alignment drill. Log your score for this attempt below.</p>'+
+      '<div class="card" style="text-align:center;">'+
+        ALIGNMENT_DIAGRAM_SVG+
+        '<div class="key" style="display:flex;justify-content:center;gap:14px;margin-top:14px;font-size:11px;color:var(--chalk-dim);">'+
+          '<span style="display:inline-flex;align-items:center;gap:6px;"><span style="width:12px;height:12px;border-radius:4px;border:2px solid #3FCB6B;display:inline-block;"></span>Score zone</span>'+
+          '<span style="display:inline-flex;align-items:center;gap:6px;"><span style="width:12px;height:12px;border-radius:4px;border:2px solid #C8283A;display:inline-block;"></span>End turn</span>'+
+        '</div>'+
+      '</div>'+
+      '<div class="field">'+
+        '<label>Your score</label>'+
+        '<input type="number" inputmode="numeric" min="0" id="ft-score-input" placeholder="0">'+
+      '</div>'+
+      '<div id="ft-msg"></div>'+
+      '<button class="btn btn-primary" id="ft-submit">Submit score</button>';
+
+    document.getElementById('ft-submit').addEventListener('click', submitFollowThroughScore);
+  }
+
+  function submitFollowThroughScore(){
+    var input = document.getElementById('ft-score-input');
+    var val = Number(input.value);
+    var msgEl = document.getElementById('ft-msg');
+    msgEl.innerHTML = '';
+    if (input.value === '' || isNaN(val) || val < 0){
+      msgEl.innerHTML = '<div class="msg msg-error">Enter a valid score first.</div>';
+      return;
+    }
+    var btn = document.getElementById('ft-submit');
+    btn.disabled = true; btn.textContent = 'Saving...';
+    withTimeout(supabase.from('follow_through_scores').insert({user_id: currentUser.id, score: val}))
+      .then(function(res){
+        btn.disabled = false; btn.textContent = 'Submit score';
+        if (res.error){
+          msgEl.innerHTML = '<div class="msg msg-error">'+escapeHtml(res.error.message)+'</div>';
+          return;
+        }
+        msgEl.innerHTML = '<div class="msg msg-ok">Score saved.</div>';
+        input.value = '';
+      })
+      .catch(function(err){
+        btn.disabled = false; btn.textContent = 'Submit score';
+        msgEl.innerHTML = '<div class="msg msg-error">'+escapeHtml(err.message)+'</div>';
+      });
   }
 
   function phaseTotal(rounds){
@@ -1310,6 +1408,88 @@
       document.getElementById('lb-you-line').textContent = myPos ? ('You\'re ranked #'+myPos+' of '+ranked.length+' by '+metricLabel+'.') : 'Play a session to join the board.';
     }).catch(function(err){
       document.getElementById('lb-list').innerHTML = '<div class="empty-state">Could not load the leaderboard. Pull to refresh.</div>';
+      console.error(err);
+    });
+  }
+
+  // ---------------- board type switch (ranking vs follow through) ----------------
+  var boardType = 'ranking';
+  var boardTypeTabs = document.querySelectorAll('#board-type-tabs button');
+  for (var bt=0; bt<boardTypeTabs.length; bt++){
+    boardTypeTabs[bt].addEventListener('click', function(){
+      boardType = this.dataset.board;
+      var all = document.querySelectorAll('#board-type-tabs button');
+      for (var x=0;x<all.length;x++) all[x].classList.toggle('active', all[x].dataset.board === boardType);
+      document.getElementById('ranking-board-panel').style.display = boardType === 'ranking' ? 'block' : 'none';
+      document.getElementById('followthrough-board-panel').style.display = boardType === 'followthrough' ? 'block' : 'none';
+      if (boardType === 'followthrough') loadFollowThroughLeaderboard();
+      else loadLeaderboard();
+    });
+  }
+
+  var ftLbMode = 'average';
+  var ftLbTabButtons = document.querySelectorAll('#ft-lb-tabs button');
+  for (var flt=0; flt<ftLbTabButtons.length; flt++){
+    ftLbTabButtons[flt].addEventListener('click', function(){
+      ftLbMode = this.dataset.mode;
+      var all = document.querySelectorAll('#ft-lb-tabs button');
+      for (var x=0;x<all.length;x++) all[x].classList.toggle('active', all[x].dataset.mode === ftLbMode);
+      loadFollowThroughLeaderboard(ftLbMode);
+    });
+  }
+
+  function loadFollowThroughLeaderboard(mode){
+    mode = mode || ftLbMode;
+    ftLbMode = mode;
+    document.getElementById('ft-lb-list').innerHTML = '<div class="spinner" style="margin-top:30px;"></div>';
+    Promise.all([
+      withTimeout(supabase.from('follow_through_scores').select('user_id,score')),
+      withTimeout(supabase.from('profiles').select('id,username'))
+    ]).then(function(results){
+      var scores = results[0].data || [];
+      var profiles = results[1].data || [];
+      var nameById = {};
+      for (var i=0;i<profiles.length;i++) nameById[profiles[i].id] = profiles[i].username;
+
+      var byUser = {};
+      for (var j=0;j<scores.length;j++){
+        var uid = scores[j].user_id;
+        if (!byUser[uid]) byUser[uid] = {sum:0, count:0, best:0};
+        byUser[uid].sum += scores[j].score;
+        byUser[uid].count += 1;
+        if (scores[j].score > byUser[uid].best) byUser[uid].best = scores[j].score;
+      }
+      var ranked = Object.keys(byUser).map(function(uid){
+        var u = byUser[uid];
+        var score = mode === 'best' ? u.best : Math.round(u.sum / u.count);
+        return {uid:uid, score:score, name: nameById[uid] || 'Unknown player'};
+      });
+      ranked.sort(function(a,b){ return b.score - a.score; });
+
+      var listEl = document.getElementById('ft-lb-list');
+      if (ranked.length === 0){
+        listEl.innerHTML = '<div class="empty-state"><div class="glyph">'+ICON_TARGET+'</div>No Follow Through scores logged yet. Be the first on the board.</div>';
+        document.getElementById('ft-lb-you-line').textContent = '';
+        return;
+      }
+
+      var html = '';
+      var myPos = null;
+      for (var k=0;k<ranked.length;k++){
+        var r = ranked[k];
+        var isMe = r.uid === currentUser.id;
+        if (isMe) myPos = k+1;
+        html += '<div class="lb-row '+(isMe?'me':'')+'">'+
+          '<div class="lb-pos">'+(k+1)+'</div>'+
+          '<div class="lb-name">'+escapeHtml(r.name)+(isMe?' (you)':'')+'</div>'+
+          '<div class="lb-score mono">'+r.score+'</div>'+
+        '</div>';
+      }
+      listEl.innerHTML = html;
+      var metricLabel = mode === 'best' ? 'best-ever score' : 'rolling average';
+      document.getElementById('ft-lb-you-line').textContent = myPos ? ('You\'re ranked #'+myPos+' of '+ranked.length+' by '+metricLabel+'.') : 'Log a score to join the board.';
+    }).catch(function(err){
+      document.getElementById('ft-lb-list').innerHTML = '<div class="empty-state">Could not load the leaderboard. Pull to refresh.</div>';
       console.error(err);
     });
   }
