@@ -366,6 +366,11 @@
   .history-table td{text-align:right;padding:9px 8px 9px 0;border-bottom:1px solid var(--wire);color:var(--chalk);}
   .history-table th:first-child, .history-table td:first-child{text-align:left;color:var(--chalk-dim);font-family:'Inter',sans-serif;}
   .history-table tr:last-child td{border-bottom:none;}
+  .history-table tr.best-row td{background:rgba(63,203,107,0.14);box-shadow:inset 0 0 12px rgba(63,203,107,0.3);}
+  .history-table tr.best-row td:first-child{border-radius:6px 0 0 6px;border-left:2px solid #3FCB6B;padding-left:6px;}
+  .history-table tr.best-row td:last-child{border-radius:0 6px 6px 0;}
+  .history-table tr.best-row td:nth-child(2){color:#3FCB6B;font-weight:700;}
+  .history-table td.ft-best{color:#3FCB6B;font-weight:700;background:rgba(63,203,107,0.14);box-shadow:inset 0 0 8px rgba(63,203,107,0.3);border-radius:4px;}
 
   .empty-state{text-align:center;padding:40px 20px;color:var(--chalk-dim);}
   .empty-state .glyph{margin-bottom:10px;}
@@ -661,15 +666,11 @@
     <div class="topbar" style="padding-left:0;padding-right:0;">
       <h2 style="font-size:20px;" id="profile-name">Profile</h2>
     </div>
-    <div class="stat-grid">
-      <div class="stat-box"><div class="num mono" id="profile-pb">0</div><div class="lab">Personal Best</div></div>
-      <div class="stat-box"><div class="num mono" id="profile-sessions">0</div><div class="lab">Sessions Logged</div></div>
-    </div>
 
     <div class="card">
       <div class="card-head"><h3>Appearance</h3></div>
       <div class="p2-row" style="background:var(--felt-deep);">
-        <div><div class="lbl" id="theme-toggle-label">Dark mode</div></div>
+        <div><div class="lbl" id="theme-toggle-label">Toggle light/dark mode</div></div>
         <div class="hit-toggle" id="theme-toggle"><div class="knob"></div></div>
       </div>
     </div>
@@ -1127,7 +1128,8 @@
             var d = new Date(s.played_at);
             var dateStr = d.toLocaleDateString(undefined, {day:'numeric', month:'short'});
             var rankShort = tierAbbr[s.tier] || s.tier;
-            html += '<tr>'+
+            var isBest = s.total_score === hi;
+            html += '<tr'+(isBest?' class="best-row"':'')+'>'+
               '<td>'+dateStr+'</td>'+
               '<td>'+s.total_score+'</td>'+
               '<td>'+escapeHtml(rankShort)+'</td>'+
@@ -1197,17 +1199,35 @@
         if (scores.length === 0){
           histEl.innerHTML = '<div class="empty-state"><div class="glyph">'+ICON_CLIPBOARD+'</div>No scores yet.</div>';
         } else {
-          var html = '';
+          var PER_ROW = 5;
+          var groups = [];
           for (var j=0;j<scores.length;j++){
             var s = scores[j];
             var d = new Date(s.played_at);
-            var dateStr = d.toLocaleDateString(undefined, {day:'numeric', month:'short', year:'numeric'});
-            html += '<div class="history-row">'+
-              '<div class="history-top"><span>'+s.score+' pts</span></div>'+
-              '<div class="history-date">'+dateStr+'</div>'+
-            '</div>';
+            var dateStr = d.toLocaleDateString(undefined, {day:'numeric', month:'short'});
+            var lastGroup = groups[groups.length-1];
+            if (lastGroup && lastGroup.dateStr === dateStr) lastGroup.values.push(s.score);
+            else groups.push({dateStr:dateStr, values:[s.score]});
           }
-          histEl.innerHTML = html;
+
+          var rowsHtml = '';
+          for (var g=0; g<groups.length; g++){
+            var grp = groups[g];
+            for (var offset=0; offset<grp.values.length; offset+=PER_ROW){
+              var chunk = grp.values.slice(offset, offset+PER_ROW);
+              rowsHtml += '<tr>';
+              rowsHtml += '<td>'+(offset===0 ? escapeHtml(grp.dateStr) : '')+'</td>';
+              for (var c=0;c<chunk.length;c++){
+                var isBest = chunk[c] === hi;
+                rowsHtml += '<td'+(isBest?' class="ft-best"':'')+'>'+chunk[c]+'</td>';
+              }
+              for (var p=chunk.length; p<PER_ROW; p++) rowsHtml += '<td></td>';
+              rowsHtml += '</tr>';
+            }
+          }
+          histEl.innerHTML = '<div style="overflow-x:auto;"><table class="history-table"><thead><tr>'+
+            '<th>Date</th><th colspan="'+PER_ROW+'">Scores</th>'+
+          '</tr></thead><tbody>'+rowsHtml+'</tbody></table></div>';
         }
 
         return withTimeout(supabase.from('follow_through_scores').select('user_id,score'));
@@ -1719,13 +1739,8 @@
     withTimeout(supabase.from('sessions').select('total_score').eq('user_id', currentUser.id))
       .then(function(res){
         var sessions = res.data || [];
-        var best = 0, sum = 0;
-        for (var i=0;i<sessions.length;i++){
-          if (sessions[i].total_score > best) best = sessions[i].total_score;
-          sum += sessions[i].total_score;
-        }
-        document.getElementById('profile-pb').textContent = best;
-        document.getElementById('profile-sessions').textContent = sessions.length;
+        var sum = 0;
+        for (var i=0;i<sessions.length;i++) sum += sessions[i].total_score;
         var avg = sessions.length > 0 ? Math.round(sum / sessions.length) : 0;
         var avgTier = getTier(avg);
         document.getElementById('profile-bands').innerHTML = buildBandsList(sessions.length > 0 ? avgTier.name : null);
