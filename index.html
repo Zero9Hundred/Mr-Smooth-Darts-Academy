@@ -553,12 +553,16 @@
     <div class="topbar" style="padding-left:0;padding-right:0;">
       <h2 style="font-size:20px;">Stats</h2>
     </div>
-    <div class="lb-tabs" id="stats-scope-tabs">
+    <div class="lb-tabs" id="game-type-tabs">
+      <button class="active" data-game="ranking">Ranking</button>
+      <button data-game="followthrough">Follow Through</button>
+    </div>
+    <div class="lb-tabs" id="stats-scope-tabs" style="margin-bottom:14px;">
       <button class="active" data-scope="you">You</button>
       <button data-scope="global">Global</button>
     </div>
 
-    <div id="stats-you-panel">
+    <div id="ranking-you-panel">
       <div class="stat-grid">
         <div class="stat-box"><div class="num mono" id="stats-sessions">0</div><div class="lab">Sessions</div></div>
         <button class="stat-box" data-nav="stats-global" style="cursor:pointer;text-align:left;width:100%;appearance:none;-webkit-appearance:none;font:inherit;">
@@ -578,27 +582,42 @@
       <div id="stats-history"></div>
     </div>
 
-    <div id="stats-global-panel" style="display:none;">
-      <div class="lb-tabs" id="board-type-tabs" style="margin-bottom:10px;">
-        <button class="active" data-board="ranking">Ranking</button>
-        <button data-board="followthrough">Follow Through</button>
+    <div id="ranking-global-panel" style="display:none;">
+      <div class="lb-tabs" id="lb-tabs">
+        <button class="active" data-mode="average">Average</button>
+        <button data-mode="best">Goat</button>
       </div>
-      <div id="ranking-board-panel">
-        <div class="lb-tabs" id="lb-tabs">
-          <button class="active" data-mode="average">Average</button>
-          <button data-mode="best">Goat</button>
-        </div>
-        <p class="subtle" id="lb-you-line" style="margin-bottom:14px;"></p>
-        <div id="lb-list"></div>
+      <p class="subtle" id="lb-you-line" style="margin-bottom:14px;"></p>
+      <div id="lb-list"></div>
+    </div>
+
+    <div id="ft-you-panel" style="display:none;">
+      <div class="stat-grid">
+        <div class="stat-box"><div class="num mono" id="ft-sessions">0</div><div class="lab">Sessions</div></div>
+        <button class="stat-box" id="ft-rank-nav" style="cursor:pointer;text-align:left;width:100%;appearance:none;-webkit-appearance:none;font:inherit;">
+          <div class="num mono" id="ft-rank-pos">&mdash;</div><div class="lab">FT Rank &rarr;</div>
+        </button>
       </div>
-      <div id="followthrough-board-panel" style="display:none;">
-        <div class="lb-tabs" id="ft-lb-tabs">
-          <button class="active" data-mode="average">Average</button>
-          <button data-mode="best">Goat</button>
-        </div>
-        <p class="subtle" id="ft-lb-you-line" style="margin-bottom:14px;"></p>
-        <div id="ft-lb-list"></div>
+      <div class="stat-grid-3">
+        <div class="stat-box"><div class="num mono" id="ft-highest">0</div><div class="lab">Highest</div></div>
+        <div class="stat-box"><div class="num mono" id="ft-lowest">0</div><div class="lab">Lowest</div></div>
+        <div class="stat-box"><div class="num mono" id="ft-average">0</div><div class="lab">Average</div></div>
       </div>
+      <div class="card">
+        <div class="card-head"><h3>Progress</h3></div>
+        <div class="trend-chart" id="ft-trend-chart"></div>
+      </div>
+      <h3 style="font-size:11px;font-weight:600;color:var(--chalk-dim);margin:16px 0 10px;letter-spacing:0.14em;">Full history</h3>
+      <div id="ft-history"></div>
+    </div>
+
+    <div id="ft-global-panel" style="display:none;">
+      <div class="lb-tabs" id="ft-lb-tabs">
+        <button class="active" data-mode="average">Average</button>
+        <button data-mode="best">Goat</button>
+      </div>
+      <p class="subtle" id="ft-lb-you-line" style="margin-bottom:14px;"></p>
+      <div id="ft-lb-list"></div>
     </div>
   </div>
 
@@ -895,13 +914,25 @@
   });
 
   // ---------------- bottom nav ----------------
+  function saveLastScreen(target){
+    try { localStorage.setItem('msda_last_screen', target); } catch(e){}
+  }
+  function loadLastScreen(){
+    try { return localStorage.getItem('msda_last_screen'); } catch(e){ return null; }
+  }
+
   function routeTo(target){
+    // Play has its own resume flow (via the banner on Home, since dropping
+    // someone straight back into a mid-throw score screen with no context
+    // on reload would be jarring) — everything else gets remembered so a
+    // refresh/timeout returns you to where you actually were.
+    if (target !== 'play') saveLastScreen(target);
     if (target === 'home') loadHome();
     else if (target === 'academy') loadAcademy();
     else if (target === 'training') loadTraining();
     else if (target === 'play') startPlayFlow();
-    else if (target === 'stats') loadStats('you');
-    else if (target === 'stats-global') loadStats('global');
+    else if (target === 'stats') loadStats('ranking', 'you');
+    else if (target === 'stats-global') loadStats('ranking', 'global');
     else if (target === 'profile') loadProfile();
   }
   function loadTraining(){
@@ -1016,21 +1047,37 @@
   }
 
   // ---------------- stats ----------------
+  var statsGame = 'ranking';
   var statsScope = 'you';
-  function loadStats(scope){
+  function loadStats(game, scope){
+    statsGame = game || statsGame || 'ranking';
     statsScope = scope || statsScope || 'you';
     showScreen('stats');
+
+    var gameTabs = document.querySelectorAll('#game-type-tabs button');
+    for (var g=0; g<gameTabs.length; g++) gameTabs[g].classList.toggle('active', gameTabs[g].dataset.game === statsGame);
     var scopeTabs = document.querySelectorAll('#stats-scope-tabs button');
     for (var x=0;x<scopeTabs.length;x++) scopeTabs[x].classList.toggle('active', scopeTabs[x].dataset.scope === statsScope);
-    document.getElementById('stats-you-panel').style.display = statsScope === 'you' ? 'block' : 'none';
-    document.getElementById('stats-global-panel').style.display = statsScope === 'global' ? 'block' : 'none';
-    if (statsScope === 'global') loadLeaderboard();
-    else loadStatsYouData();
+
+    document.getElementById('ranking-you-panel').style.display = (statsGame === 'ranking' && statsScope === 'you') ? 'block' : 'none';
+    document.getElementById('ranking-global-panel').style.display = (statsGame === 'ranking' && statsScope === 'global') ? 'block' : 'none';
+    document.getElementById('ft-you-panel').style.display = (statsGame === 'followthrough' && statsScope === 'you') ? 'block' : 'none';
+    document.getElementById('ft-global-panel').style.display = (statsGame === 'followthrough' && statsScope === 'global') ? 'block' : 'none';
+
+    if (statsGame === 'ranking' && statsScope === 'you') loadStatsYouData();
+    else if (statsGame === 'ranking' && statsScope === 'global') loadLeaderboard();
+    else if (statsGame === 'followthrough' && statsScope === 'you') loadFollowThroughYouData();
+    else if (statsGame === 'followthrough' && statsScope === 'global') loadFollowThroughLeaderboard();
+  }
+  var gameTypeTabButtons = document.querySelectorAll('#game-type-tabs button');
+  for (var gtt=0; gtt<gameTypeTabButtons.length; gtt++){
+    gameTypeTabButtons[gtt].addEventListener('click', function(){ loadStats(this.dataset.game, statsScope); });
   }
   var statsScopeTabButtons = document.querySelectorAll('#stats-scope-tabs button');
   for (var sst=0; sst<statsScopeTabButtons.length; sst++){
-    statsScopeTabButtons[sst].addEventListener('click', function(){ loadStats(this.dataset.scope); });
+    statsScopeTabButtons[sst].addEventListener('click', function(){ loadStats(statsGame, this.dataset.scope); });
   }
+  document.getElementById('ft-rank-nav').addEventListener('click', function(){ loadStats('followthrough', 'global'); });
 
   function loadStatsYouData(){
     document.getElementById('stats-trend-chart').innerHTML = '<div class="trend-empty">Loading…</div>';
@@ -1097,6 +1144,76 @@
       })
       .catch(function(err){
         document.getElementById('stats-history').innerHTML = '<div class="empty-state">Could not load history.</div>';
+        console.error(err);
+      });
+  }
+
+  function loadFollowThroughYouData(){
+    document.getElementById('ft-trend-chart').innerHTML = '<div class="trend-empty">Loading…</div>';
+    document.getElementById('ft-history').innerHTML = '<div class="spinner" style="margin-top:20px;"></div>';
+    withTimeout(supabase.from('follow_through_scores').select('*').eq('user_id', currentUser.id).order('played_at', {ascending:false}))
+      .then(function(res){
+        var scores = res.data || [];
+        document.getElementById('ft-sessions').textContent = scores.length;
+        var chartData = scores.map(function(s){ return {total_score: s.score, played_at: s.played_at}; });
+        document.getElementById('ft-trend-chart').innerHTML = buildTrendSVG(chartData, 140);
+
+        if (scores.length === 0){
+          document.getElementById('ft-highest').textContent = '0';
+          document.getElementById('ft-lowest').textContent = '0';
+          document.getElementById('ft-average').textContent = '0';
+        } else {
+          var hi = scores[0].score, lo = scores[0].score, sum = 0;
+          for (var k=0;k<scores.length;k++){
+            var v = scores[k].score;
+            if (v > hi) hi = v;
+            if (v < lo) lo = v;
+            sum += v;
+          }
+          document.getElementById('ft-highest').textContent = hi;
+          document.getElementById('ft-lowest').textContent = lo;
+          document.getElementById('ft-average').textContent = Math.round(sum / scores.length);
+        }
+
+        var histEl = document.getElementById('ft-history');
+        if (scores.length === 0){
+          histEl.innerHTML = '<div class="empty-state"><div class="glyph">'+ICON_CLIPBOARD+'</div>No scores yet.</div>';
+        } else {
+          var html = '';
+          for (var j=0;j<scores.length;j++){
+            var s = scores[j];
+            var d = new Date(s.played_at);
+            var dateStr = d.toLocaleDateString(undefined, {day:'numeric', month:'short', year:'numeric'});
+            html += '<div class="history-row">'+
+              '<div class="history-top"><span>'+s.score+' pts</span></div>'+
+              '<div class="history-date">'+dateStr+'</div>'+
+            '</div>';
+          }
+          histEl.innerHTML = html;
+        }
+
+        return withTimeout(supabase.from('follow_through_scores').select('user_id,score'));
+      })
+      .then(function(res){
+        if (!res) return;
+        var all = res.data || [];
+        var byUser = {};
+        for (var i=0;i<all.length;i++){
+          var uid = all[i].user_id;
+          if (!byUser[uid]) byUser[uid] = {sum:0, count:0};
+          byUser[uid].sum += all[i].score;
+          byUser[uid].count += 1;
+        }
+        var ranked = Object.keys(byUser).map(function(uid){
+          return {uid:uid, score: Math.round(byUser[uid].sum / byUser[uid].count)};
+        });
+        ranked.sort(function(a,b){ return b.score - a.score; });
+        var pos = null;
+        for (var j=0;j<ranked.length;j++){ if (ranked[j].uid === currentUser.id){ pos = j+1; break; } }
+        document.getElementById('ft-rank-pos').textContent = pos ? ('#'+pos) : '—';
+      })
+      .catch(function(err){
+        document.getElementById('ft-history').innerHTML = '<div class="empty-state">Could not load history.</div>';
         console.error(err);
       });
   }
@@ -1464,21 +1581,6 @@
     });
   }
 
-  // ---------------- board type switch (ranking vs follow through) ----------------
-  var boardType = 'ranking';
-  var boardTypeTabs = document.querySelectorAll('#board-type-tabs button');
-  for (var bt=0; bt<boardTypeTabs.length; bt++){
-    boardTypeTabs[bt].addEventListener('click', function(){
-      boardType = this.dataset.board;
-      var all = document.querySelectorAll('#board-type-tabs button');
-      for (var x=0;x<all.length;x++) all[x].classList.toggle('active', all[x].dataset.board === boardType);
-      document.getElementById('ranking-board-panel').style.display = boardType === 'ranking' ? 'block' : 'none';
-      document.getElementById('followthrough-board-panel').style.display = boardType === 'followthrough' ? 'block' : 'none';
-      if (boardType === 'followthrough') loadFollowThroughLeaderboard();
-      else loadLeaderboard();
-    });
-  }
-
   var ftLbMode = 'average';
   var ftLbTabButtons = document.querySelectorAll('#ft-lb-tabs button');
   for (var flt=0; flt<ftLbTabButtons.length; flt++){
@@ -1655,7 +1757,12 @@
   // ---------------- entry / auth state ----------------
   function enterApp(){
     document.getElementById('bottom-nav').style.display = 'flex';
-    loadHome();
+    var last = loadLastScreen();
+    if (last && last !== 'play'){
+      routeTo(last);
+    } else {
+      loadHome();
+    }
   }
 
   function checkProfileThenRoute(){
