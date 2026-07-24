@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Darts Coaching — with Mr Smooth</title>
+<title>Smooth Darts Coaching</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
@@ -66,7 +66,7 @@
     flex-direction:column;
     position:relative;
   }
-  .screen{display:none;flex:1;padding:16px 20px 90px;}
+  .screen{display:none;flex:1;padding:calc(16px + env(safe-area-inset-top)) 20px 90px;}
   .screen.active{display:flex;flex-direction:column;}
   .center-screen{align-items:center;justify-content:center;text-align:center;}
 
@@ -224,7 +224,7 @@
   .header-spacer{width:32px;height:32px;}
   .wordmark{text-align:center;margin-bottom:2px;}
   .wordmark .lead{display:block;font-family:'Oswald',sans-serif;font-style:normal;font-weight:700;font-size:clamp(28px, 9.5vw, 38px);line-height:1.05;color:var(--chalk);text-transform:uppercase;letter-spacing:0.01em;}
-  .wordmark .sub{display:block;font-family:'Inter',sans-serif;font-weight:500;font-style:italic;font-size:17px;color:var(--chalk);margin-top:8px;text-shadow:0 0 18px rgba(78,137,255,0.95), 0 0 9px rgba(78,137,255,0.85), 0 0 3px rgba(78,137,255,0.9);}
+  .wordmark .sub{display:block;font-family:'Oswald',sans-serif;font-style:normal;font-weight:700;font-size:clamp(28px, 9.5vw, 38px);line-height:1.05;color:var(--chalk);text-transform:uppercase;letter-spacing:0.01em;margin-top:2px;}
   .badge-mark{display:flex;justify-content:center;margin:18px 0 20px;}
   .badge-mark svg{width:120px;height:120px;}
   .tagline{
@@ -426,8 +426,8 @@
   <div id="screen-auth" class="screen">
     <div style="flex:1;display:flex;flex-direction:column;justify-content:center;">
       <div class="wordmark">
-        <span class="lead">Darts Coaching</span>
-        <span class="sub">&hellip;with Mr Smooth</span>
+        <span class="lead">Smooth Darts</span>
+        <span class="sub">Coaching</span>
       </div>
       <div class="badge-mark"><svg viewBox="0 0 220 220"><defs><radialGradient id="authBullGlow" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#4E89FF" stop-opacity="0.9"/><stop offset="100%" stop-color="#4E89FF" stop-opacity="0"/></radialGradient></defs><circle cx="110" cy="110" r="102" fill="#0D0F14" stroke="#202530" stroke-width="2"/><path d="M 94.67,13.21 A 98.00,98.00 0 0,1 125.33,13.21 L 124.08,21.11 A 90.00,90.00 0 0,0 95.92,21.11 Z" fill="#4E89FF" stroke="#7B8494" stroke-width="0.75"/> <path d="M 95.92,21.11 A 90.00,90.00 0 0,1 124.08,21.11 L 119.07,52.71 A 58.00,58.00 0 0,0 100.93,52.71 Z" fill="#F1F3F7" stroke="#050608" stroke-width="0.6"/> <path d="M 100.93,52.71 A 58.00,58.00 0 0,1 119.07,52.71 L 117.82,60.62 A 50.00,50.00 0 0,0 102.18,60.62 Z" fill="#4E89FF" stroke="#7B8494" stroke-width="0.75"/> <path d="M 102.18,60.62 A 50.00,50.00 0 0,1 117.82,60.62 L 112.50,94.20 A 16.00,16.00 0 0,0 107.50,94.20 Z" fill="#F1F3F7" stroke="#050608" stroke-width="0.6"/> <path d="M 125.33,13.21 A 98.00,98.00 0 0,1 154.49,22.68 L 150.86,29.81 A 90.00,90.00 0 0,0 124.08,21.11 Z" fill="#3A4152" stroke="#7B8494" stroke-width="0.75"/> <path d="M 124.08,21.11 A 90.00,90.00 0 0,1 150.86,29.81 L 136.33,58.32 A 58.00,58.00 0 0,0 119.07,52.71 Z" fill="#05060A" stroke="#050608" stroke-width="0.6"/> <path d="M 119.07,52.71 A 58.00,58.00 0 0,1 136.33,58.32 L 132.70,65.45 A 50.00,50.00 0 0,0 117.82,60.62 Z" fill="#3A4152" stroke="#7B8494" stroke-width="0.75"/> <path d="M 117.82,60.62 A 50.00,50.00 0 0,1 132.70,65.45 L 117.26,95.74 A 16.00,16.00 0 0,0 112.50,94.20 Z" fill="#05060A" stroke="#050608" stroke-width="0.6"/> <path d="M 154.49,22.68 A 98.00,98.00 0 0,1 179.30,40.70 L 173.64,46.36 A 90.00,90.00 0 0,0 150.86,29.81 Z" fill="#4E89FF" stroke="#7B8494" stroke-width="0.75"/> <path d="M 150.86,29.81 A 90.00,90.00 0 0,1 173.64,46.36 L 151.01,68.99 A 58.00,58.00 0 0,0 136.33,58.32 Z" fill="#F1F3F7" stroke="#050608" stroke-width="0.6"/> <path d="M 136.33,58.32 A 58.00,58.00 0 0,1 151.01,68.99 L 145.36,74.64 A 50.00,50.00 0 0,0 132.70,65.45 Z" fill="#4E89FF" stroke="#7B8494" stroke-width="0.75"/> <path d="M 132.70,65.45 A 50.00,50.00 0 0,1 145.36,74.64 L 121.31,98.69 A 16.00,16.00 0 0,0 117.26,95.74 Z" fill="#F1F3F7" stroke="#050608" stroke-width="0.6"/> <path d="M 179.30,40.70 A 98.00,98.00 0 0,1 197.32,65.51 L 190.19,69.14 A 90.00,90.00 0 0,0 173.64,46.36 Z" fill="#3A4152" stroke="#7B8494" stroke-width="0.75"/> <path d="M 173.64,46.36 A 90.00,90.00 0 0,1 190.19,69.14 L 161.68,83.67 A 58.00,58.00 0 0,0 151.01,68.99 Z" fill="#05060A" stroke="#050608" stroke-width="0.6"/> <path d="M 151.01,68.99 A 58.00,58.00 0 0,1 161.68,83.67 L 154.55,87.30 A 50.00,50.00 0 0,0 145.36,74.64 Z" fill="#3A4152" stroke="#7B8494" stroke-width="0.75"/> <path d="M 145.36,74.64 A 50.00,50.00 0 0,1 154.55,87.30 L 124.26,102.74 A 16.00,16.00 0 0,0 121.31,98.69 Z" fill="#05060A" stroke="#050608" stroke-width="0.6"/> <path d="M 197.32,65.51 A 98.00,98.00 0 0,1 206.79,94.67 L 198.89,95.92 A 90.00,90.00 0 0,0 190.19,69.14 Z" fill="#4E89FF" stroke="#7B8494" stroke-width="0.75"/> <path d="M 190.19,69.14 A 90.00,90.00 0 0,1 198.89,95.92 L 167.29,100.93 A 58.00,58.00 0 0,0 161.68,83.67 Z" fill="#F1F3F7" stroke="#050608" stroke-width="0.6"/> <path d="M 161.68,83.67 A 58.00,58.00 0 0,1 167.29,100.93 L 159.38,102.18 A 50.00,50.00 0 0,0 154.55,87.30 Z" fill="#4E89FF" stroke="#7B8494" stroke-width="0.75"/> <path d="M 154.55,87.30 A 50.00,50.00 0 0,1 159.38,102.18 L 125.80,107.50 A 16.00,16.00 0 0,0 124.26,102.74 Z" fill="#F1F3F7" stroke="#050608" stroke-width="0.6"/> <path d="M 206.79,94.67 A 98.00,98.00 0 0,1 206.79,125.33 L 198.89,124.08 A 90.00,90.00 0 0,0 198.89,95.92 Z" fill="#3A4152" stroke="#7B8494" stroke-width="0.75"/> <path d="M 198.89,95.92 A 90.00,90.00 0 0,1 198.89,124.08 L 167.29,119.07 A 58.00,58.00 0 0,0 167.29,100.93 Z" fill="#05060A" stroke="#050608" stroke-width="0.6"/> <path d="M 167.29,100.93 A 58.00,58.00 0 0,1 167.29,119.07 L 159.38,117.82 A 50.00,50.00 0 0,0 159.38,102.18 Z" fill="#3A4152" stroke="#7B8494" stroke-width="0.75"/> <path d="M 159.38,102.18 A 50.00,50.00 0 0,1 159.38,117.82 L 125.80,112.50 A 16.00,16.00 0 0,0 125.80,107.50 Z" fill="#05060A" stroke="#050608" stroke-width="0.6"/> <path d="M 206.79,125.33 A 98.00,98.00 0 0,1 197.32,154.49 L 190.19,150.86 A 90.00,90.00 0 0,0 198.89,124.08 Z" fill="#4E89FF" stroke="#7B8494" stroke-width="0.75"/> <path d="M 198.89,124.08 A 90.00,90.00 0 0,1 190.19,150.86 L 161.68,136.33 A 58.00,58.00 0 0,0 167.29,119.07 Z" fill="#F1F3F7" stroke="#050608" stroke-width="0.6"/> <path d="M 167.29,119.07 A 58.00,58.00 0 0,1 161.68,136.33 L 154.55,132.70 A 50.00,50.00 0 0,0 159.38,117.82 Z" fill="#4E89FF" stroke="#7B8494" stroke-width="0.75"/> <path d="M 159.38,117.82 A 50.00,50.00 0 0,1 154.55,132.70 L 124.26,117.26 A 16.00,16.00 0 0,0 125.80,112.50 Z" fill="#F1F3F7" stroke="#050608" stroke-width="0.6"/> <path d="M 197.32,154.49 A 98.00,98.00 0 0,1 179.30,179.30 L 173.64,173.64 A 90.00,90.00 0 0,0 190.19,150.86 Z" fill="#3A4152" stroke="#7B8494" stroke-width="0.75"/> <path d="M 190.19,150.86 A 90.00,90.00 0 0,1 173.64,173.64 L 151.01,151.01 A 58.00,58.00 0 0,0 161.68,136.33 Z" fill="#05060A" stroke="#050608" stroke-width="0.6"/> <path d="M 161.68,136.33 A 58.00,58.00 0 0,1 151.01,151.01 L 145.36,145.36 A 50.00,50.00 0 0,0 154.55,132.70 Z" fill="#3A4152" stroke="#7B8494" stroke-width="0.75"/> <path d="M 154.55,132.70 A 50.00,50.00 0 0,1 145.36,145.36 L 121.31,121.31 A 16.00,16.00 0 0,0 124.26,117.26 Z" fill="#05060A" stroke="#050608" stroke-width="0.6"/> <path d="M 179.30,179.30 A 98.00,98.00 0 0,1 154.49,197.32 L 150.86,190.19 A 90.00,90.00 0 0,0 173.64,173.64 Z" fill="#4E89FF" stroke="#7B8494" stroke-width="0.75"/> <path d="M 173.64,173.64 A 90.00,90.00 0 0,1 150.86,190.19 L 136.33,161.68 A 58.00,58.00 0 0,0 151.01,151.01 Z" fill="#F1F3F7" stroke="#050608" stroke-width="0.6"/> <path d="M 151.01,151.01 A 58.00,58.00 0 0,1 136.33,161.68 L 132.70,154.55 A 50.00,50.00 0 0,0 145.36,145.36 Z" fill="#4E89FF" stroke="#7B8494" stroke-width="0.75"/> <path d="M 145.36,145.36 A 50.00,50.00 0 0,1 132.70,154.55 L 117.26,124.26 A 16.00,16.00 0 0,0 121.31,121.31 Z" fill="#F1F3F7" stroke="#050608" stroke-width="0.6"/> <path d="M 154.49,197.32 A 98.00,98.00 0 0,1 125.33,206.79 L 124.08,198.89 A 90.00,90.00 0 0,0 150.86,190.19 Z" fill="#3A4152" stroke="#7B8494" stroke-width="0.75"/> <path d="M 150.86,190.19 A 90.00,90.00 0 0,1 124.08,198.89 L 119.07,167.29 A 58.00,58.00 0 0,0 136.33,161.68 Z" fill="#05060A" stroke="#050608" stroke-width="0.6"/> <path d="M 136.33,161.68 A 58.00,58.00 0 0,1 119.07,167.29 L 117.82,159.38 A 50.00,50.00 0 0,0 132.70,154.55 Z" fill="#3A4152" stroke="#7B8494" stroke-width="0.75"/> <path d="M 132.70,154.55 A 50.00,50.00 0 0,1 117.82,159.38 L 112.50,125.80 A 16.00,16.00 0 0,0 117.26,124.26 Z" fill="#05060A" stroke="#050608" stroke-width="0.6"/> <path d="M 125.33,206.79 A 98.00,98.00 0 0,1 94.67,206.79 L 95.92,198.89 A 90.00,90.00 0 0,0 124.08,198.89 Z" fill="#4E89FF" stroke="#7B8494" stroke-width="0.75"/> <path d="M 124.08,198.89 A 90.00,90.00 0 0,1 95.92,198.89 L 100.93,167.29 A 58.00,58.00 0 0,0 119.07,167.29 Z" fill="#F1F3F7" stroke="#050608" stroke-width="0.6"/> <path d="M 119.07,167.29 A 58.00,58.00 0 0,1 100.93,167.29 L 102.18,159.38 A 50.00,50.00 0 0,0 117.82,159.38 Z" fill="#4E89FF" stroke="#7B8494" stroke-width="0.75"/> <path d="M 117.82,159.38 A 50.00,50.00 0 0,1 102.18,159.38 L 107.50,125.80 A 16.00,16.00 0 0,0 112.50,125.80 Z" fill="#F1F3F7" stroke="#050608" stroke-width="0.6"/> <path d="M 94.67,206.79 A 98.00,98.00 0 0,1 65.51,197.32 L 69.14,190.19 A 90.00,90.00 0 0,0 95.92,198.89 Z" fill="#3A4152" stroke="#7B8494" stroke-width="0.75"/> <path d="M 95.92,198.89 A 90.00,90.00 0 0,1 69.14,190.19 L 83.67,161.68 A 58.00,58.00 0 0,0 100.93,167.29 Z" fill="#05060A" stroke="#050608" stroke-width="0.6"/> <path d="M 100.93,167.29 A 58.00,58.00 0 0,1 83.67,161.68 L 87.30,154.55 A 50.00,50.00 0 0,0 102.18,159.38 Z" fill="#3A4152" stroke="#7B8494" stroke-width="0.75"/> <path d="M 102.18,159.38 A 50.00,50.00 0 0,1 87.30,154.55 L 102.74,124.26 A 16.00,16.00 0 0,0 107.50,125.80 Z" fill="#05060A" stroke="#050608" stroke-width="0.6"/> <path d="M 65.51,197.32 A 98.00,98.00 0 0,1 40.70,179.30 L 46.36,173.64 A 90.00,90.00 0 0,0 69.14,190.19 Z" fill="#4E89FF" stroke="#7B8494" stroke-width="0.75"/> <path d="M 69.14,190.19 A 90.00,90.00 0 0,1 46.36,173.64 L 68.99,151.01 A 58.00,58.00 0 0,0 83.67,161.68 Z" fill="#F1F3F7" stroke="#050608" stroke-width="0.6"/> <path d="M 83.67,161.68 A 58.00,58.00 0 0,1 68.99,151.01 L 74.64,145.36 A 50.00,50.00 0 0,0 87.30,154.55 Z" fill="#4E89FF" stroke="#7B8494" stroke-width="0.75"/> <path d="M 87.30,154.55 A 50.00,50.00 0 0,1 74.64,145.36 L 98.69,121.31 A 16.00,16.00 0 0,0 102.74,124.26 Z" fill="#F1F3F7" stroke="#050608" stroke-width="0.6"/> <path d="M 40.70,179.30 A 98.00,98.00 0 0,1 22.68,154.49 L 29.81,150.86 A 90.00,90.00 0 0,0 46.36,173.64 Z" fill="#3A4152" stroke="#7B8494" stroke-width="0.75"/> <path d="M 46.36,173.64 A 90.00,90.00 0 0,1 29.81,150.86 L 58.32,136.33 A 58.00,58.00 0 0,0 68.99,151.01 Z" fill="#05060A" stroke="#050608" stroke-width="0.6"/> <path d="M 68.99,151.01 A 58.00,58.00 0 0,1 58.32,136.33 L 65.45,132.70 A 50.00,50.00 0 0,0 74.64,145.36 Z" fill="#3A4152" stroke="#7B8494" stroke-width="0.75"/> <path d="M 74.64,145.36 A 50.00,50.00 0 0,1 65.45,132.70 L 95.74,117.26 A 16.00,16.00 0 0,0 98.69,121.31 Z" fill="#05060A" stroke="#050608" stroke-width="0.6"/> <path d="M 22.68,154.49 A 98.00,98.00 0 0,1 13.21,125.33 L 21.11,124.08 A 90.00,90.00 0 0,0 29.81,150.86 Z" fill="#4E89FF" stroke="#7B8494" stroke-width="0.75"/> <path d="M 29.81,150.86 A 90.00,90.00 0 0,1 21.11,124.08 L 52.71,119.07 A 58.00,58.00 0 0,0 58.32,136.33 Z" fill="#F1F3F7" stroke="#050608" stroke-width="0.6"/> <path d="M 58.32,136.33 A 58.00,58.00 0 0,1 52.71,119.07 L 60.62,117.82 A 50.00,50.00 0 0,0 65.45,132.70 Z" fill="#4E89FF" stroke="#7B8494" stroke-width="0.75"/> <path d="M 65.45,132.70 A 50.00,50.00 0 0,1 60.62,117.82 L 94.20,112.50 A 16.00,16.00 0 0,0 95.74,117.26 Z" fill="#F1F3F7" stroke="#050608" stroke-width="0.6"/> <path d="M 13.21,125.33 A 98.00,98.00 0 0,1 13.21,94.67 L 21.11,95.92 A 90.00,90.00 0 0,0 21.11,124.08 Z" fill="#3A4152" stroke="#7B8494" stroke-width="0.75"/> <path d="M 21.11,124.08 A 90.00,90.00 0 0,1 21.11,95.92 L 52.71,100.93 A 58.00,58.00 0 0,0 52.71,119.07 Z" fill="#05060A" stroke="#050608" stroke-width="0.6"/> <path d="M 52.71,119.07 A 58.00,58.00 0 0,1 52.71,100.93 L 60.62,102.18 A 50.00,50.00 0 0,0 60.62,117.82 Z" fill="#3A4152" stroke="#7B8494" stroke-width="0.75"/> <path d="M 60.62,117.82 A 50.00,50.00 0 0,1 60.62,102.18 L 94.20,107.50 A 16.00,16.00 0 0,0 94.20,112.50 Z" fill="#05060A" stroke="#050608" stroke-width="0.6"/> <path d="M 13.21,94.67 A 98.00,98.00 0 0,1 22.68,65.51 L 29.81,69.14 A 90.00,90.00 0 0,0 21.11,95.92 Z" fill="#4E89FF" stroke="#7B8494" stroke-width="0.75"/> <path d="M 21.11,95.92 A 90.00,90.00 0 0,1 29.81,69.14 L 58.32,83.67 A 58.00,58.00 0 0,0 52.71,100.93 Z" fill="#F1F3F7" stroke="#050608" stroke-width="0.6"/> <path d="M 52.71,100.93 A 58.00,58.00 0 0,1 58.32,83.67 L 65.45,87.30 A 50.00,50.00 0 0,0 60.62,102.18 Z" fill="#4E89FF" stroke="#7B8494" stroke-width="0.75"/> <path d="M 60.62,102.18 A 50.00,50.00 0 0,1 65.45,87.30 L 95.74,102.74 A 16.00,16.00 0 0,0 94.20,107.50 Z" fill="#F1F3F7" stroke="#050608" stroke-width="0.6"/> <path d="M 22.68,65.51 A 98.00,98.00 0 0,1 40.70,40.70 L 46.36,46.36 A 90.00,90.00 0 0,0 29.81,69.14 Z" fill="#3A4152" stroke="#7B8494" stroke-width="0.75"/> <path d="M 29.81,69.14 A 90.00,90.00 0 0,1 46.36,46.36 L 68.99,68.99 A 58.00,58.00 0 0,0 58.32,83.67 Z" fill="#05060A" stroke="#050608" stroke-width="0.6"/> <path d="M 58.32,83.67 A 58.00,58.00 0 0,1 68.99,68.99 L 74.64,74.64 A 50.00,50.00 0 0,0 65.45,87.30 Z" fill="#3A4152" stroke="#7B8494" stroke-width="0.75"/> <path d="M 65.45,87.30 A 50.00,50.00 0 0,1 74.64,74.64 L 98.69,98.69 A 16.00,16.00 0 0,0 95.74,102.74 Z" fill="#05060A" stroke="#050608" stroke-width="0.6"/> <path d="M 40.70,40.70 A 98.00,98.00 0 0,1 65.51,22.68 L 69.14,29.81 A 90.00,90.00 0 0,0 46.36,46.36 Z" fill="#4E89FF" stroke="#7B8494" stroke-width="0.75"/> <path d="M 46.36,46.36 A 90.00,90.00 0 0,1 69.14,29.81 L 83.67,58.32 A 58.00,58.00 0 0,0 68.99,68.99 Z" fill="#F1F3F7" stroke="#050608" stroke-width="0.6"/> <path d="M 68.99,68.99 A 58.00,58.00 0 0,1 83.67,58.32 L 87.30,65.45 A 50.00,50.00 0 0,0 74.64,74.64 Z" fill="#4E89FF" stroke="#7B8494" stroke-width="0.75"/> <path d="M 74.64,74.64 A 50.00,50.00 0 0,1 87.30,65.45 L 102.74,95.74 A 16.00,16.00 0 0,0 98.69,98.69 Z" fill="#F1F3F7" stroke="#050608" stroke-width="0.6"/> <path d="M 65.51,22.68 A 98.00,98.00 0 0,1 94.67,13.21 L 95.92,21.11 A 90.00,90.00 0 0,0 69.14,29.81 Z" fill="#3A4152" stroke="#7B8494" stroke-width="0.75"/> <path d="M 69.14,29.81 A 90.00,90.00 0 0,1 95.92,21.11 L 100.93,52.71 A 58.00,58.00 0 0,0 83.67,58.32 Z" fill="#05060A" stroke="#050608" stroke-width="0.6"/> <path d="M 83.67,58.32 A 58.00,58.00 0 0,1 100.93,52.71 L 102.18,60.62 A 50.00,50.00 0 0,0 87.30,65.45 Z" fill="#3A4152" stroke="#7B8494" stroke-width="0.75"/> <path d="M 87.30,65.45 A 50.00,50.00 0 0,1 102.18,60.62 L 107.50,94.20 A 16.00,16.00 0 0,0 102.74,95.74 Z" fill="#05060A" stroke="#050608" stroke-width="0.6"/><circle cx="110" cy="110" r="16" fill="none" stroke="#050608" stroke-width="1"/><circle cx="110" cy="110" r="16" fill="#F1F3F7"/><circle cx="110" cy="110" r="20" fill="url(#authBullGlow)"/><circle cx="110" cy="110" r="7" fill="#4E89FF"/><circle cx="110" cy="110" r="98" fill="none" stroke="#050608" stroke-width="2"/></svg></div>
       <p class="tagline" style="margin-bottom:20px;">Stability. Alignment. Release.</p>
@@ -497,8 +497,8 @@
       <button class="icon-btn" id="btn-signout" title="Sign out"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px;"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg></button>
     </header>
     <div class="wordmark">
-      <span class="lead">Darts Coaching</span>
-      <span class="sub">&hellip;with Mr Smooth</span>
+      <span class="lead">Smooth Darts</span>
+      <span class="sub">Coaching</span>
     </div>
     <p class="tagline">Stability. Alignment. Release.</p>
 
@@ -614,7 +614,7 @@
     </button>
     <button class="academy-card" id="btn-training-followthrough" style="width:100%;text-align:left;border:1px solid var(--wire);cursor:pointer;font:inherit;color:inherit;">
       <div class="glyph-box"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/><circle cx="12" cy="12" r="2" fill="currentColor" stroke="none"/></svg></div>
-      <div><div class="title">Follow Through Session</div><div class="desc">Alignment drill &mdash; log a single score.</div></div>
+      <div><div class="title">Follow Through Session</div><div class="desc">Full extension, finger pointing at the board.</div></div>
     </button>
   </div>
 
@@ -658,6 +658,17 @@
 
     <button class="btn btn-ghost" data-nav="stats" style="margin-bottom:10px;">View full history</button>
     <button class="btn btn-danger" id="btn-profile-signout">Sign out</button>
+
+    <div class="card" style="border-color:rgba(193,68,60,0.4);margin-top:24px;">
+      <div class="card-head"><h3 style="color:var(--danger);">Danger Zone</h3></div>
+      <p class="subtle" style="margin-bottom:12px;">This permanently deletes your sessions, scores, and profile. This can't be undone.</p>
+      <div class="field" style="margin-bottom:10px;">
+        <label>Type <span class="mono" style="color:var(--danger);">delete</span> to confirm</label>
+        <input type="text" id="delete-confirm-input" placeholder="delete" autocapitalize="none" autocorrect="off">
+      </div>
+      <div id="delete-account-msg"></div>
+      <button class="btn btn-danger" id="btn-delete-account" disabled>Delete account</button>
+    </div>
   </div>
 
   <!-- ================= BOTTOM NAV ================= -->
@@ -825,6 +836,39 @@
       document.getElementById('bottom-nav').style.display = 'none';
     });
   }
+
+  // ---------------- delete account (data only — see note below) ----------------
+  // We can only delete the person's own rows here, using the anon key under RLS.
+  // Actually removing the auth.users entry needs the service-role key, which must
+  // never live in client-side code — that's a separate server-side task if wanted.
+  var deleteConfirmInput = document.getElementById('delete-confirm-input');
+  var deleteAccountBtn = document.getElementById('btn-delete-account');
+  deleteConfirmInput.addEventListener('input', function(){
+    deleteAccountBtn.disabled = this.value.trim().toLowerCase() !== 'delete';
+  });
+  deleteAccountBtn.addEventListener('click', function(){
+    var msgEl = document.getElementById('delete-account-msg');
+    msgEl.innerHTML = '';
+    var btn = this;
+    btn.disabled = true; btn.textContent = 'Deleting...';
+    Promise.all([
+      withTimeout(supabase.from('sessions').delete().eq('user_id', currentUser.id)),
+      withTimeout(supabase.from('follow_through_scores').delete().eq('user_id', currentUser.id))
+    ]).then(function(){
+      return withTimeout(supabase.from('profiles').delete().eq('id', currentUser.id));
+    }).then(function(res){
+      if (res.error){
+        msgEl.innerHTML = '<div class="msg msg-error">'+escapeHtml(res.error.message)+'</div>';
+        btn.disabled = false; btn.textContent = 'Delete account';
+        return;
+      }
+      clearSavedPlayState();
+      signOut();
+    }).catch(function(err){
+      msgEl.innerHTML = '<div class="msg msg-error">'+escapeHtml(err.message)+'</div>';
+      btn.disabled = false; btn.textContent = 'Delete account';
+    });
+  });
 
   // ---------------- onboarding ----------------
   document.getElementById('btn-onboard-save').addEventListener('click', function(){
@@ -1107,6 +1151,7 @@
     var c = document.getElementById('followthrough-content');
     c.innerHTML =
       '<h2 style="font-size:18px;text-align:center;margin-bottom:4px;">Follow Through</h2>'+
+      '<p style="text-align:center;margin-bottom:10px;font-family:Oswald,sans-serif;font-size:13px;letter-spacing:0.03em;color:var(--brass-light);">Full extension after release. Get the darts straight, finger pointing at the board.</p>'+
       '<p class="subtle" style="text-align:center;margin-bottom:16px;">Throw all three darts at the treble 20 — nail the treble for 3 points, high into the single for 1, low into the single for 1. Miss those scoring zones and your turn ends. Submit your score to take your place on the leaderboard.</p>'+
       '<div class="card" style="text-align:center;">'+
         ALIGNMENT_DIAGRAM_SVG+
@@ -1120,7 +1165,8 @@
         '<input type="number" inputmode="numeric" min="0" id="ft-score-input" placeholder="0">'+
       '</div>'+
       '<div id="ft-msg"></div>'+
-      '<button class="btn btn-primary" id="ft-submit">Submit score</button>';
+      '<button class="btn btn-primary" id="ft-submit">Submit score</button>'+
+      '<p class="subtle" style="text-align:center;margin-top:10px;">Log your highest scores. Can you take top spot?</p>';
 
     document.getElementById('ft-submit').addEventListener('click', submitFollowThroughScore);
   }
