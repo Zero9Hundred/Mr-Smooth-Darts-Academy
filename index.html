@@ -614,7 +614,7 @@
     </button>
     <button class="academy-card" id="btn-training-followthrough" style="width:100%;text-align:left;border:1px solid var(--wire);cursor:pointer;font:inherit;color:inherit;">
       <div class="glyph-box"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/><circle cx="12" cy="12" r="2" fill="currentColor" stroke="none"/></svg></div>
-      <div><div class="title">Follow Through Session</div><div class="desc">Full extension, finger pointing at the board.</div></div>
+      <div><div class="title">Follow Through Session</div><div class="desc">Full extension, fingers pointing at the board.</div></div>
     </button>
   </div>
 
@@ -1151,21 +1151,27 @@
     var c = document.getElementById('followthrough-content');
     c.innerHTML =
       '<h2 style="font-size:18px;text-align:center;margin-bottom:4px;">Follow Through</h2>'+
-      '<p style="text-align:center;margin-bottom:10px;font-family:Oswald,sans-serif;font-size:13px;letter-spacing:0.03em;color:var(--brass-light);">Full extension after release. Get the darts straight, finger pointing at the board.</p>'+
+      '<p style="text-align:center;margin-bottom:10px;font-family:Oswald,sans-serif;font-size:13px;letter-spacing:0.03em;color:var(--brass-light);">Full extension. Fingers pointing towards the board. Hold for a split second after each dart. Don&rsquo;t drop the elbow.</p>'+
       '<p class="subtle" style="text-align:center;margin-bottom:16px;">Throw all three darts at the treble 20 — nail the treble for 3 points, high into the single for 1, low into the single for 1. Miss those scoring zones and your turn ends. Submit your score to take your place on the leaderboard.</p>'+
-      '<div class="card" style="text-align:center;">'+
-        ALIGNMENT_DIAGRAM_SVG+
-        '<div class="key" style="display:flex;justify-content:center;gap:14px;margin-top:14px;font-size:11px;color:var(--chalk-dim);">'+
-          '<span style="display:inline-flex;align-items:center;gap:6px;"><span style="width:12px;height:12px;border-radius:4px;border:2px solid #3FCB6B;display:inline-block;"></span>Score zone</span>'+
-          '<span style="display:inline-flex;align-items:center;gap:6px;"><span style="width:12px;height:12px;border-radius:4px;border:2px solid #C8283A;display:inline-block;"></span>End turn</span>'+
+      '<div class="card">'+
+        '<div style="display:flex;gap:12px;align-items:flex-start;">'+
+          '<div style="flex:1.25;min-width:0;text-align:center;">'+
+            ALIGNMENT_DIAGRAM_SVG+
+            '<div class="key" style="display:flex;flex-direction:column;align-items:flex-start;gap:6px;margin-top:12px;font-size:10px;color:var(--chalk-dim);">'+
+              '<span style="display:inline-flex;align-items:center;gap:5px;"><span style="width:10px;height:10px;border-radius:3px;border:2px solid #3FCB6B;display:inline-block;flex-shrink:0;"></span>Score zone</span>'+
+              '<span style="display:inline-flex;align-items:center;gap:5px;"><span style="width:10px;height:10px;border-radius:3px;border:2px solid #C8283A;display:inline-block;flex-shrink:0;"></span>End turn</span>'+
+            '</div>'+
+          '</div>'+
+          '<div style="flex:1;min-width:0;display:flex;flex-direction:column;">'+
+            '<div class="field" style="margin-bottom:10px;">'+
+              '<label>Your score</label>'+
+              '<input type="number" inputmode="numeric" min="0" id="ft-score-input" placeholder="0">'+
+            '</div>'+
+            '<div id="ft-msg"></div>'+
+            '<button class="btn btn-primary" id="ft-submit">Submit</button>'+
+          '</div>'+
         '</div>'+
       '</div>'+
-      '<div class="field">'+
-        '<label>Your score</label>'+
-        '<input type="number" inputmode="numeric" min="0" id="ft-score-input" placeholder="0">'+
-      '</div>'+
-      '<div id="ft-msg"></div>'+
-      '<button class="btn btn-primary" id="ft-submit">Submit score</button>'+
       '<p class="subtle" style="text-align:center;margin-top:10px;">Log your highest scores. Can you take top spot?</p>';
 
     document.getElementById('ft-submit').addEventListener('click', submitFollowThroughScore);
