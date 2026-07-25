@@ -1324,12 +1324,32 @@
             '</div>'+
             '<div id="ft-msg"></div>'+
             '<button class="btn btn-primary" id="ft-submit">Submit</button>'+
+            '<div class="stat-box" style="margin-top:14px;"><div class="num mono" id="ft-your-highest">&mdash;</div><div class="lab">Your Highest</div></div>'+
+            '<div class="stat-box" style="margin-top:8px;"><div class="num mono" id="ft-global-highest">&mdash;</div><div class="lab">Global Highest</div></div>'+
           '</div>'+
         '</div>'+
       '</div>'+
       '<p class="subtle" style="text-align:center;margin-top:10px;">Log your highest scores. Can you take top spot?</p>';
 
     document.getElementById('ft-submit').addEventListener('click', submitFollowThroughScore);
+    loadFollowThroughHighlights();
+  }
+
+  function loadFollowThroughHighlights(){
+    withTimeout(supabase.from('follow_through_scores').select('user_id,score'))
+      .then(function(res){
+        var rows = res.data || [];
+        var yourHigh = 0, globalHigh = 0;
+        for (var i=0;i<rows.length;i++){
+          if (rows[i].score > globalHigh) globalHigh = rows[i].score;
+          if (rows[i].user_id === currentUser.id && rows[i].score > yourHigh) yourHigh = rows[i].score;
+        }
+        var yourEl = document.getElementById('ft-your-highest');
+        var globalEl = document.getElementById('ft-global-highest');
+        if (yourEl) yourEl.textContent = yourHigh;
+        if (globalEl) globalEl.textContent = globalHigh;
+      })
+      .catch(function(err){ console.error(err); });
   }
 
   function submitFollowThroughScore(){
@@ -1345,16 +1365,17 @@
     btn.disabled = true; btn.textContent = 'Saving...';
     withTimeout(supabase.from('follow_through_scores').insert({user_id: currentUser.id, score: val}))
       .then(function(res){
-        btn.disabled = false; btn.textContent = 'Submit score';
+        btn.disabled = false; btn.textContent = 'Submit';
         if (res.error){
           msgEl.innerHTML = '<div class="msg msg-error">'+escapeHtml(res.error.message)+'</div>';
           return;
         }
         msgEl.innerHTML = '<div class="msg msg-ok">Score saved.</div>';
         input.value = '';
+        loadFollowThroughHighlights();
       })
       .catch(function(err){
-        btn.disabled = false; btn.textContent = 'Submit score';
+        btn.disabled = false; btn.textContent = 'Submit';
         msgEl.innerHTML = '<div class="msg msg-error">'+escapeHtml(err.message)+'</div>';
       });
   }
