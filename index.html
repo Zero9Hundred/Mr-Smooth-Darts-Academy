@@ -4,6 +4,15 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Smooth Darts Coaching</title>
+
+<!-- Add to Home Screen / PWA support -->
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-180.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="SDC">
+<meta name="theme-color" content="#050608">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
@@ -997,12 +1006,14 @@
   // ---------------- home ----------------
   function loadHome(){
     showScreen('home');
+    // Simple existence check on purpose: the previous version tried to be
+    // clever about detecting "meaningful" progress and that extra logic was
+    // itself a source of bugs — someone lost real progress because of it.
+    // Any saved session is worth offering to resume; discarding a truly
+    // empty one costs nothing, but failing to offer a real one costs someone
+    // their whole round.
     var savedSession = loadSavedPlayState();
-    var hasSavedProgress = savedSession && (
-      phaseTotal(savedSession.p1 || []) > 0 || p2Total(savedSession.p2 || []) > 0 || phaseTotal(savedSession.p3 || []) > 0 ||
-      savedSession.phase === 2 || savedSession.phase === 3 || savedSession.phase === 'summary' ||
-      (savedSession.phase === 1 && savedSession.p1i > 0)
-    );
+    var hasSavedProgress = !!savedSession;
     document.getElementById('home-resume-banner').style.display = hasSavedProgress ? 'block' : 'none';
     document.getElementById('btn-home-play-label').textContent = hasSavedProgress ? 'Resume Session' : 'Start a Session';
     withTimeout(supabase.from('sessions').select('total_score').eq('user_id', currentUser.id))
@@ -1275,16 +1286,18 @@
   // fresh app launches from a home-screen icon (sessionStorage isn't reliable
   // there — it can behave like a fresh session on each launch).
   function savePlayState(){
-    try { localStorage.setItem('msda_play_state', JSON.stringify(playState)); } catch(e){}
+    try { localStorage.setItem('msda_play_state', JSON.stringify(playState)); }
+    catch(e){ console.error('Could not save play state:', e); }
   }
   function loadSavedPlayState(){
     try {
       var raw = localStorage.getItem('msda_play_state');
       return raw ? JSON.parse(raw) : null;
-    } catch(e){ return null; }
+    } catch(e){ console.error('Could not load saved play state:', e); return null; }
   }
   function clearSavedPlayState(){
-    try { localStorage.removeItem('msda_play_state'); } catch(e){}
+    try { localStorage.removeItem('msda_play_state'); }
+    catch(e){ console.error('Could not clear saved play state:', e); }
   }
 
   var ALIGNMENT_DIAGRAM_SVG = '<svg viewBox="90 5 220 265" style="width:100%;max-width:320px;display:block;margin:0 auto;"><path d="M 113.74,45.71 A 190.00,190.00 0 0,1 170.28,27.34 L 173.41,47.09 A 170.00,170.00 0 0,0 122.82,63.53 Z" fill="#3A4152" stroke="#7B8494" stroke-width="0.75"/>   <path d="M 122.82,63.53 A 170.00,170.00 0 0,1 173.41,47.09 L 182.79,106.35 A 110.00,110.00 0 0,0 150.06,116.99 Z" fill="#F1F3F7" stroke="#05060A" stroke-width="0.6"/>   <path d="M 150.06,116.99 A 110.00,110.00 0 0,1 182.79,106.35 L 185.14,121.17 A 95.00,95.00 0 0,0 156.87,130.35 Z" fill="#3A4152" stroke="#7B8494" stroke-width="0.75"/>   <path d="M 156.87,130.35 A 95.00,95.00 0 0,1 185.14,121.17 L 193.74,175.49 A 40.00,40.00 0 0,0 181.84,179.36 Z" fill="#F1F3F7" stroke="#05060A" stroke-width="0.6"/>   <path d="M 170.28,27.34 A 190.00,190.00 0 0,1 229.72,27.34 L 226.59,47.09 A 170.00,170.00 0 0,0 173.41,47.09 Z" fill="#3A4152" stroke="#7B8494" stroke-width="0.75"/>   <path d="M 173.41,47.09 A 170.00,170.00 0 0,1 226.59,47.09 L 217.21,106.35 A 110.00,110.00 0 0,0 182.79,106.35 Z" fill="#F1F3F7" stroke="#05060A" stroke-width="0.6"/>   <path d="M 182.79,106.35 A 110.00,110.00 0 0,1 217.21,106.35 L 214.86,121.17 A 95.00,95.00 0 0,0 185.14,121.17 Z" fill="#4E89FF" stroke="#7B8494" stroke-width="0.75"/>   <path d="M 185.14,121.17 A 95.00,95.00 0 0,1 214.86,121.17 L 206.26,175.49 A 40.00,40.00 0 0,0 193.74,175.49 Z" fill="#F1F3F7" stroke="#05060A" stroke-width="0.6"/>   <path d="M 229.72,27.34 A 190.00,190.00 0 0,1 286.26,45.71 L 277.18,63.53 A 170.00,170.00 0 0,0 226.59,47.09 Z" fill="#3A4152" stroke="#7B8494" stroke-width="0.75"/>   <path d="M 226.59,47.09 A 170.00,170.00 0 0,1 277.18,63.53 L 249.94,116.99 A 110.00,110.00 0 0,0 217.21,106.35 Z" fill="#F1F3F7" stroke="#05060A" stroke-width="0.6"/>   <path d="M 217.21,106.35 A 110.00,110.00 0 0,1 249.94,116.99 L 243.13,130.35 A 95.00,95.00 0 0,0 214.86,121.17 Z" fill="#3A4152" stroke="#7B8494" stroke-width="0.75"/>   <path d="M 214.86,121.17 A 95.00,95.00 0 0,1 243.13,130.35 L 218.16,179.36 A 40.00,40.00 0 0,0 206.26,175.49 Z" fill="#F1F3F7" stroke="#05060A" stroke-width="0.6"/>   <circle cx="200" cy="215" r="40" fill="#3A4152" stroke="#7B8494" stroke-width="0.75"/>   <circle cx="200" cy="215" r="18" fill="#A62028" stroke="#7B8494" stroke-width="0.75"/>   <path d="M 170.28,27.34 A 190.00,190.00 0 0,1 229.72,27.34 L 226.59,47.09 A 170.00,170.00 0 0,0 173.41,47.09 Z" fill="none" stroke="#C8283A" stroke-width="2.5"/>   <path d="M 113.74,45.71 A 190.00,190.00 0 0,1 170.28,27.34 L 193.74,175.49 A 40.00,40.00 0 0,0 181.84,179.36 Z" fill="none" stroke="#C8283A" stroke-width="2.5"/>   <path d="M 229.72,27.34 A 190.00,190.00 0 0,1 286.26,45.71 L 218.16,179.36 A 40.00,40.00 0 0,0 206.26,175.49 Z" fill="none" stroke="#C8283A" stroke-width="2.5"/>   <circle cx="200" cy="215" r="40" fill="none" stroke="#C8283A" stroke-width="2.5"/>   <path d="M 173.41,47.09 A 170.00,170.00 0 0,1 226.59,47.09 L 206.26,175.49 A 40.00,40.00 0 0,0 193.74,175.49 Z" fill="none" stroke="#3FCB6B" stroke-width="3"/><text x="200" y="112.5" text-anchor="middle" dominant-baseline="middle" font-family="JetBrains Mono" font-weight="700" font-size="9.5" fill="#050608">3pts</text><text x="200" y="75" text-anchor="middle" dominant-baseline="middle" font-family="JetBrains Mono" font-weight="700" font-size="10.5" fill="#050608">1pt</text><text x="200" y="147.5" text-anchor="middle" dominant-baseline="middle" font-family="JetBrains Mono" font-weight="700" font-size="10.5" fill="#050608">1pt</text></svg>';
