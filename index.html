@@ -579,7 +579,7 @@
     <div class="lb-tabs" id="game-type-tabs">
       <button class="active" data-game="ranking">Ranking</button>
       <button data-game="followthrough">Follow Through</button>
-      <button data-game="center">Center</button>
+      <button data-game="center">Bulls-hit</button>
     </div>
     <div class="lb-tabs" id="stats-scope-tabs" style="margin-bottom:14px;">
       <button class="active" data-scope="you">You</button>
@@ -648,7 +648,7 @@
       <div class="stat-grid">
         <div class="stat-box"><div class="num mono" id="ct-sessions">0</div><div class="lab">Sessions</div></div>
         <button class="stat-box" id="ct-rank-nav" style="cursor:pointer;text-align:left;width:100%;appearance:none;-webkit-appearance:none;font:inherit;">
-          <div class="num mono" id="ct-rank-pos">&mdash;</div><div class="lab">Center Rank &rarr;</div>
+          <div class="num mono" id="ct-rank-pos">&mdash;</div><div class="lab">BS Rank &rarr;</div>
         </button>
       </div>
       <div class="stat-grid-3">
@@ -690,7 +690,7 @@
     </button>
     <button class="academy-card" id="btn-training-center" style="width:100%;text-align:left;border:1px solid var(--wire);cursor:pointer;font:inherit;color:inherit;">
       <div class="glyph-box"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="1.2" fill="currentColor" stroke="none"/></svg></div>
-      <div><div class="title">Center Session</div><div class="desc">Bull &amp; outer bull &mdash; log a single score.</div></div>
+      <div><div class="title">Bulls-hit</div><div class="desc">Bull &amp; outer bull &mdash; log a single score.</div></div>
     </button>
   </div>
 
@@ -1536,7 +1536,7 @@
   function renderCenter(){
     var c = document.getElementById('center-content');
     c.innerHTML =
-      '<h2 style="font-size:18px;text-align:center;margin-bottom:4px;">Center</h2>'+
+      '<h2 style="font-size:18px;text-align:center;margin-bottom:4px;">Bulls-hit</h2>'+
       '<p style="text-align:center;margin-bottom:10px;font-family:Oswald,sans-serif;font-size:13px;letter-spacing:0.03em;color:var(--brass-light);">Set, aim, hold your line into the bull. Let the dart do the work.</p>'+
       '<p class="subtle" style="text-align:center;margin-bottom:16px;">Throw all three darts at the bull — the bullseye scores 50, the outer bull scores 25. Miss both and your turn ends. Submit your score to take your place on the leaderboard.</p>'+
       '<div class="card">'+
@@ -1979,7 +1979,7 @@
 
       var listEl = document.getElementById('ct-lb-list');
       if (ranked.length === 0){
-        listEl.innerHTML = '<div class="empty-state"><div class="glyph">'+ICON_TARGET+'</div>No Center scores logged yet. Be the first on the board.</div>';
+        listEl.innerHTML = '<div class="empty-state"><div class="glyph">'+ICON_TARGET+'</div>No Bulls-hit scores logged yet. Be the first on the board.</div>';
         document.getElementById('ct-lb-you-line').textContent = '';
         return;
       }
