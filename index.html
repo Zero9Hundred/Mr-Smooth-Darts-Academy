@@ -124,6 +124,19 @@
   .btn-ghost{background:transparent;color:var(--chalk);border:1px solid var(--wire-strong);}
   .btn-danger{background:transparent;color:var(--danger);border:1px solid rgba(193,68,60,0.4);}
   .btn:disabled{opacity:0.5;cursor:not-allowed;}
+
+  .checkout-result-btn{
+    width:100%;padding:20px 16px;border-radius:14px;border:none;margin-bottom:12px;
+    font-family:'Oswald',sans-serif;font-size:16px;font-weight:700;letter-spacing:0.03em;text-transform:uppercase;
+    cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;min-height:64px;justify-content:center;
+    touch-action:manipulation;-webkit-tap-highlight-color:transparent;
+  }
+  .checkout-result-btn:last-child{margin-bottom:0;}
+  .checkout-result-btn .sub{font-size:11px;font-weight:500;text-transform:none;letter-spacing:0.02em;opacity:0.85;}
+  .checkout-result-btn.route{background:#3FCB6B;color:#050608;}
+  .checkout-result-btn.alt{background:#F5883D;color:#050608;}
+  .checkout-result-btn.miss{background:#C1443C;color:#F1F3F7;}
+
   .msg{font-size:13px;padding:10px 12px;border-radius:8px;margin-bottom:14px;}
   .msg-error{background:rgba(193,68,60,0.15);color:#F2B3AE;border:1px solid rgba(193,68,60,0.35);}
   .msg-ok{background:rgba(63,163,122,0.15);color:#B9E6D0;border:1px solid rgba(63,163,122,0.35);}
@@ -352,6 +365,7 @@
     font-family:'Oswald',sans-serif;font-weight:600;font-size:13px;letter-spacing:0.06em;text-transform:uppercase;color:var(--chalk-dim);
   }
   .lb-tabs button.active{background:var(--brass);color:var(--felt-deep);}
+  #game-type-tabs button{font-size:11px;padding:9px 3px;letter-spacing:0.02em;}
   .lb-row{
     display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:10px;margin-bottom:8px;
     background:var(--surface);border:1px solid var(--wire);
@@ -576,10 +590,11 @@
     <div class="topbar" style="padding-left:0;padding-right:0;">
       <h2 style="font-size:20px;">Stats</h2>
     </div>
-    <div class="lb-tabs" id="game-type-tabs">
+    <div class="lb-tabs" id="game-type-tabs" style="overflow-x:auto;">
       <button class="active" data-game="ranking">Ranking</button>
-      <button data-game="followthrough">Follow Through</button>
+      <button data-game="followthrough">Follow Thru</button>
       <button data-game="center">Bulls-hit</button>
+      <button data-game="checkout">Checkout</button>
     </div>
     <div class="lb-tabs" id="stats-scope-tabs" style="margin-bottom:14px;">
       <button class="active" data-scope="you">You</button>
@@ -672,7 +687,37 @@
       <p class="subtle" id="ct-lb-you-line" style="margin-bottom:14px;"></p>
       <div id="ct-lb-list"></div>
     </div>
+
+    <div id="co-you-panel" style="display:none;">
+      <div class="stat-grid">
+        <div class="stat-box"><div class="num mono" id="co-sessions">0</div><div class="lab">Sessions</div></div>
+        <button class="stat-box" id="co-rank-nav" style="cursor:pointer;text-align:left;width:100%;appearance:none;-webkit-appearance:none;font:inherit;">
+          <div class="num mono" id="co-rank-pos">&mdash;</div><div class="lab">Checkout Rank &rarr;</div>
+        </button>
+      </div>
+      <div class="stat-grid-3">
+        <div class="stat-box"><div class="num mono" id="co-highest">0</div><div class="lab">Highest</div></div>
+        <div class="stat-box"><div class="num mono" id="co-lowest">0</div><div class="lab">Lowest</div></div>
+        <div class="stat-box"><div class="num mono" id="co-average">0</div><div class="lab">Average</div></div>
+      </div>
+      <div class="card">
+        <div class="card-head"><h3>Progress</h3></div>
+        <div class="trend-chart" id="co-trend-chart"></div>
+      </div>
+      <h3 style="font-size:11px;font-weight:600;color:var(--chalk-dim);margin:16px 0 10px;letter-spacing:0.14em;">Full history</h3>
+      <div id="co-history"></div>
+    </div>
+
+    <div id="co-global-panel" style="display:none;">
+      <div class="lb-tabs" id="co-lb-tabs">
+        <button class="active" data-mode="average">Average</button>
+        <button data-mode="best">Goat</button>
+      </div>
+      <p class="subtle" id="co-lb-you-line" style="margin-bottom:14px;"></p>
+      <div id="co-lb-list"></div>
+    </div>
   </div>
+
 
   <!-- ================= TRAINING HUB ================= -->
   <div id="screen-training" class="screen">
@@ -692,6 +737,10 @@
       <div class="glyph-box"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="1.2" fill="currentColor" stroke="none"/></svg></div>
       <div><div class="title">Bulls-hit</div><div class="desc">Bull &amp; outer bull &mdash; log a single score.</div></div>
     </button>
+    <button class="academy-card" id="btn-training-checkout" style="width:100%;text-align:left;border:1px solid var(--wire);cursor:pointer;font:inherit;color:inherit;">
+      <div class="glyph-box"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></div>
+      <div><div class="title">Percentage Checkout</div><div class="desc">5 rounds &mdash; hit your route, grade your finishing.</div></div>
+    </button>
   </div>
 
   <!-- ================= PLAY ================= -->
@@ -707,6 +756,11 @@
   <!-- ================= CENTER ================= -->
   <div id="screen-center" class="screen">
     <div id="center-content"></div>
+  </div>
+
+  <!-- ================= CHECKOUT ================= -->
+  <div id="screen-checkout" class="screen">
+    <div id="checkout-content"></div>
   </div>
 
   <!-- ================= PROFILE ================= -->
@@ -1004,6 +1058,7 @@
   document.getElementById('btn-training-ranking').addEventListener('click', startPlayFlow);
   document.getElementById('btn-training-followthrough').addEventListener('click', startFollowThroughFlow);
   document.getElementById('btn-training-center').addEventListener('click', startCenterFlow);
+  document.getElementById('btn-training-checkout').addEventListener('click', startCheckoutFlow);
   // quick-nav tiles and "view all" links share a data-nav attribute
   document.addEventListener('click', function(e){
     var el = e.target.closest ? e.target.closest('[data-nav]') : null;
@@ -1126,6 +1181,8 @@
     document.getElementById('ft-global-panel').style.display = (statsGame === 'followthrough' && statsScope === 'global') ? 'block' : 'none';
     document.getElementById('ct-you-panel').style.display = (statsGame === 'center' && statsScope === 'you') ? 'block' : 'none';
     document.getElementById('ct-global-panel').style.display = (statsGame === 'center' && statsScope === 'global') ? 'block' : 'none';
+    document.getElementById('co-you-panel').style.display = (statsGame === 'checkout' && statsScope === 'you') ? 'block' : 'none';
+    document.getElementById('co-global-panel').style.display = (statsGame === 'checkout' && statsScope === 'global') ? 'block' : 'none';
 
     if (statsGame === 'ranking' && statsScope === 'you') loadStatsYouData();
     else if (statsGame === 'ranking' && statsScope === 'global') loadLeaderboard();
@@ -1133,6 +1190,8 @@
     else if (statsGame === 'followthrough' && statsScope === 'global') loadFollowThroughLeaderboard();
     else if (statsGame === 'center' && statsScope === 'you') loadCenterYouData();
     else if (statsGame === 'center' && statsScope === 'global') loadCenterLeaderboard();
+    else if (statsGame === 'checkout' && statsScope === 'you') loadCheckoutYouData();
+    else if (statsGame === 'checkout' && statsScope === 'global') loadCheckoutLeaderboard();
   }
   var gameTypeTabButtons = document.querySelectorAll('#game-type-tabs button');
   for (var gtt=0; gtt<gameTypeTabButtons.length; gtt++){
@@ -1144,6 +1203,7 @@
   }
   document.getElementById('ft-rank-nav').addEventListener('click', function(){ loadStats('followthrough', 'global'); });
   document.getElementById('ct-rank-nav').addEventListener('click', function(){ loadStats('center', 'global'); });
+  document.getElementById('co-rank-nav').addEventListener('click', function(){ loadStats('checkout', 'global'); });
 
   function loadStatsYouData(){
     document.getElementById('stats-trend-chart').innerHTML = '<div class="trend-empty">Loading…</div>';
@@ -1400,6 +1460,94 @@
       });
   }
 
+  function loadCheckoutYouData(){
+    document.getElementById('co-trend-chart').innerHTML = '<div class="trend-empty">Loading…</div>';
+    document.getElementById('co-history').innerHTML = '<div class="spinner" style="margin-top:20px;"></div>';
+    withTimeout(supabase.from('checkout_scores').select('*').eq('user_id', currentUser.id).order('played_at', {ascending:false}))
+      .then(function(res){
+        var scores = res.data || [];
+        document.getElementById('co-sessions').textContent = scores.length;
+        var chartData = scores.map(function(s){ return {total_score: s.score, played_at: s.played_at}; });
+        document.getElementById('co-trend-chart').innerHTML = buildTrendSVG(chartData, 140);
+
+        if (scores.length === 0){
+          document.getElementById('co-highest').textContent = '0';
+          document.getElementById('co-lowest').textContent = '0';
+          document.getElementById('co-average').textContent = '0';
+        } else {
+          var hi = scores[0].score, lo = scores[0].score, sum = 0;
+          for (var k=0;k<scores.length;k++){
+            var v = scores[k].score;
+            if (v > hi) hi = v;
+            if (v < lo) lo = v;
+            sum += v;
+          }
+          document.getElementById('co-highest').textContent = hi;
+          document.getElementById('co-lowest').textContent = lo;
+          document.getElementById('co-average').textContent = Math.round(sum / scores.length);
+        }
+
+        var histEl = document.getElementById('co-history');
+        if (scores.length === 0){
+          histEl.innerHTML = '<div class="empty-state"><div class="glyph">'+ICON_CLIPBOARD+'</div>No scores yet.</div>';
+        } else {
+          var PER_ROW = 5;
+          var groups = [];
+          for (var j=0;j<scores.length;j++){
+            var s = scores[j];
+            var d = new Date(s.played_at);
+            var dateStr = d.toLocaleDateString(undefined, {day:'numeric', month:'short'});
+            var lastGroup = groups[groups.length-1];
+            if (lastGroup && lastGroup.dateStr === dateStr) lastGroup.values.push(s.score);
+            else groups.push({dateStr:dateStr, values:[s.score]});
+          }
+
+          var rowsHtml = '';
+          for (var g=0; g<groups.length; g++){
+            var grp = groups[g];
+            for (var offset=0; offset<grp.values.length; offset+=PER_ROW){
+              var chunk = grp.values.slice(offset, offset+PER_ROW);
+              rowsHtml += '<tr>';
+              rowsHtml += '<td>'+(offset===0 ? escapeHtml(grp.dateStr) : '')+'</td>';
+              for (var c=0;c<chunk.length;c++){
+                var isBest = chunk[c] === hi;
+                rowsHtml += '<td'+(isBest?' class="ft-best"':'')+'>'+chunk[c]+'</td>';
+              }
+              for (var p=chunk.length; p<PER_ROW; p++) rowsHtml += '<td></td>';
+              rowsHtml += '</tr>';
+            }
+          }
+          histEl.innerHTML = '<div style="overflow-x:auto;"><table class="history-table"><thead><tr>'+
+            '<th>Date</th><th colspan="'+PER_ROW+'">Scores</th>'+
+          '</tr></thead><tbody>'+rowsHtml+'</tbody></table></div>';
+        }
+
+        return withTimeout(supabase.from('checkout_scores').select('user_id,score'));
+      })
+      .then(function(res){
+        if (!res) return;
+        var all = res.data || [];
+        var byUser = {};
+        for (var i=0;i<all.length;i++){
+          var uid = all[i].user_id;
+          if (!byUser[uid]) byUser[uid] = {sum:0, count:0};
+          byUser[uid].sum += all[i].score;
+          byUser[uid].count += 1;
+        }
+        var ranked = Object.keys(byUser).map(function(uid){
+          return {uid:uid, score: Math.round(byUser[uid].sum / byUser[uid].count)};
+        });
+        ranked.sort(function(a,b){ return b.score - a.score; });
+        var pos = null;
+        for (var j=0;j<ranked.length;j++){ if (ranked[j].uid === currentUser.id){ pos = j+1; break; } }
+        document.getElementById('co-rank-pos').textContent = pos ? ('#'+pos) : '—';
+      })
+      .catch(function(err){
+        document.getElementById('co-history').innerHTML = '<div class="empty-state">Could not load history.</div>';
+        console.error(err);
+      });
+  }
+
   // ---------------- play flow ----------------
   var playState = null;
   function freshPlayState(){
@@ -1609,6 +1757,135 @@
         btn.disabled = false; btn.textContent = 'Submit';
         msgEl.innerHTML = '<div class="msg msg-error">'+escapeHtml(err.message)+'</div>';
       });
+  }
+
+  // ---------------- percentage checkout ----------------
+  var CHECKOUT_DB = [
+    {target:61, route:"T15 \u2794 D8"}, {target:62, route:"T10 \u2794 D16"}, {target:63, route:"T13 \u2794 D12"},
+    {target:64, route:"T16 \u2794 D8"}, {target:65, route:"S25 \u2794 D20"}, {target:66, route:"T14 \u2794 D12"},
+    {target:67, route:"T17 \u2794 D8"}, {target:68, route:"T12 \u2794 D16"}, {target:69, route:"T19 \u2794 D6"},
+    {target:70, route:"T18 \u2794 D8"}, {target:71, route:"T13 \u2794 D16"}, {target:72, route:"T16 \u2794 D12"},
+    {target:73, route:"T19 \u2794 D8"}, {target:74, route:"T14 \u2794 D16"}, {target:75, route:"T17 \u2794 D12"},
+    {target:76, route:"T16 \u2794 D14"}, {target:77, route:"T15 \u2794 D16"}, {target:78, route:"T18 \u2794 D12"},
+    {target:79, route:"T19 \u2794 D11"}, {target:80, route:"T20 \u2794 D10"}
+  ];
+  var checkoutState = null;
+
+  function pickRandomTargets(n){
+    var pool = CHECKOUT_DB.slice();
+    for (var i=pool.length-1;i>0;i--){
+      var j = Math.floor(Math.random()*(i+1));
+      var tmp = pool[i]; pool[i]=pool[j]; pool[j]=tmp;
+    }
+    return pool.slice(0, n);
+  }
+
+  function startCheckoutFlow(){
+    checkoutState = { targets: pickRandomTargets(5), roundIndex: 0, results: [] };
+    showScreen('checkout');
+    renderCheckout();
+  }
+
+  function renderCheckout(){
+    if (checkoutState.roundIndex < 5) renderCheckoutRound();
+    else renderCheckoutSummary();
+  }
+
+  function renderCheckoutRound(){
+    var c = document.getElementById('checkout-content');
+    var round = checkoutState.targets[checkoutState.roundIndex];
+    var dots = '';
+    for (var i=0;i<5;i++){
+      var cls = i < checkoutState.roundIndex ? 'done' : (i === checkoutState.roundIndex ? 'now' : '');
+      dots += '<div class="step-dot '+cls+'"></div>';
+    }
+    c.innerHTML =
+      '<h2 style="font-size:18px;text-align:center;margin-bottom:4px;">Percentage Checkout</h2>'+
+      '<p class="subtle" style="text-align:center;margin-bottom:16px;">Round '+(checkoutState.roundIndex+1)+' of 5</p>'+
+      '<div class="step-track">'+dots+'</div>'+
+      '<div style="text-align:center;margin:18px 0 6px;">'+
+        '<div class="mono" style="font-size:64px;font-weight:700;line-height:1;color:var(--chalk);">'+round.target+'</div>'+
+        '<div class="mono" style="font-size:16px;color:var(--brass-light);margin-top:10px;letter-spacing:0.04em;">'+round.route+'</div>'+
+      '</div>'+
+      '<div style="margin-top:24px;">'+
+        '<button type="button" class="checkout-result-btn route" id="co-route">Target Route<span class="sub">Checked out on '+round.route+'</span></button>'+
+        '<button type="button" class="checkout-result-btn alt" id="co-alt">Alternative Route<span class="sub">Checked out a different way</span></button>'+
+        '<button type="button" class="checkout-result-btn miss" id="co-miss">Missed<span class="sub">Did not check out</span></button>'+
+      '</div>';
+
+    document.getElementById('co-route').addEventListener('click', function(){ handleCheckoutResult(3); });
+    document.getElementById('co-alt').addEventListener('click', function(){ handleCheckoutResult(1); });
+    document.getElementById('co-miss').addEventListener('click', function(){ handleCheckoutResult(0); });
+  }
+
+  function handleCheckoutResult(points){
+    checkoutState.results.push(points);
+    checkoutState.roundIndex++;
+    renderCheckout();
+  }
+
+  function checkoutGrade(score){
+    if (score === 15) return 'A+';
+    if (score >= 12) return 'A';
+    if (score >= 9) return 'B';
+    if (score >= 6) return 'C';
+    if (score >= 3) return 'D';
+    if (score >= 1) return 'E';
+    return 'F';
+  }
+
+  function renderCheckoutSummary(){
+    var c = document.getElementById('checkout-content');
+    var total = checkoutState.results.reduce(function(a,b){ return a+b; }, 0);
+    var pct = (total/15*100).toFixed(1);
+    var grade = checkoutGrade(total);
+
+    c.innerHTML =
+      '<h2 style="font-size:18px;text-align:center;margin-bottom:16px;">Session Complete</h2>'+
+      '<div class="card" style="text-align:center;">'+
+        '<div class="mono" style="font-size:76px;font-weight:700;line-height:1;color:var(--brass-light);">'+grade+'</div>'+
+        '<div class="mono" style="font-size:22px;color:var(--chalk);margin-top:10px;">'+total+' / 15</div>'+
+        '<div class="subtle" style="margin-top:4px;">'+pct+'% accuracy</div>'+
+      '</div>'+
+      '<div class="stat-box" style="margin-top:14px;"><div class="num mono" id="co-your-highest">0</div><div class="lab">Your Highest</div></div>'+
+      '<div class="stat-box" style="margin-top:8px;"><div class="num mono" id="co-global-highest">0</div><div class="lab">Global Highest</div></div>'+
+      '<div id="co-save-msg" style="margin-top:12px;"></div>'+
+      '<button class="btn btn-primary" id="co-play-again" style="margin-top:14px;">Play Again</button>';
+
+    document.getElementById('co-play-again').addEventListener('click', startCheckoutFlow);
+    submitCheckoutScore(total);
+  }
+
+  function submitCheckoutScore(total){
+    var msgEl = document.getElementById('co-save-msg');
+    withTimeout(supabase.from('checkout_scores').insert({user_id: currentUser.id, score: total}))
+      .then(function(res){
+        if (res.error){
+          if (msgEl) msgEl.innerHTML = '<div class="msg msg-error">'+escapeHtml(res.error.message)+'</div>';
+          return;
+        }
+        loadCheckoutHighlights();
+      })
+      .catch(function(err){
+        if (msgEl) msgEl.innerHTML = '<div class="msg msg-error">'+escapeHtml(err.message)+'</div>';
+      });
+  }
+
+  function loadCheckoutHighlights(){
+    withTimeout(supabase.from('checkout_scores').select('user_id,score'))
+      .then(function(res){
+        var rows = res.data || [];
+        var yourHigh = 0, globalHigh = 0;
+        for (var i=0;i<rows.length;i++){
+          if (rows[i].score > globalHigh) globalHigh = rows[i].score;
+          if (rows[i].user_id === currentUser.id && rows[i].score > yourHigh) yourHigh = rows[i].score;
+        }
+        var yourEl = document.getElementById('co-your-highest');
+        var globalEl = document.getElementById('co-global-highest');
+        if (yourEl) yourEl.textContent = yourHigh;
+        if (globalEl) globalEl.textContent = globalHigh;
+      })
+      .catch(function(err){ console.error(err); });
   }
 
   function phaseTotal(rounds){
@@ -2001,6 +2278,73 @@
       document.getElementById('ct-lb-you-line').textContent = myPos ? ('You\'re ranked #'+myPos+' of '+ranked.length+' by '+metricLabel+'.') : 'Log a score to join the board.';
     }).catch(function(err){
       document.getElementById('ct-lb-list').innerHTML = '<div class="empty-state">Could not load the leaderboard. Pull to refresh.</div>';
+      console.error(err);
+    });
+  }
+
+  var coLbMode = 'average';
+  var coLbTabButtons = document.querySelectorAll('#co-lb-tabs button');
+  for (var clt=0; clt<coLbTabButtons.length; clt++){
+    coLbTabButtons[clt].addEventListener('click', function(){
+      coLbMode = this.dataset.mode;
+      var all = document.querySelectorAll('#co-lb-tabs button');
+      for (var x=0;x<all.length;x++) all[x].classList.toggle('active', all[x].dataset.mode === coLbMode);
+      loadCheckoutLeaderboard(coLbMode);
+    });
+  }
+
+  function loadCheckoutLeaderboard(mode){
+    mode = mode || coLbMode;
+    coLbMode = mode;
+    document.getElementById('co-lb-list').innerHTML = '<div class="spinner" style="margin-top:30px;"></div>';
+    Promise.all([
+      withTimeout(supabase.from('checkout_scores').select('user_id,score')),
+      withTimeout(supabase.from('profiles').select('id,username'))
+    ]).then(function(results){
+      var scores = results[0].data || [];
+      var profiles = results[1].data || [];
+      var nameById = {};
+      for (var i=0;i<profiles.length;i++) nameById[profiles[i].id] = profiles[i].username;
+
+      var byUser = {};
+      for (var j=0;j<scores.length;j++){
+        var uid = scores[j].user_id;
+        if (!byUser[uid]) byUser[uid] = {sum:0, count:0, best:0};
+        byUser[uid].sum += scores[j].score;
+        byUser[uid].count += 1;
+        if (scores[j].score > byUser[uid].best) byUser[uid].best = scores[j].score;
+      }
+      var ranked = Object.keys(byUser).map(function(uid){
+        var u = byUser[uid];
+        var score = mode === 'best' ? u.best : Math.round(u.sum / u.count);
+        return {uid:uid, score:score, name: nameById[uid] || 'Unknown player'};
+      });
+      ranked.sort(function(a,b){ return b.score - a.score; });
+
+      var listEl = document.getElementById('co-lb-list');
+      if (ranked.length === 0){
+        listEl.innerHTML = '<div class="empty-state"><div class="glyph">'+ICON_TARGET+'</div>No Checkout scores logged yet. Be the first on the board.</div>';
+        document.getElementById('co-lb-you-line').textContent = '';
+        return;
+      }
+
+      var html = '';
+      var myPos = null;
+      for (var k=0;k<ranked.length;k++){
+        var r = ranked[k];
+        var isMe = r.uid === currentUser.id;
+        if (isMe) myPos = k+1;
+        html += '<div class="lb-row '+(isMe?'me':'')+'">'+
+          '<div class="lb-pos">'+(k+1)+'</div>'+
+          '<div class="lb-name">'+escapeHtml(r.name)+(isMe?' (you)':'')+'</div>'+
+          '<div class="lb-score mono">'+r.score+'</div>'+
+        '</div>';
+      }
+      listEl.innerHTML = html;
+      var metricLabel = mode === 'best' ? 'best-ever score' : 'rolling average';
+      document.getElementById('co-lb-you-line').textContent = myPos ? ('You\'re ranked #'+myPos+' of '+ranked.length+' by '+metricLabel+'.') : 'Log a score to join the board.';
+    }).catch(function(err){
+      document.getElementById('co-lb-list').innerHTML = '<div class="empty-state">Could not load the leaderboard. Pull to refresh.</div>';
       console.error(err);
     });
   }
