@@ -570,6 +570,15 @@
       <div id="home-resume-banner" style="display:none;text-align:center;font-size:12px;color:var(--chalk-dim);margin-bottom:10px;">You have a session in progress.</div>
       <button class="btn-mission" id="btn-home-play"><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8V4z"/></svg><span id="btn-home-play-label">Start a Session</span></button>
     </div>
+
+    <div class="card">
+      <div class="card-head"><h3>Your Best</h3></div>
+      <div class="stat-grid-3">
+        <div class="stat-box"><div class="num mono" id="home-best-ft">&mdash;</div><div class="lab">Follow Through</div></div>
+        <div class="stat-box"><div class="num mono" id="home-best-ct">&mdash;</div><div class="lab">Bulls-hit</div></div>
+        <div class="stat-box"><div class="num mono" id="home-best-co">&mdash;</div><div class="lab">Checkout</div></div>
+      </div>
+    </div>
   </div>
 
   <!-- ================= ACADEMY ================= -->
@@ -1101,6 +1110,7 @@
   // ---------------- home ----------------
   function loadHome(){
     showScreen('home');
+    loadHomeBests();
     // Simple existence check on purpose: the previous version tried to be
     // clever about detecting "meaningful" progress and that extra logic was
     // itself a source of bugs — someone lost real progress because of it.
@@ -1155,6 +1165,23 @@
         }
       })
       .catch(function(err){ console.error(err); });
+  }
+
+  function loadHomeBests(){
+    Promise.all([
+      withTimeout(supabase.from('follow_through_scores').select('score').eq('user_id', currentUser.id)),
+      withTimeout(supabase.from('center_scores').select('score').eq('user_id', currentUser.id)),
+      withTimeout(supabase.from('checkout_scores').select('score').eq('user_id', currentUser.id))
+    ]).then(function(results){
+      var ftBest = (results[0].data || []).reduce(function(m,r){ return Math.max(m, r.score); }, 0);
+      var ctBest = (results[1].data || []).reduce(function(m,r){ return Math.max(m, r.score); }, 0);
+      var coRows = results[2].data || [];
+      var coBest = coRows.reduce(function(m,r){ return Math.max(m, r.score); }, 0);
+
+      document.getElementById('home-best-ft').textContent = (results[0].data || []).length ? ftBest : '\u2014';
+      document.getElementById('home-best-ct').textContent = (results[1].data || []).length ? ctBest : '\u2014';
+      document.getElementById('home-best-co').textContent = coRows.length ? checkoutGrade(coBest) : '\u2014';
+    }).catch(function(err){ console.error(err); });
   }
 
   // ---------------- academy ----------------
@@ -1471,9 +1498,9 @@
         document.getElementById('co-trend-chart').innerHTML = buildTrendSVG(chartData, 140);
 
         if (scores.length === 0){
-          document.getElementById('co-highest').textContent = '0';
-          document.getElementById('co-lowest').textContent = '0';
-          document.getElementById('co-average').textContent = '0';
+          document.getElementById('co-highest').textContent = '\u2014';
+          document.getElementById('co-lowest').textContent = '\u2014';
+          document.getElementById('co-average').textContent = '\u2014';
         } else {
           var hi = scores[0].score, lo = scores[0].score, sum = 0;
           for (var k=0;k<scores.length;k++){
@@ -1482,9 +1509,9 @@
             if (v < lo) lo = v;
             sum += v;
           }
-          document.getElementById('co-highest').textContent = hi;
-          document.getElementById('co-lowest').textContent = lo;
-          document.getElementById('co-average').textContent = Math.round(sum / scores.length);
+          document.getElementById('co-highest').textContent = checkoutGrade(hi);
+          document.getElementById('co-lowest').textContent = checkoutGrade(lo);
+          document.getElementById('co-average').textContent = checkoutGrade(Math.round(sum / scores.length));
         }
 
         var histEl = document.getElementById('co-history');
@@ -1511,14 +1538,14 @@
               rowsHtml += '<td>'+(offset===0 ? escapeHtml(grp.dateStr) : '')+'</td>';
               for (var c=0;c<chunk.length;c++){
                 var isBest = chunk[c] === hi;
-                rowsHtml += '<td'+(isBest?' class="ft-best"':'')+'>'+chunk[c]+'</td>';
+                rowsHtml += '<td'+(isBest?' class="ft-best"':'')+'>'+checkoutGrade(chunk[c])+'</td>';
               }
               for (var p=chunk.length; p<PER_ROW; p++) rowsHtml += '<td></td>';
               rowsHtml += '</tr>';
             }
           }
           histEl.innerHTML = '<div style="overflow-x:auto;"><table class="history-table"><thead><tr>'+
-            '<th>Date</th><th colspan="'+PER_ROW+'">Scores</th>'+
+            '<th>Date</th><th colspan="'+PER_ROW+'">Grades</th>'+
           '</tr></thead><tbody>'+rowsHtml+'</tbody></table></div>';
         }
 
@@ -1761,12 +1788,12 @@
 
   // ---------------- percentage checkout ----------------
   var CHECKOUT_DB = [
-    {target:61, route:"T15 \u2794 D8"}, {target:62, route:"T10 \u2794 D16"}, {target:63, route:"T13 \u2794 D12"},
-    {target:64, route:"T16 \u2794 D8"}, {target:65, route:"S25 \u2794 D20"}, {target:66, route:"T14 \u2794 D12"},
-    {target:67, route:"T17 \u2794 D8"}, {target:68, route:"T12 \u2794 D16"}, {target:69, route:"T19 \u2794 D6"},
+    {target:61, route:"T15 \u2794 D8"}, {target:62, route:"T10 \u2794 D16"}, {target:63, route:"T17 \u2794 D6"},
+    {target:64, route:"T16 \u2794 D8"}, {target:65, route:"T11 \u2794 D16"}, {target:66, route:"T10 \u2794 D18"},
+    {target:67, route:"T9 \u2794 D20"}, {target:68, route:"T16 \u2794 D10"}, {target:69, route:"T19 \u2794 D6"},
     {target:70, route:"T18 \u2794 D8"}, {target:71, route:"T13 \u2794 D16"}, {target:72, route:"T16 \u2794 D12"},
     {target:73, route:"T19 \u2794 D8"}, {target:74, route:"T14 \u2794 D16"}, {target:75, route:"T17 \u2794 D12"},
-    {target:76, route:"T16 \u2794 D14"}, {target:77, route:"T15 \u2794 D16"}, {target:78, route:"T18 \u2794 D12"},
+    {target:76, route:"T16 \u2794 D14"}, {target:77, route:"T19 \u2794 D10"}, {target:78, route:"T18 \u2794 D12"},
     {target:79, route:"T19 \u2794 D11"}, {target:80, route:"T20 \u2794 D10"}
   ];
   var checkoutState = null;
@@ -2337,11 +2364,11 @@
         html += '<div class="lb-row '+(isMe?'me':'')+'">'+
           '<div class="lb-pos">'+(k+1)+'</div>'+
           '<div class="lb-name">'+escapeHtml(r.name)+(isMe?' (you)':'')+'</div>'+
-          '<div class="lb-score mono">'+r.score+'</div>'+
+          '<div class="lb-score mono">'+checkoutGrade(r.score)+'</div>'+
         '</div>';
       }
       listEl.innerHTML = html;
-      var metricLabel = mode === 'best' ? 'best-ever score' : 'rolling average';
+      var metricLabel = mode === 'best' ? 'best-ever grade' : 'average grade';
       document.getElementById('co-lb-you-line').textContent = myPos ? ('You\'re ranked #'+myPos+' of '+ranked.length+' by '+metricLabel+'.') : 'Log a score to join the board.';
     }).catch(function(err){
       document.getElementById('co-lb-list').innerHTML = '<div class="empty-state">Could not load the leaderboard. Pull to refresh.</div>';
